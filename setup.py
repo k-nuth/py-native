@@ -50,9 +50,23 @@ from setuptools.dist import Distribution
 
 from conans.client.conan_api import (Conan, default_manifest_folder)
 
+
+import fnmatch
+import os
+
+        
 PKG_NAME = 'bitprim_native'
 VERSION = '1.0.39'
 SYSTEM = sys.platform
+
+def get_similar_lib(path, pattern):
+    # for file in os.listdir('.'):
+    #     if fnmatch.fnmatch(file, '*.txt'):
+    #         print file
+    for file in os.listdir(path):
+        if fnmatch.fnmatch(file, pattern):
+            return file
+    return ""
 
 # class CustomInstallCommand(install):
 #     """Customized setuptools install command - prints a friendly greeting."""
@@ -145,6 +159,104 @@ refe = "."
 # c.install(refe, verify=None, manifests=None)
 c.install(refe, verify=None, manifests_interactive=None, manifests=None)
 
+print('-----------------------------------------------------------------------------------')
+xxx = get_similar_lib('bitprim/lib', "*boost_atomic*")
+print(xxx)
+print('-----------------------------------------------------------------------------------')
+
+
+
+from sys import platform
+# if platform == "linux" or platform == "linux2":
+#     # linux
+# elif platform == "darwin":
+#     # OS X
+# elif platform == "win32":
+#     # Windows...
+
+def get_libraries():
+    # libraries = ['bitprim-node-cint', 'bitprim-node', 'bitprim-blockchain', 'bitprim-network', 'bitprim-consensus', 'bitprim-database', 'bitprim-core', 'boost_atomic', 'boost_chrono', 'boost_date_time', 'boost_filesystem', 'boost_iostreams', 'boost_locale', 'boost_log', 'boost_log_setup', 'boost_program_options', 'boost_random', 'boost_regex', 'boost_system', 'boost_unit_test_framework', 'boost_prg_exec_monitor', 'boost_test_exec_monitor', 'boost_thread', 'boost_timer', 'secp256k1', 'bz2', 'gmp', 'z',]
+    fixed = ['bitprim-node-cint', 'bitprim-node', 'bitprim-blockchain', 'bitprim-network', 'bitprim-consensus', 'bitprim-database', 'bitprim-core']
+    libraries = ['boost_atomic', 'boost_chrono', 'boost_date_time', 'boost_filesystem', 'boost_iostreams', 'boost_locale', 'boost_log', 'boost_log_setup', 'boost_program_options', 'boost_random', 'boost_regex', 'boost_system', 'boost_unit_test_framework', 'boost_prg_exec_monitor', 'boost_test_exec_monitor', 'boost_thread', 'boost_timer', 'secp256k1', 'bz2', 'gmp', 'z',]
+
+    if platform == "win32":
+        winlibs = fixed
+        for lib in libraries:
+            print(lib)
+            xxx = get_similar_lib('bitprim/lib', "*" + lib + "*")
+            if xxx != '':
+                xxx = xxx.replace('.lib', '')
+                print(xxx)
+                winlibs.append(xxx)
+    
+        print(winlibs)
+        return winlibs
+    else:
+        return fixed + libraries
+
+
+
+    # C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.10.25017\bin\HostX64\x64\link.exe /nologo /INCREMENTAL:NO /LTCG /DLL /MANIFEST:EMBED,ID=2 /MANIFESTUAC:NO /LIBPATH:bitprim/lib /LIBPATH:c:\python36\libs /LIBPATH:c:\python36\PCbuild\amd64 "/LIBPATH:C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.10.25017\ATLMFC\lib\x64" "/LIBPATH:C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.10.25017\lib\x64" "/LIBPATH:C:\Program Files (x86)\Windows Kits\NETFXSDK\4.6.1\lib\um\x64" "/LIBPATH:C:\Program Files (x86)\Windows Kits\10\lib\10.0.15063.0\ucrt\x64" "/LIBPATH:C:\Program Files (x86)\Windows Kits\10\lib\10.0.15063.0\um\x64"
+    # 
+    #  bitprim-node-cint.lib 
+    # bitprim-node.lib 
+    # bitprim-blockchain.lib 
+    # bitprim-network.lib 
+    # bitprim-consensus.lib 
+    # bitprim-database.lib 
+    # bitprim-core.lib 
+    # libboost_atomic-vc141-mt-s-1_64.lib 
+    # libboost_chrono-vc141-mt-s-1_64.lib 
+    # libboost_date_time-vc141-mt-s-1_64.lib
+    # libboost_filesystem-vc141-mt-s-1_64.lib
+    # libboost_iostreams-vc141-mt-s-1_64.lib
+    # libboost_locale-vc141-mt-s-1_64.lib
+    # libboost_log-vc141-mt-s-1_64.lib
+    # libboost_log_setup-vc141-mt-s-1_64.lib
+    # libboost_program_options-vc141-mt-s-1_64.lib
+    # libboost_random-vc141-mt-s-1_64.lib
+    # libboost_regex-vc141-mt-s-1_64.lib
+    # libboost_system-vc141-mt-s-1_64.lib
+    # libboost_unit_test_framework-vc141-mt-s-1_64.lib
+    # libboost_prg_exec_monitor-vc141-mt-s-1_64.lib
+    # libboost_test_exec_monitor-vc141-mt-s-1_64.lib
+    # libboost_thread-vc141-mt-s-1_64.lib
+    # libboost_timer-vc141-mt-s-1_64.lib
+    # secp256k1.lib
+    # zlib.lib 
+    # /EXPORT:PyInit_bitprim_native 
+     # build\temp.win-amd64-3.6\Release\chain/header.obj 
+    # build\temp.win-amd64-3.6\Release\chain/block.obj 
+    # build\temp.win-amd64-3.6\Release\chain/merkle_block.obj 
+    # build\temp.win-amd64-3.6\Release\bitprimmodule.obj 
+    # build\temp.win-amd64-3.6\Release\utils.obj 
+    # build\temp.win-amd64-3.6\Release\chain/chain.obj 
+    # build\temp.win-amd64-3.6\Release\binary.obj 
+    # build\temp.win-amd64-3.6\Release\chain/point.obj 
+    # build\temp.win-amd64-3.6\Release\chain/history.obj 
+    # build\temp.win-amd64-3.6\Release\chain/word_list.obj 
+    # build\temp.win-amd64-3.6\Release\chain/transaction.obj 
+    # build\temp.win-amd64-3.6\Release\chain/output.obj 
+    # build\temp.win-amd64-3.6\Release\chain/output_list.obj 
+    # build\temp.win-amd64-3.6\Release\chain/input.obj 
+    # build\temp.win-amd64-3.6\Release\chain/input_list.obj 
+    # build\temp.win-amd64-3.6\Release\chain/script.obj
+    # build\temp.win-amd64-3.6\Release\chain/payment_address.obj
+    # build\temp.win-amd64-3.6\Release\chain/compact_block.obj
+    # build\temp.win-amd64-3.6\Release\chain/output_point.obj
+    # build\temp.win-amd64-3.6\Release\chain/block_list.obj
+    # build\temp.win-amd64-3.6\Release\chain/transaction_list.obj
+    # build\temp.win-amd64-3.6\Release\chain/stealth_compact.obj
+    # build\temp.win-amd64-3.6\Release\chain/stealth_compact_list.obj
+    # /OUT:build\lib.win-amd64-3.6\bitprim_native.cp36-win_amd64.pyd
+    # /IMPLIB:build\temp.win-amd64-3.6\Release\chain\bitprim_native.cp36-win_amd64.lib
+    # 
+    # 
+    # 
+    # bitprimmodule.obj : warning LNK4197: export 'PyInit_bitprim_native' specified multiple times; using first specification
+    #    Creating library build\temp.win-amd64-3.6\Release\chain\bitprim_native.cp36-win_amd64.lib and object build\temp.win-amd64-3.6\Release\chain\bitprim_native.cp36-win_amd64.exp
+    # MSVCRT.lib(initializers.obj) : warning LNK4098: defaultlib 'libcmt.lib' conflicts with use of other libs; use /NODEFAULTLIB:library
+    # header.obj : error LNK2001: unresolved external symbol __imp_chain_header_set_version
 
 extensions = [
 	Extension('bitprim_native',
@@ -157,7 +269,11 @@ extensions = [
 
         include_dirs=['bitprim/include'],
         library_dirs=['bitprim/lib'],
-        libraries = ['bitprim-node-cint', 'bitprim-node', 'bitprim-blockchain', 'bitprim-network', 'bitprim-consensus', 'bitprim-database', 'bitprim-core', 'boost_atomic', 'boost_chrono', 'boost_date_time', 'boost_filesystem', 'boost_iostreams', 'boost_locale', 'boost_log', 'boost_log_setup', 'boost_program_options', 'boost_random', 'boost_regex', 'boost_system', 'boost_unit_test_framework', 'boost_prg_exec_monitor', 'boost_test_exec_monitor', 'boost_thread', 'boost_timer', 'secp256k1', 'bz2', 'gmp', 'z',],
+        # libraries = ['bitprim-node-cint', 'bitprim-node', 'bitprim-blockchain', 'bitprim-network', 'bitprim-consensus', 'bitprim-database', 'bitprim-core', 'boost_atomic', 'boost_chrono', 'boost_date_time', 'boost_filesystem', 'boost_iostreams', 'boost_locale', 'boost_log', 'boost_log_setup', 'boost_program_options', 'boost_random', 'boost_regex', 'boost_system', 'boost_unit_test_framework', 'boost_prg_exec_monitor', 'boost_test_exec_monitor', 'boost_thread', 'boost_timer', 'secp256k1', 'bz2', 'gmp', 'z',],
+        libraries = get_libraries()
+
+
+
     ),
 ]
 
