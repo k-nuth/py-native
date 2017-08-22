@@ -17,49 +17,124 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-build: false
 
+# Taken from: https://packaging.python.org/en/latest/appveyor.html
+# and from: https://bitbucket.org/pygame/pygame/pull-request/45/create-python-wheel-builds-using-appveyor/diff
+# For now considering only Python 2.7, looking to support soon Python 2.6
+# and Python 3 in the future
+ 
 environment:
-    # PYTHON: "C:\\Python27"
-    PYTHON: "C:\\Python27-x64"
-    PYTHON_VERSION: "2.7.8"
-    PYTHON_ARCH: "64"
-
-    # VS150COMNTOOLS: "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\Common7\\Tools\\"
-
-    matrix:
-        # - MINGW_CONFIGURATIONS: "5.4@x86_64@seh@posix" #5.4@x86_64@sjlj@posix
-        # - MINGW_CONFIGURATIONS: "7.1@x86_64@seh@posix" #7.1@x86_64@sjlj@posix
-        - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-          # CONAN_VISUAL_VERSIONS: 14
-        # - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-        #   CONAN_VISUAL_VERSIONS: 15
-
+ 
+  global:
+    # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
+    # /E:ON and /V:ON options are not enabled in the batch script intepreter
+    # See: http://stackoverflow.com/a/13751649/163740
+    WITH_COMPILER: "cmd /E:ON /V:ON /C .\\appveyor\\run_with_compiler.cmd"
+ 
+  matrix:
+    - PYTHON: "C:\\Python27"
+      PYTHON_VERSION: "2.7.8"
+      PYTHON_ARCH: "32"
+      DISTRIBUTIONS: "sdist bdist_wheel"
+ 
+    - PYTHON: "C:\\Python33"
+      PYTHON_VERSION: "3.3.5"
+      PYTHON_ARCH: "32"
+      DISTRIBUTIONS: "bdist_wheel"
+ 
+    - PYTHON: "C:\\Python34"
+      PYTHON_VERSION: "3.4.1"
+      PYTHON_ARCH: "32"
+      DISTRIBUTIONS: "bdist_wheel"
+ 
+    - PYTHON: "C:\\Python27-x64"
+      PYTHON_VERSION: "2.7.8"
+      PYTHON_ARCH: "64"
+      WINDOWS_SDK_VERSION: "v7.0"
+      DISTRIBUTIONS: "sdist bdist_wheel"
+ 
+    - PYTHON: "C:\\Python33-x64"
+      PYTHON_VERSION: "3.3.5"
+      PYTHON_ARCH: "64"
+      WINDOWS_SDK_VERSION: "v7.1"
+      DISTRIBUTIONS: "bdist_wheel"
+ 
+    - PYTHON: "C:\\Python34-x64"
+      PYTHON_VERSION: "3.4.1"
+      PYTHON_ARCH: "64"
+      WINDOWS_SDK_VERSION: "v7.1"
+      DISTRIBUTIONS: "bdist_wheel"
+ 
+init:
+  - "ECHO %PYTHON% %PYTHON_VERSION% %PYTHON_ARCH%"
+  - "ECHO %PYTHON% %WITH_COMPILER%"
+ 
 install:
-  - set PATH=%PATH%;%PYTHON%/Scripts/
-  - pip.exe install --upgrade setuptools
-  - pip.exe install conan --upgrade
-  - pip.exe install conan_package_tools
-  - conan user # It creates the conan data directory
+  - "powershell appveyor\\install.ps1"
+  - "set HOME=%APPVEYOR_BUILD_FOLDER%"
+ 
+build: off
+ 
+test_script:
+  - python --version
+  - python -c "import struct;print( 8 * struct.calcsize('P'))"
+  - %PYTHON%/python --version
+  - %PYTHON%/python -c "import struct;print( 8 * struct.calcsize('P'))"
+  - "%WITH_COMPILER% %PYTHON%/python setup.py test"
+ 
+after_test:
+  - "%WITH_COMPILER% %PYTHON%/python setup.py %DISTRIBUTIONS%"
+ 
+artifacts:
+  - path: dist\*
+
+
+# ------------------------------------------------------------------------------------------------------
+
+
+# build: false
+
+# environment:
+#     # PYTHON: "C:\\Python27"
+#     PYTHON: "C:\\Python27-x64"
+#     PYTHON_VERSION: "2.7.8"
+#     PYTHON_ARCH: "64"
+
+#     # VS150COMNTOOLS: "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\Common7\\Tools\\"
+
+#     matrix:
+#         # - MINGW_CONFIGURATIONS: "5.4@x86_64@seh@posix" #5.4@x86_64@sjlj@posix
+#         # - MINGW_CONFIGURATIONS: "7.1@x86_64@seh@posix" #7.1@x86_64@sjlj@posix
+#         - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+#           # CONAN_VISUAL_VERSIONS: 14
+#         # - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#         #   CONAN_VISUAL_VERSIONS: 15
+
+# install:
+#   - set PATH=%PATH%;%PYTHON%/Scripts/
+#   - pip.exe install --upgrade setuptools
+#   - pip.exe install conan --upgrade
+#   - pip.exe install conan_package_tools
+#   - conan user # It creates the conan data directory
 
 
 
-before_build:
-  # - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat" amd64
-  - call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" amd64
+# before_build:
+#   # - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat" amd64
+#   - call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" amd64
 
-# test_script:
-build_script:
-  # - python build.py
-    - python --version
-    - cl.exe
-    - python -c "import struct;print( 8 * struct.calcsize('P'))"
-    # - build.cmd
-    - conan user
-    - conan remote add bitprim_temp https://api.bintray.com/conan/bitprim/bitprim
-    - conan install .
-    # - pip install  -e .
-    - python setup.py build
-    - python setup.py sdist
-    - python setup.py bdist_wheel
-    - twine upload -u ${PYPI_USER_NAME} -p ${PYPI_PASSWORD} dist/* || true
+# # test_script:
+# build_script:
+#   # - python build.py
+#     - python --version
+#     - cl.exe
+#     - python -c "import struct;print( 8 * struct.calcsize('P'))"
+#     # - build.cmd
+#     - conan user
+#     - conan remote add bitprim_temp https://api.bintray.com/conan/bitprim/bitprim
+#     - conan install .
+#     # - pip install  -e .
+#     - python setup.py build
+#     - python setup.py sdist
+#     - python setup.py bdist_wheel
+#     - twine upload -u ${PYPI_USER_NAME} -p ${PYPI_PASSWORD} dist/* || true
