@@ -5,3 +5,6 @@ build/
 conan_imports_manifest.txt
 conanbuildinfo.cmake
 conaninfo.txt
+
+bitprim_native.cp36-win_amd64.pyd
+dist/
