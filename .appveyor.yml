@@ -97,7 +97,7 @@ environment:
 # Python 3.6.1 x64 (C:\Python36-x64)
 
 install:
-
+  - cd
   - SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
   - SET VS90COMNTOOLS=%VS140COMNTOOLS%
   - cd "c:\Users\appveyor\AppData\Local\Programs\Common\Microsoft\"
