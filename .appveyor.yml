@@ -97,7 +97,15 @@ environment:
 # Python 3.6.1 x64 (C:\Python36-x64)
 
 install:
-  - set PATH=%PATH%;%PYTHON%/Scripts/
+
+  - SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
+  - SET VS90COMNTOOLS=%VS140COMNTOOLS%
+  - cd "c:\Users\appveyor\AppData\Local\Programs\Common\Microsoft\"
+  - ren "Visual C++ for Python" "Visual C++ for Python Do Not Use"
+  - cd "C:\Program Files (x86)\"
+  - ren "Microsoft Visual Studio 9.0" "Microsoft Visual Studio 9.0 Do Not Use"
+
+  # - set PATH=%PATH%;%PYTHON%/Scripts/
   - pip.exe --version
   - "%PYTHON%\\Scripts\\pip.exe --version"
   - "%PYTHON%\\Scripts\\pip.exe install --upgrade setuptools"

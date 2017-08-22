@@ -33,13 +33,15 @@ extern "C" {
 
 PyObject* bitprim_native_chain_header_get_version(PyObject* self, PyObject* args){
     PyObject* py_header;
+    header_t header;
+    uint32_t res;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_header)) {
         return NULL;
     }
 
-    header_t header = (header_t)get_ptr(py_header);
-    uint32_t res = chain_header_version(header);
+    header = (header_t)get_ptr(py_header);
+    res = chain_header_version(header);
 
     return Py_BuildValue("I", res);   
 }
@@ -47,12 +49,13 @@ PyObject* bitprim_native_chain_header_get_version(PyObject* self, PyObject* args
 PyObject* bitprim_native_chain_header_set_version(PyObject* self, PyObject* args){
     PyObject* py_header;
     uint32_t py_version;
+    header_t header;
 
     if ( ! PyArg_ParseTuple(args, "OI", &py_header, &py_version)) {
         return NULL;
     }
 
-    header_t header = (header_t)get_ptr(py_header);
+    header = (header_t)get_ptr(py_header);
     chain_header_set_version(header, py_version);
 
     Py_RETURN_NONE;   
