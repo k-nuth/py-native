@@ -35,12 +35,12 @@ environment:
         DISTRIBUTIONS: "sdist bdist_wheel"
         APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
   
-      - PYTHON: "C:\\Python33-x64"
-        PYTHON_VERSION: "3.3.5"
-        PYTHON_ARCH: "64"
-        WINDOWS_SDK_VERSION: "v7.1"
-        DISTRIBUTIONS: "bdist_wheel"
-        APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      # - PYTHON: "C:\\Python33-x64"
+      #   PYTHON_VERSION: "3.3.5"
+      #   PYTHON_ARCH: "64"
+      #   WINDOWS_SDK_VERSION: "v7.1"
+      #   DISTRIBUTIONS: "bdist_wheel"
+      #   APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
   
       - PYTHON: "C:\\Python34-x64"
         PYTHON_VERSION: "3.4.4"
