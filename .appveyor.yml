@@ -148,7 +148,8 @@ build_script:
     - "%PYTHON%\\python.exe setup.py build"
     - "%PYTHON%\\python.exe setup.py sdist"
     - "%PYTHON%\\python.exe setup.py bdist_wheel"
-    - twine upload -u ${PYPI_USER_NAME} -p ${PYPI_PASSWORD} dist/* || true
+    # - twine upload -u ${PYPI_USER_NAME} -p ${PYPI_PASSWORD} dist/* || true
+    - twine upload -u %PYPI_USER_NAME% -p %PYPI_PASSWORD% dist/* || true
 
 
 
