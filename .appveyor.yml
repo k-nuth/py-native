@@ -103,6 +103,8 @@ install:
   - "%PYTHON%\\Scripts\\pip.exe install --upgrade setuptools"
   - "%PYTHON%\\Scripts\\pip.exe install conan --upgrade"
   - "%PYTHON%\\Scripts\\pip.exe install conan_package_tools"
+  - "%PYTHON%\\python.exe -m pip install wheel"
+  - "%PYTHON%\\python.exe -m pip install twine"
   - "%PYTHON%\\Scripts\\pip.exe --version"
   - "%PYTHON%\\Scripts\\pip.exe --version"
   - conan user # It creates the conan data directory
@@ -112,7 +114,7 @@ install:
   # - build.cmd
   - "%PYTHON%\\python.exe --version"
   - "%PYTHON%\\python.exe -c \"import struct;print( 8 * struct.calcsize('P'))\""
-
+  - cp "c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdint.h" "C:\Users\appveyor\AppData\Local\Programs\Common\Microsoft\Visual C++ for Python\9.0\VC\include\stdint.h"
 
 before_build:
   # - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat" amd64
