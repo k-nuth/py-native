@@ -105,6 +105,9 @@ install:
   - cd "C:\Program Files (x86)\"
   - ren "Microsoft Visual Studio 9.0" "Microsoft Visual Studio 9.0 Do Not Use"
 
+  # - cp "c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdint.h" "C:\Users\appveyor\AppData\Local\Programs\Common\Microsoft\Visual C++ for Python\9.0\VC\include\stdint.h"
+
+
   # - set PATH=%PATH%;%PYTHON%/Scripts/
   - pip.exe --version
   - "%PYTHON%\\Scripts\\pip.exe --version"
@@ -122,7 +125,6 @@ install:
   # - build.cmd
   - "%PYTHON%\\python.exe --version"
   - "%PYTHON%\\python.exe -c \"import struct;print( 8 * struct.calcsize('P'))\""
-  - cp "c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdint.h" "C:\Users\appveyor\AppData\Local\Programs\Common\Microsoft\Visual C++ for Python\9.0\VC\include\stdint.h"
 
 before_build:
   # - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat" amd64
