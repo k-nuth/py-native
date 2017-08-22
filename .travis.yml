@@ -74,6 +74,21 @@ matrix:
       - <<: *osx
         osx_image: xcode7.3
         env: CONAN_APPLE_CLANG_VERSIONS=7.3
+        python: "3.6"
+
+      - <<: *osx
+        osx_image: xcode8.2
+        env: CONAN_APPLE_CLANG_VERSIONS=8.0
+        python: "3.6"
+
+      - <<: *osx
+        osx_image: xcode8.3
+        env: CONAN_APPLE_CLANG_VERSIONS=8.1
+        python: "3.6"
+
+      - <<: *osx
+        osx_image: xcode7.3
+        env: CONAN_APPLE_CLANG_VERSIONS=7.3
         python: "2.7"
 
       - <<: *osx
@@ -87,20 +102,7 @@ matrix:
         python: "2.7"
 
       
-      - <<: *osx
-        osx_image: xcode7.3
-        env: CONAN_APPLE_CLANG_VERSIONS=7.3
-        python: "3.6"
 
-      - <<: *osx
-        osx_image: xcode8.2
-        env: CONAN_APPLE_CLANG_VERSIONS=8.0
-        python: "3.6"
-
-      - <<: *osx
-        osx_image: xcode8.3
-        env: CONAN_APPLE_CLANG_VERSIONS=8.1
-        python: "3.6"
 
 
 install:
@@ -124,6 +126,9 @@ script:
     if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
       /usr/bin/docker run --rm -ti -v ${TRAVIS_BUILD_DIR}:/home/conan/project -v ${TRAVIS_BUILD_DIR}/.travis/entrypoint.sh:/tmp/entrypoint.sh lasote/conangcc63 /bin/bash -c /tmp/entrypoint.sh
     else
+      python --version
+      python3 --version
+      python2 --version
       conan user
       conan remote add bitprim_temp https://api.bintray.com/conan/bitprim/bitprim
       conan install .
