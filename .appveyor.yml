@@ -138,6 +138,8 @@ before_build:
 
 # test_script:
 build_script:
+    - cd %APPVEYOR_BUILD_FOLDER% 
+    - cd
     - cl.exe
     - conan user
     - conan remote add bitprim_temp https://api.bintray.com/conan/bitprim/bitprim
