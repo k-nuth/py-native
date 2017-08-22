@@ -73,7 +73,7 @@ install:
   # - "powershell appveyor\\install.ps1"
   - "set HOME=%APPVEYOR_BUILD_FOLDER%"
   - "%PYTHON%\\python.exe --version"
-  - "%PYTHON%\\python.exe -c \"import struct;print( 8 * struct.calcsize('P'))\"""
+  - "%PYTHON%\\python.exe -c \"import struct;print( 8 * struct.calcsize('P'))\""
  
 build: off
  
