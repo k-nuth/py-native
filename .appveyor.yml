@@ -78,8 +78,8 @@ build: off
 test_script:
   - python --version
   - python -c "import struct;print( 8 * struct.calcsize('P'))"
-  - %PYTHON%/python --version
-  - %PYTHON%/python -c "import struct;print( 8 * struct.calcsize('P'))"
+  - "%PYTHON%/python --version"
+  # - %PYTHON%/python -c "import struct;print( 8 * struct.calcsize('P'))"
   - "%WITH_COMPILER% %PYTHON%/python setup.py test"
  
 after_test:
