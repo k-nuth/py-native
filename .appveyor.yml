@@ -125,9 +125,9 @@ build_script:
     - conan remote add bitprim_temp https://api.bintray.com/conan/bitprim/bitprim
     - conan install .
     # - pip install  -e .
-    - python setup.py build
-    - python setup.py sdist
-    - python setup.py bdist_wheel
+    - "%PYTHON%\\python.exe setup.py build"
+    - "%PYTHON%\\python.exe setup.py sdist"
+    - "%PYTHON%\\python.exe setup.py bdist_wheel"
     - twine upload -u ${PYPI_USER_NAME} -p ${PYPI_PASSWORD} dist/* || true
 
 
