@@ -51,11 +51,13 @@ build_script:
   # - python build.py
     - python --version
     - cl.exe
+    - python -c "import struct;print( 8 * struct.calcsize('P'))"
     # - build.cmd
     - conan user
     - conan remote add bitprim_temp https://api.bintray.com/conan/bitprim/bitprim
     - conan install .
-    - pip install  -e .
+    # - pip install  -e .
+    - python setup.py build
     - python setup.py sdist
     - python setup.py bdist_wheel
     - twine upload -u ${PYPI_USER_NAME} -p ${PYPI_PASSWORD} dist/* || true
