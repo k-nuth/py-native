@@ -700,7 +700,13 @@ int chain_subscribe_reorganize_handler(chain_t chain, void* ctx, int error, uint
     //Py_XDECREF(py_callback);  // Dispose of the call
 
     if (ret != NULL) {
+
+#if PY_MAJOR_VERSION >= 3
+        int py_ret = (int)PyLong_AsLong(ret); //TODO(fernando): warning! convertion.. how to conver PyObject to int
+#else /* PY_MAJOR_VERSION >= 3 */
         int py_ret = (int)PyInt_AsLong(ret); //TODO(fernando): warning! convertion.. how to conver PyObject to int
+#endif /* PY_MAJOR_VERSION >= 3 */
+
         printf("Result of call: %d\n", py_ret);
         Py_DECREF(ret);
         return py_ret;
@@ -744,7 +750,13 @@ int chain_subscribe_transaction_handler(chain_t chain, void* ctx, int error, tra
 
 
     if (ret != NULL) {
+#if PY_MAJOR_VERSION >= 3
+        int py_ret = (int)PyLong_AsLong(ret); //TODO(fernando): warning! convertion.. how to conver PyObject to int
+#else /* PY_MAJOR_VERSION >= 3 */
         int py_ret = (int)PyInt_AsLong(ret); //TODO(fernando): warning! convertion.. how to conver PyObject to int
+#endif /* PY_MAJOR_VERSION >= 3 */
+
+
         printf("Result of call: %d\n", py_ret);
         Py_DECREF(ret);
         return py_ret;

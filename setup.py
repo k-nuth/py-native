@@ -56,7 +56,7 @@ import os
 
         
 PKG_NAME = 'bitprim_native'
-VERSION = '1.0.39'
+VERSION = '1.0.40'
 SYSTEM = sys.platform
 
 def get_similar_lib(path, pattern):
@@ -261,8 +261,10 @@ def get_libraries():
 extensions = [
 	Extension('bitprim_native',
 
-    	sources = ['chain/header.c', 'chain/block.c', 'chain/merkle_block.c', 'bitprimmodule.cpp',
-        'utils.c', 'chain/chain.c', 'binary.c', 'chain/point.c', 'chain/history.c', 'chain/word_list.c', 
+        define_macros = [('BITPRIM_LIB_STATIC', None),],
+        # 
+    	sources = ['utils.c',  'chain/header.c', 'chain/block.c', 'chain/merkle_block.c', 'bitprimmodule.cpp',
+        'chain/chain.c', 'binary.c', 'chain/point.c', 'chain/history.c', 'chain/word_list.c', 
         'chain/transaction.c', 'chain/output.c', 'chain/output_list.c',  'chain/input.c', 'chain/input_list.c', 
         'chain/script.c', 'chain/payment_address.c', 'chain/compact_block.c', 'chain/output_point.c',
         'chain/block_list.c', 'chain/transaction_list.c', 'chain/stealth_compact.c', 'chain/stealth_compact_list.c'],

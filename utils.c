@@ -4,7 +4,7 @@
 extern "C" {  
 #endif  
 
-inline 
+// inline 
 void* get_ptr(PyObject* obj) {
 #if PY_MAJOR_VERSION >= 3
     return PyCapsule_GetPointer(obj, NULL);
@@ -13,7 +13,7 @@ void* get_ptr(PyObject* obj) {
 #endif /* PY_MAJOR_VERSION >= 3 */
 }
 
-inline
+// inline
 executor_t cast_executor(PyObject* obj) {
     return (executor_t)get_ptr(obj);
 }
@@ -37,7 +37,7 @@ void hex2bin(const char* src, uint8_t* target) {
     }
 }
 
-inline
+// inline
 PyObject* to_py_obj(void* obj) {
 #if PY_MAJOR_VERSION >= 3
     return PyCapsule_New(obj, NULL, NULL);
@@ -45,6 +45,9 @@ PyObject* to_py_obj(void* obj) {
     return PyCObject_FromVoidPtr(obj, NULL);
 #endif /* PY_MAJOR_VERSION >= 3 */
 }
+
+
+
 
 
 #ifdef __cplusplus
