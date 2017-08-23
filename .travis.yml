@@ -123,7 +123,7 @@ install:
 
       if which pyenv > /dev/null; then
           eval "$(pyenv init -)"
-          eval "$(pyenv virtualenv-init -)"  
+          eval "$(pyenv virtualenv-init -)" 
       fi
 
       if [[ $TRAVIS_PYTHON_VERSION == 2.7 ]]; then
@@ -138,11 +138,11 @@ install:
       pyenv activate conan
     fi
 
-    - pip install conan --upgrade
-    - pip install conan_package_tools --upgrade
-    - pip install wheel --upgrade
-    - pip install twine --upgrade
-    - conan user
+  - pip install conan --upgrade
+  - pip install conan_package_tools --upgrade
+  - pip install wheel --upgrade
+  - pip install twine --upgrade
+  - conan user
 
 
 script:
