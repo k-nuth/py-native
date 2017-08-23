@@ -111,8 +111,8 @@ install:
   # - chmod +x .travis/install.sh
   # - ./.travis/install.sh
 
-  - set -e
-  - set -x
+  # - set -e
+  # - set -x
 
   - |
     if [[ "${TRAVIS_OS_NAME}" != "linux" ]]; then
@@ -150,8 +150,8 @@ script:
   # - chmod +x .travis/run.sh
   # - ./.travis/run.sh
 
-  - set -e
-  - set -x
+  # - set -e
+  # - set -x
 
   - |
     if [[ "${TRAVIS_OS_NAME}" != "linux" ]]; then
@@ -161,8 +161,6 @@ script:
       fi
       pyenv activate conan
     fi
-
-
 
   - |
     if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
