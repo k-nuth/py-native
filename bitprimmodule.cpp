@@ -394,6 +394,7 @@ PyMethodDef BitprimNativeMethods[] = {
     //{"header_set_previous_block_hash",  bitprim_native_chain_header_set_previous_block_hash, METH_VARARGS, "..."},
     {"header_get_merkle",  bitprim_native_chain_header_get_merkle, METH_VARARGS, "..."},
     //{"header_set_merkle",  bitprim_native_chain_header_set_merkle, METH_VARARGS, "..."},
+    {"header_get_hash",  bitprim_native_chain_header_get_hash, METH_VARARGS, "..."},
     {"header_get_timestamp",  bitprim_native_chain_header_get_timestamp, METH_VARARGS, "..."},
     {"header_set_timestamp",  bitprim_native_chain_header_set_timestamp, METH_VARARGS, "..."},
     {"header_get_bits",  bitprim_native_chain_header_get_bits, METH_VARARGS, "..."},
