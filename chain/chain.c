@@ -690,41 +690,60 @@ PyObject* bitprim_native_chain_fetch_spend(PyObject* self, PyObject* args){
 }
 
 int chain_subscribe_reorganize_handler(chain_t chain, void* ctx, int error, uint64_t fork_height, block_list_t blocks_incoming, block_list_t blocks_replaced) {
+
+    PyGILState_STATE gstate;
+    gstate = PyGILState_Ensure();
+
     PyObject* py_callback = ctx;
+
     PyObject* py_blocks_incoming = to_py_obj(blocks_incoming);
     PyObject* py_blocks_replaced = to_py_obj(blocks_replaced);
-
     PyObject* arglist = Py_BuildValue("(iKOO)", error, fork_height, py_blocks_incoming, py_blocks_replaced);
+
     PyObject* ret = PyObject_CallObject(py_callback, arglist);
+    
     Py_DECREF(arglist);    
-    //Py_XDECREF(py_callback);  // Dispose of the call
-
+    
     if (ret != NULL) {
+        //printf("chain_subscribe_reorganize_handler -  1\n");
 
-#if PY_MAJOR_VERSION >= 3
-        int py_ret = (int)PyLong_AsLong(ret); //TODO(fernando): warning! convertion.. how to conver PyObject to int
-#else /* PY_MAJOR_VERSION >= 3 */
-        int py_ret = (int)PyInt_AsLong(ret); //TODO(fernando): warning! convertion.. how to conver PyObject to int
-#endif /* PY_MAJOR_VERSION >= 3 */
+// #if PY_MAJOR_VERSION >= 3
+//         int py_ret = (int)PyLong_AsLong(ret); //TODO(fernando): warning! convertion.. how to conver PyObject to int
+// #else /* PY_MAJOR_VERSION >= 3 */
+//         int py_ret = (int)PyInt_AsLong(ret); //TODO(fernando): warning! convertion.. how to conver PyObject to int
+// #endif /* PY_MAJOR_VERSION >= 3 */
 
-        printf("Result of call: %d\n", py_ret);
+        int truthy = PyObject_IsTrue(ret);
+
         Py_DECREF(ret);
-        return py_ret;
+        
+        //TODO(rama):
+        //if (truthy == -1) return APPROPRIATEERRORRETURN;
+
+        PyGILState_Release(gstate);    
+        
+        if (truthy) {
+            return 1;
+        } else {
+            return 0;    
+        }
+
     }
     else {
         // Py_DECREF(pFunc);
         // Py_DECREF(pModule);
         // PyErr_Print();
         fprintf(stderr,"Call failed\n");
+        PyGILState_Release(gstate);    
         return 0;
-    }    
+    }     
 }
 
 PyObject* bitprim_native_chain_subscribe_reorganize(PyObject* self, PyObject* args){
     PyObject* py_chain;
     PyObject* py_callback;
 
-    if ( ! PyArg_ParseTuple(args, "OO", &py_chain, &py_callback)) {
+    if ( ! PyArg_ParseTuple(args, "OO:set_callback", &py_chain, &py_callback)) {
         return NULL;
     }
 
@@ -735,6 +754,7 @@ PyObject* bitprim_native_chain_subscribe_reorganize(PyObject* self, PyObject* ar
 
     chain_t chain = (chain_t)get_ptr(py_chain);
     Py_XINCREF(py_callback);         /* Add a reference to new callback */
+    
     chain_subscribe_reorganize(chain, py_callback, chain_subscribe_reorganize_handler);
     Py_RETURN_NONE;
 }
