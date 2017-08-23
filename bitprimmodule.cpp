@@ -540,6 +540,14 @@ initbitprim_native(void)
 
 
 {
+
+    // Make sure the GIL has been created since we need to acquire it in our
+    // callback to safely call into the python application.
+    if (! PyEval_ThreadsInitialized()) {
+        PyEval_InitThreads();
+    }
+
+
 #if PY_MAJOR_VERSION >= 3
     PyObject *module = PyModule_Create(&moduledef);
 #else
