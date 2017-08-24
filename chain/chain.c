@@ -379,7 +379,7 @@ PyObject* bitprim_native_chain_fetch_stealth(PyObject* self, PyObject* args) {
 
     chain_t chain = (chain_t)get_ptr(py_chain);
     Py_XINCREF(py_callback);         /* Add a reference to new callback */
-    binary_t binary_filter = (binary_t)PyCapsule_GetPointer(py_filter, NULL);
+    binary_t binary_filter = (binary_t)get_ptr(py_filter);
     chain_fetch_stealth(chain, py_callback, binary_filter, py_from_height, chain_stealth_fetch_handler);
     Py_RETURN_NONE;
 }
