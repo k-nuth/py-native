@@ -126,7 +126,23 @@ install:
           eval "$(pyenv virtualenv-init -)" 
       fi
 
+      echo $TRAVIS_PYTHON_VERSION
+      echo "$TRAVIS_PYTHON_VERSION"
+
       if [[ $TRAVIS_PYTHON_VERSION == 2.7 ]]; then
+        echo "2.7 -- 1"
+      else
+        echo "2.7 -- 1 -- ELSE"
+      fi
+
+
+      if [[ "$TRAVIS_PYTHON_VERSION" == 2.7 ]]; then
+        echo "2.7 -- 2"
+      else
+        echo "2.7 -- 2 -- ELSE"
+      fi
+
+      if [[ "$TRAVIS_PYTHON_VERSION" == 2.7 ]]; then
         pyenv install 2.7.10
         pyenv virtualenv 2.7.10 conan
       else
