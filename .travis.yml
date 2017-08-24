@@ -30,13 +30,13 @@ linux: &linux
    os: linux
    sudo: required
    language: python
-   python: "3.6"
+  #  python: "3.6"
    services:
      - docker
 
 osx: &osx
    os: osx
-   language: generic
+   language: python
 
 # addons:
 #   apt:
@@ -70,21 +70,7 @@ matrix:
     # - os: linux
     #   env: UNIT_TESTS=true COMPILER=g++-6     BOOST_VERSION=default ENABLE_MEMCHECK=true
     #   compiler: gcc
-      
-      - <<: *osx
-        osx_image: xcode7.3
-        env: CONAN_APPLE_CLANG_VERSIONS=7.3
-        python: "3.6"
 
-      - <<: *osx
-        osx_image: xcode8.2
-        env: CONAN_APPLE_CLANG_VERSIONS=8.0
-        python: "3.6"
-
-      - <<: *osx
-        osx_image: xcode8.3
-        env: CONAN_APPLE_CLANG_VERSIONS=8.1
-        python: "3.6"
 
       - <<: *osx
         osx_image: xcode7.3
@@ -100,6 +86,24 @@ matrix:
         osx_image: xcode8.3
         env: CONAN_APPLE_CLANG_VERSIONS=8.1
         python: "2.7"
+
+
+
+      - <<: *osx
+        osx_image: xcode7.3
+        env: CONAN_APPLE_CLANG_VERSIONS=7.3
+        python: "3.6"
+
+      - <<: *osx
+        osx_image: xcode8.2
+        env: CONAN_APPLE_CLANG_VERSIONS=8.0
+        python: "3.6"
+
+      - <<: *osx
+        osx_image: xcode8.3
+        env: CONAN_APPLE_CLANG_VERSIONS=8.1
+        python: "3.6"
+
 
       
 
@@ -107,28 +111,97 @@ matrix:
 
 install:
   
-  - cd ${TRAVIS_BUILD_DIR}
-  - chmod +x .travis/install.sh
-  - ./.travis/install.sh
+  # - cd ${TRAVIS_BUILD_DIR}
+  # - chmod +x .travis/install.sh
+  # - ./.travis/install.sh
+
+  # - set -e
+  # - set -x
+
+  - echo $TRAVIS_PYTHON_VERSION
+  - echo "$TRAVIS_PYTHON_VERSION"
+  - echo ${TRAVIS_PYTHON_VERSION}
+  - echo "${TRAVIS_PYTHON_VERSION}"
+  - echo "${TRAVIS_OS_NAME}"
+
+  - |
+    if [[ "${TRAVIS_OS_NAME}" != "linux" ]]; then
+      brew update || brew update
+      brew outdated pyenv || brew upgrade pyenv
+      brew install pyenv-virtualenv
+      brew install cmake || true
+
+      if which pyenv > /dev/null; then
+          eval "$(pyenv init -)"
+          eval "$(pyenv virtualenv-init -)" 
+      fi
+
+
+      if [[ $TRAVIS_PYTHON_VERSION == 2.7 ]]; then
+        echo "2.7 -- 1"
+      else
+        echo "2.7 -- 1 -- ELSE"
+      fi
+
+
+      if [[ "$TRAVIS_PYTHON_VERSION" == 2.7 ]]; then
+        echo "2.7 -- 2"
+      else
+        echo "2.7 -- 2 -- ELSE"
+      fi
+
+      if [[ "$TRAVIS_PYTHON_VERSION" == 2.7 ]]; then
+        pyenv install 2.7.10
+        pyenv virtualenv 2.7.10 conan
+      else
+        pyenv install 3.6.1
+        pyenv virtualenv 3.6.1 conan
+      fi
+
+      pyenv rehash
+      pyenv activate conan
+    fi
+
+  - pip install conan_package_tools --upgrade
+  - pip install conan --upgrade
+  - pip install wheel --upgrade
+  - pip install twine --upgrade
+  - conan user
 
 
 script:
-  - cd ${TRAVIS_BUILD_DIR}
-  - chmod +x .travis/run.sh
-  - ./.travis/run.sh
+  # - cd ${TRAVIS_BUILD_DIR}
+  # - chmod +x .travis/run.sh
+  # - ./.travis/run.sh
 
-  - cd ${TRAVIS_BUILD_DIR}
-  - ls -ltra .travis/
-  - chmod a+x .travis/entrypoint.sh
-  - ls -ltra .travis/
+  # - set -e
+  # - set -x
+
+  - echo $TRAVIS_PYTHON_VERSION
+  - echo "$TRAVIS_PYTHON_VERSION"
+  - echo ${TRAVIS_PYTHON_VERSION}
+  - echo "${TRAVIS_PYTHON_VERSION}"
+  - echo "${TRAVIS_OS_NAME}"
+
+
+  - |
+    if [[ "${TRAVIS_OS_NAME}" != "linux" ]]; then
+      if which pyenv > /dev/null; then
+          eval "$(pyenv init -)"
+          eval "$(pyenv virtualenv-init -)"
+      fi
+      pyenv activate conan
+    fi
 
   - |
     if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
+      cd ${TRAVIS_BUILD_DIR}
+      chmod a+x .travis/entrypoint.sh
       /usr/bin/docker run --rm -ti -v ${TRAVIS_BUILD_DIR}:/home/conan/project -v ${TRAVIS_BUILD_DIR}/.travis/entrypoint.sh:/tmp/entrypoint.sh lasote/conangcc63 /bin/bash -c /tmp/entrypoint.sh
     else
       python --version
-      python3 --version
-      python2 --version
+      # python3 --version
+      # python2 --version
       conan user
       conan remote add bitprim_temp https://api.bintray.com/conan/bitprim/bitprim
       conan install .
