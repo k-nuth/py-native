@@ -30,7 +30,7 @@ linux: &linux
    os: linux
    sudo: required
    language: python
-   python: "3.6"
+  #  python: "3.6"
    services:
      - docker
 
@@ -70,21 +70,7 @@ matrix:
     # - os: linux
     #   env: UNIT_TESTS=true COMPILER=g++-6     BOOST_VERSION=default ENABLE_MEMCHECK=true
     #   compiler: gcc
-      
-      - <<: *osx
-        osx_image: xcode7.3
-        env: CONAN_APPLE_CLANG_VERSIONS=7.3
-        python: "3.6"
 
-      - <<: *osx
-        osx_image: xcode8.2
-        env: CONAN_APPLE_CLANG_VERSIONS=8.0
-        python: "3.6"
-
-      - <<: *osx
-        osx_image: xcode8.3
-        env: CONAN_APPLE_CLANG_VERSIONS=8.1
-        python: "3.6"
 
       - <<: *osx
         osx_image: xcode7.3
@@ -100,6 +86,24 @@ matrix:
         osx_image: xcode8.3
         env: CONAN_APPLE_CLANG_VERSIONS=8.1
         python: "2.7"
+
+
+
+      - <<: *osx
+        osx_image: xcode7.3
+        env: CONAN_APPLE_CLANG_VERSIONS=7.3
+        python: "3.6"
+
+      - <<: *osx
+        osx_image: xcode8.2
+        env: CONAN_APPLE_CLANG_VERSIONS=8.0
+        python: "3.6"
+
+      - <<: *osx
+        osx_image: xcode8.3
+        env: CONAN_APPLE_CLANG_VERSIONS=8.1
+        python: "3.6"
+
 
       
 
@@ -114,6 +118,12 @@ install:
   # - set -e
   # - set -x
 
+  - echo $TRAVIS_PYTHON_VERSION
+  - echo "$TRAVIS_PYTHON_VERSION"
+  - echo ${TRAVIS_PYTHON_VERSION}
+  - echo "${TRAVIS_PYTHON_VERSION}"
+  - echo "${TRAVIS_OS_NAME}"
+
   - |
     if [[ "${TRAVIS_OS_NAME}" != "linux" ]]; then
       brew update || brew update
@@ -126,8 +136,6 @@ install:
           eval "$(pyenv virtualenv-init -)" 
       fi
 
-      echo $TRAVIS_PYTHON_VERSION
-      echo "$TRAVIS_PYTHON_VERSION"
 
       if [[ $TRAVIS_PYTHON_VERSION == 2.7 ]]; then
         echo "2.7 -- 1"
@@ -168,6 +176,13 @@ script:
 
   # - set -e
   # - set -x
+
+  - echo $TRAVIS_PYTHON_VERSION
+  - echo "$TRAVIS_PYTHON_VERSION"
+  - echo ${TRAVIS_PYTHON_VERSION}
+  - echo "${TRAVIS_PYTHON_VERSION}"
+  - echo "${TRAVIS_OS_NAME}"
+
 
   - |
     if [[ "${TRAVIS_OS_NAME}" != "linux" ]]; then
