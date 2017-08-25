@@ -51,48 +51,55 @@ matrix:
       
       - <<: *osx
         osx_image: xcode7.3
-        env: CONAN_APPLE_CLANG_VERSIONS=7.3  TRAVIS_PYTHON_VERSION=2.7
-        python: "2.7"
-
-      - <<: *osx
-        osx_image: xcode8.2
-        env: CONAN_APPLE_CLANG_VERSIONS=8.0  TRAVIS_PYTHON_VERSION=2.7
+        env: CONAN_APPLE_CLANG_VERSIONS=7.3  TRAVIS_PYTHON_VERSION=2.7 PYTHON_FULL_VERSION=2.7.13
         python: "2.7"
 
       - <<: *osx
         osx_image: xcode8.3
-        env: CONAN_APPLE_CLANG_VERSIONS=8.1 TRAVIS_PYTHON_VERSION=2.7
+        env: CONAN_APPLE_CLANG_VERSIONS=8.1 TRAVIS_PYTHON_VERSION=2.7 PYTHON_FULL_VERSION=2.7.13
         python: "2.7"
 
       - <<: *osx
         osx_image: xcode7.3
-        env: CONAN_APPLE_CLANG_VERSIONS=7.3 TRAVIS_PYTHON_VERSION=3.6
-        python: "3.6"
+        env: CONAN_APPLE_CLANG_VERSIONS=7.3 TRAVIS_PYTHON_VERSION=3.4 PYTHON_FULL_VERSION=3.4.7
+        python: "3.4"
 
       - <<: *osx
-        osx_image: xcode8.2
-        env: CONAN_APPLE_CLANG_VERSIONS=8.0 TRAVIS_PYTHON_VERSION=3.6
+        osx_image: xcode8.3
+        env: CONAN_APPLE_CLANG_VERSIONS=8.1 TRAVIS_PYTHON_VERSION=3.4 PYTHON_FULL_VERSION=3.4.7
+        python: "3.4"
+
+      - <<: *osx
+        osx_image: xcode7.3
+        env: CONAN_APPLE_CLANG_VERSIONS=7.3 TRAVIS_PYTHON_VERSION=3.5 PYTHON_FULL_VERSION=3.5.4
+        python: "3.5"
+
+      - <<: *osx
+        osx_image: xcode8.3
+        env: CONAN_APPLE_CLANG_VERSIONS=8.1 TRAVIS_PYTHON_VERSION=3.5 PYTHON_FULL_VERSION=3.5.4
+        python: "3.5"
+
+      - <<: *osx
+        osx_image: xcode7.3
+        env: CONAN_APPLE_CLANG_VERSIONS=7.3 TRAVIS_PYTHON_VERSION=3.6 PYTHON_FULL_VERSION=3.6.2
         python: "3.6"
 
       - <<: *osx
         osx_image: xcode8.3
-        env: CONAN_APPLE_CLANG_VERSIONS=8.1 TRAVIS_PYTHON_VERSION=3.6
+        env: CONAN_APPLE_CLANG_VERSIONS=8.1 TRAVIS_PYTHON_VERSION=3.6 PYTHON_FULL_VERSION=3.6.2
         python: "3.6"
 
 install:
-  
-  # - cd ${TRAVIS_BUILD_DIR}
-  # - chmod +x .travis/install.sh
-  # - ./.travis/install.sh
 
   - set -e
-  - set -x
+  # - set -x
 
   - echo $TRAVIS_PYTHON_VERSION
   - echo "$TRAVIS_PYTHON_VERSION"
   - echo ${TRAVIS_PYTHON_VERSION}
   - echo "${TRAVIS_PYTHON_VERSION}"
   - echo "${TRAVIS_OS_NAME}"
+  - echo "${PYTHON_FULL_VERSION}"
 
   - |
     if [[ "${TRAVIS_OS_NAME}" != "linux" ]]; then
@@ -106,25 +113,22 @@ install:
           eval "$(pyenv virtualenv-init -)" 
       fi
 
-      if [[ $TRAVIS_PYTHON_VERSION == 2.7 ]]; then
-        echo "2.7 -- 1"
-      else
-        echo "2.7 -- 1 -- ELSE"
-      fi
+      # if [[ "$TRAVIS_PYTHON_VERSION" == 2.7 ]]; then
+      #   pyenv install 2.7.13
+      #   pyenv virtualenv 2.7.13 conan
+      # elif [[ "$TRAVIS_PYTHON_VERSION" == 3.4 ]]; then
+      #   pyenv install 3.4.7
+      #   pyenv virtualenv 3.4.7 conan
+      # elif [[ "$TRAVIS_PYTHON_VERSION" == 3.5 ]]; then
+      #   pyenv install 3.5.4
+      #   pyenv virtualenv 3.5.4 conan
+      # elif [[ "$TRAVIS_PYTHON_VERSION" == 3.6 ]]; then
+      #   pyenv install 3.6.2
+      #   pyenv virtualenv 3.6.2 conan
+      # fi
 
-      if [[ "$TRAVIS_PYTHON_VERSION" == 2.7 ]]; then
-        echo "2.7 -- 2"
-      else
-        echo "2.7 -- 2 -- ELSE"
-      fi
-
-      if [[ "$TRAVIS_PYTHON_VERSION" == 2.7 ]]; then
-        pyenv install 2.7.10
-        pyenv virtualenv 2.7.10 conan
-      else
-        pyenv install 3.6.1
-        pyenv virtualenv 3.6.1 conan
-      fi
+      pyenv install $PYTHON_FULL_VERSION
+      pyenv virtualenv $PYTHON_FULL_VERSION conan
 
       pyenv rehash
       pyenv activate conan
@@ -143,7 +147,7 @@ script:
   # - ./.travis/run.sh
 
   - set -e
-  - set -x
+  # - set -x
 
   - echo $TRAVIS_PYTHON_VERSION
   - echo "$TRAVIS_PYTHON_VERSION"
