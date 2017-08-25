@@ -186,6 +186,10 @@ script:
   # - python setup.py sdist
   - twine upload -u ${PYPI_USER_NAME} -p ${PYPI_PASSWORD} dist/* || true
 
+  # For testing
+  # - twine upload -r test -u ${PYPI_USER_NAME} -p ${PYPI_PASSWORD} dist/* || true
+
+
 notifications:
   email: 
     - ci@bitprim.org

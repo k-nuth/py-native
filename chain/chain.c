@@ -353,8 +353,8 @@ void chain_stealth_fetch_handler(chain_t chain, void* ctx, int error, stealth_co
     PyObject* py_callback = ctx;
 
     PyObject* py_stealth_list = to_py_obj(stealth_list);
-    /*void* ptr_void =*/ PyCapsule_GetPointer(py_stealth_list, NULL);
-    /*int is_valid =*/ PyCapsule_IsValid(py_stealth_list, NULL);
+    // /*void* ptr_void =*/ PyCapsule_GetPointer(py_stealth_list, NULL);
+    /*int is_valid =*/ PyCapsule_IsValid(py_stealth_list, NULL); //TODO(fernando): chequear esto!
 
     PyObject* arglist = Py_BuildValue("(iO)", error, py_stealth_list);
     PyObject_CallObject(py_callback, arglist);
