@@ -22,10 +22,6 @@ branches:
   - master
   - dev
 
-# env:
-#    global:
-#      - PYPI_USER_NAME: "fpelliccioni"
-
 linux: &linux
    os: linux
    sudo: required
@@ -37,79 +33,51 @@ linux: &linux
 osx: &osx
    os: osx
    sudo: required
-   language: python
-   python: "3.6"
-
-# addons:
-#   apt:
-#     packages:
-#       - g++-6
-#     sources: &sources
-#       - ubuntu-toolchain-r-test
-
+   # language: python
+   # python: "3.6"
+   language: generic
 
 matrix:
    include:
-    # GCC 6
       - <<: *linux
         env: C_COMPILER=gcc-6 CXX_COMPILER=g++-6
         compiler: gcc
-
-
-      # - env: GCC_VERSION=6
-      #       os: linux
-      #       sudo: required
-      #       dist: trusty
-      #       group: edge
-      #       addons: &gcc6d
-      #         apt:
-      #           packages:
-      #             - g++-6
-      #             - libc6
-      #           sources:
-      #             - ubuntu-toolchain-r-test        
-
-    # - os: linux
-    #   env: UNIT_TESTS=true COMPILER=g++-6     BOOST_VERSION=default ENABLE_MEMCHECK=true
-    #   compiler: gcc
-
-
-      - <<: *osx
-        osx_image: xcode7.3
-        env: CONAN_APPLE_CLANG_VERSIONS=7.3
-        python: "2.7"
-
-      - <<: *osx
-        osx_image: xcode8.2
-        env: CONAN_APPLE_CLANG_VERSIONS=8.0
-        python: "2.7"
-
-      - <<: *osx
-        osx_image: xcode8.3
-        env: CONAN_APPLE_CLANG_VERSIONS=8.1
-        python: "2.7"
-
-
-
-      - <<: *osx
-        osx_image: xcode7.3
-        env: CONAN_APPLE_CLANG_VERSIONS=7.3
         python: "3.6"
 
-      - <<: *osx
-        osx_image: xcode8.2
-        env: CONAN_APPLE_CLANG_VERSIONS=8.0
-        python: "3.6"
-
-      - <<: *osx
-        osx_image: xcode8.3
-        env: CONAN_APPLE_CLANG_VERSIONS=8.1
-        python: "3.6"
-
-
+      - <<: *linux
+        env: C_COMPILER=gcc-6 CXX_COMPILER=g++-6
+        compiler: gcc
+        python: "2.7"
       
+      - <<: *osx
+        osx_image: xcode7.3
+        env: CONAN_APPLE_CLANG_VERSIONS=7.3  TRAVIS_PYTHON_VERSION=2.7
+        python: "2.7"
 
+      - <<: *osx
+        osx_image: xcode8.2
+        env: CONAN_APPLE_CLANG_VERSIONS=8.0  TRAVIS_PYTHON_VERSION=2.7
+        python: "2.7"
 
+      - <<: *osx
+        osx_image: xcode8.3
+        env: CONAN_APPLE_CLANG_VERSIONS=8.1 TRAVIS_PYTHON_VERSION=2.7
+        python: "2.7"
+
+      - <<: *osx
+        osx_image: xcode7.3
+        env: CONAN_APPLE_CLANG_VERSIONS=7.3 TRAVIS_PYTHON_VERSION=3.6
+        python: "3.6"
+
+      - <<: *osx
+        osx_image: xcode8.2
+        env: CONAN_APPLE_CLANG_VERSIONS=8.0 TRAVIS_PYTHON_VERSION=3.6
+        python: "3.6"
+
+      - <<: *osx
+        osx_image: xcode8.3
+        env: CONAN_APPLE_CLANG_VERSIONS=8.1 TRAVIS_PYTHON_VERSION=3.6
+        python: "3.6"
 
 install:
   
@@ -117,8 +85,8 @@ install:
   # - chmod +x .travis/install.sh
   # - ./.travis/install.sh
 
-  # - set -e
-  # - set -x
+  - set -e
+  - set -x
 
   - echo $TRAVIS_PYTHON_VERSION
   - echo "$TRAVIS_PYTHON_VERSION"
@@ -138,13 +106,11 @@ install:
           eval "$(pyenv virtualenv-init -)" 
       fi
 
-
       if [[ $TRAVIS_PYTHON_VERSION == 2.7 ]]; then
         echo "2.7 -- 1"
       else
         echo "2.7 -- 1 -- ELSE"
       fi
-
 
       if [[ "$TRAVIS_PYTHON_VERSION" == 2.7 ]]; then
         echo "2.7 -- 2"
@@ -176,8 +142,8 @@ script:
   # - chmod +x .travis/run.sh
   # - ./.travis/run.sh
 
-  # - set -e
-  # - set -x
+  - set -e
+  - set -x
 
   - echo $TRAVIS_PYTHON_VERSION
   - echo "$TRAVIS_PYTHON_VERSION"
@@ -199,7 +165,8 @@ script:
     if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
       cd ${TRAVIS_BUILD_DIR}
       chmod a+x .travis/entrypoint.sh
-      /usr/bin/docker run --rm -ti -v ${TRAVIS_BUILD_DIR}:/home/conan/project -v ${TRAVIS_BUILD_DIR}/.travis/entrypoint.sh:/tmp/entrypoint.sh lasote/conangcc63 /bin/bash -c /tmp/entrypoint.sh
+      # /usr/bin/docker run --rm -ti -v ${TRAVIS_BUILD_DIR}:/home/conan/project -v ${TRAVIS_BUILD_DIR}/.travis/entrypoint.sh:/tmp/entrypoint.sh lasote/conangcc63 /bin/bash -c /tmp/entrypoint.sh
+      /usr/bin/docker run --rm -ti -e TRAVIS_PYTHON_VERSION=$TRAVIS_PYTHON_VERSION -v ${TRAVIS_BUILD_DIR}:/home/conan/project -v ${TRAVIS_BUILD_DIR}/.travis/entrypoint.sh:/tmp/entrypoint.sh lasote/conangcc63 /bin/bash -c /tmp/entrypoint.sh
     else
       python --version
       # python3 --version
@@ -216,7 +183,11 @@ script:
   - twine upload -u ${PYPI_USER_NAME} -p ${PYPI_PASSWORD} dist/* || true
 
 notifications:
-  email: false
+  email: 
+    - ci@bitprim.org
+    - dev@bitprim.org
+    - fernando@bitprim.org
+  slack: bitprim:CGkcy3Bjx7UUIxu9FSZTpaxE
   webhooks:
     urls: https://webhooks.gitter.im/e/a19dd2b03bf676d2b622
     on_success: change
