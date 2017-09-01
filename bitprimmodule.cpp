@@ -324,8 +324,8 @@ PyMethodDef BitprimNativeMethods[] = {
     {"transaction_is_missing_previous_outputs",  bitprim_native_chain_transaction_is_missing_previous_outputs, METH_VARARGS, "..."},
     {"transaction_is_final",  bitprim_native_chain_transaction_is_final, METH_VARARGS, "..."},
     {"transaction_is_locktime_conflict",  bitprim_native_chain_transaction_is_locktime_conflict, METH_VARARGS, "..."},
-    //{"transaction_outputs",  bitprim_native_chain_transaction_outputs, METH_VARARGS, "..."},
-    //{"transaction_inputs",  bitprim_native_chain_transaction_inputs, METH_VARARGS, "..."},
+    {"transaction_outputs",  bitprim_native_chain_transaction_outputs, METH_VARARGS, "..."},
+    {"transaction_inputs",  bitprim_native_chain_transaction_inputs, METH_VARARGS, "..."},
 
     {"input_is_valid",  bitprim_native_chain_input_is_valid, METH_VARARGS, "..."},
     {"input_is_final",  bitprim_native_chain_input_is_final, METH_VARARGS, "..."},    

@@ -268,7 +268,7 @@ PyObject* bitprim_native_chain_transaction_destruct(PyObject* self, PyObject* ar
     Py_RETURN_NONE;
 }
 
-/*
+
 PyObject* bitprim_native_chain_transaction_outputs(PyObject* self, PyObject* args){
     PyObject* py_transaction;
     if ( ! PyArg_ParseTuple(args, "O", &py_transaction)) {
@@ -276,7 +276,7 @@ PyObject* bitprim_native_chain_transaction_outputs(PyObject* self, PyObject* arg
     }
     transaction_t transaction = (transaction_t)get_ptr(py_transaction);
     output_list_t res = chain_transaction_outputs(transaction);
-    return Py_BuildValue("O", res);  
+    return to_py_obj(res); 
     
 }
 
@@ -289,9 +289,9 @@ PyObject* bitprim_native_chain_transaction_inputs(PyObject* self, PyObject* args
 
     transaction_t transaction = (transaction_t)get_ptr(py_transaction);
     input_list_t res = chain_transaction_inputs(transaction);
-    return Py_BuildValue("O", res);  
+    return to_py_obj(res);  
 }
-*/
+
 
 
 #ifdef __cplusplus
