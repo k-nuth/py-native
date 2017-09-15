@@ -16,3 +16,4 @@ examples/error.log
 
 bitprim_native.so
 conanfile.pyc
+setup.pyc

@@ -12,6 +12,8 @@ sudo python setup.py sdist                       # Source Distribution, for Linu
 sudo python setup.py bdist_wheel                 # Platform Wheels, with compiled extensions, for macOS and Windows
 
 twine upload dist/*
+# twine upload -u ${PYPI_USER_NAME} -p ${PYPI_PASSWORD} --repository-url https://test.pypi.org/legacy/ dist/*  || true
+# twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 sudo ./reset.sh
 
 
