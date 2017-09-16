@@ -85,16 +85,16 @@ matrix:
         env: CONAN_APPLE_CLANG_VERSIONS=8.1 TRAVIS_PYTHON_VERSION=2.7 PYTHON_FULL_VERSION=2.7.13
         python: "2.7"
 
-      - <<: *osx
-        osx_image: xcode7.3
-        env: CONAN_APPLE_CLANG_VERSIONS=7.3 TRAVIS_PYTHON_VERSION=3.4 PYTHON_FULL_VERSION=3.4.2
-        # PYTHON_FULL_VERSION=3.4.7
-        python: "3.4"
+      # - <<: *osx
+      #   osx_image: xcode7.3
+      #   env: CONAN_APPLE_CLANG_VERSIONS=7.3 TRAVIS_PYTHON_VERSION=3.4 PYTHON_FULL_VERSION=3.4.2
+      #   # PYTHON_FULL_VERSION=3.4.7
+      #   python: "3.4"
 
-      - <<: *osx
-        osx_image: xcode8.3
-        env: CONAN_APPLE_CLANG_VERSIONS=8.1 TRAVIS_PYTHON_VERSION=3.4 PYTHON_FULL_VERSION=3.4.2
-        python: "3.4"
+      # - <<: *osx
+      #   osx_image: xcode8.3
+      #   env: CONAN_APPLE_CLANG_VERSIONS=8.1 TRAVIS_PYTHON_VERSION=3.4 PYTHON_FULL_VERSION=3.4.2
+      #   python: "3.4"
 
       - <<: *osx
         osx_image: xcode7.3
