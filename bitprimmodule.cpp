@@ -168,7 +168,9 @@ PyObject* bitprim_native_executor_run_wait(PyObject* self, PyObject* args) {
 
     executor_t exec = cast_executor(py_exec);
 
+    printf("bitprim_native_executor_run_wait - 1\n");
     int res = executor_run_wait(exec);
+    printf("bitprim_native_executor_run_wait - 2\n");
     return Py_BuildValue("i", res);
 }
 
