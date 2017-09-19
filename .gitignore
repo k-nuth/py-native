@@ -12,7 +12,7 @@ dist/
 examples/blockchain/
 examples/debug.log
 examples/error.log
-
+examples/hosts.cache
 
 bitprim_native.so
 conanfile.pyc

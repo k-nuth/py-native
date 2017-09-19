@@ -126,7 +126,12 @@ build_script:
     - "%PYTHON%\\python.exe setup.py build"
     - "%PYTHON%\\python.exe setup.py sdist"
     - "%PYTHON%\\python.exe setup.py bdist_wheel"
-    - twine upload -u %PYPI_USER_NAME% -p %PYPI_PASSWORD% dist/* || true
+
+  # For Release/Stable
+  # - twine upload -u %PYPI_USER_NAME% -p %PYPI_PASSWORD% dist/* || true
+  # For Testing/Dev
+    - twine upload -u %PYPI_USER_NAME% -p %PYPI_PASSWORD% --repository-url https://test.pypi.org/legacy/ dist/*  || true
+
 
 
 
