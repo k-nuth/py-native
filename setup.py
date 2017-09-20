@@ -160,7 +160,7 @@ refe = "."
 c.install(refe, verify=None, manifests_interactive=None, manifests=None)
 
 print('-----------------------------------------------------------------------------------')
-xxx = get_similar_lib('bitprim/lib', "*boost_atomic*")
+xxx = get_similar_lib('./bitprim/lib', "*boost_atomic*")
 print(xxx)
 print('-----------------------------------------------------------------------------------')
 
