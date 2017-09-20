@@ -56,7 +56,7 @@ import os
 
         
 PKG_NAME = 'bitprim_native'
-VERSION = '1.0.49'
+VERSION = '1.0.50'
 SYSTEM = sys.platform
 
 def get_similar_lib(path, pattern):
@@ -215,8 +215,6 @@ extensions = [
 
 
 setup(
-    # name='bitprim_native',
-    # version='1.0.14',
     name=PKG_NAME,
     version=VERSION,
 
