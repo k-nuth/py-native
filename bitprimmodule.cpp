@@ -303,7 +303,7 @@ PyMethodDef BitprimNativeMethods[] = {
     {"chain_fetch_compact_block_by_height",  bitprim_native_chain_fetch_compact_block_by_height, METH_VARARGS, "..."},
     {"chain_fetch_compact_block_by_hash",  bitprim_native_chain_fetch_compact_block_by_hash, METH_VARARGS, "..."},
     {"chain_fetch_spend",  bitprim_native_chain_fetch_spend, METH_VARARGS, "..."},
-    {"chain_subscribe_reorganize",  bitprim_native_chain_subscribe_reorganize, METH_VARARGS, "..."},
+    {"chain_subscribe_blockchain",  bitprim_native_chain_subscribe_blockchain, METH_VARARGS, "..."},
     {"chain_subscribe_transaction",  bitprim_native_chain_subscribe_transaction, METH_VARARGS, "..."},
 
     {"transaction_version",  bitprim_native_chain_transaction_version, METH_VARARGS, "..."},
@@ -320,7 +320,7 @@ PyMethodDef BitprimNativeMethods[] = {
     {"transaction_is_coinbase",  bitprim_native_chain_transaction_is_coinbase, METH_VARARGS, "..."},
     {"transaction_is_null_non_coinbase",  bitprim_native_chain_transaction_is_null_non_coinbase, METH_VARARGS, "..."},
     {"transaction_is_oversized_coinbase",  bitprim_native_chain_transaction_is_oversized_coinbase, METH_VARARGS, "..."},
-    {"transaction_is_immature",  bitprim_native_chain_transaction_is_immature, METH_VARARGS, "..."},
+    {"transaction_is_mature",  bitprim_native_chain_transaction_is_mature, METH_VARARGS, "..."},
     {"transaction_is_overspent",  bitprim_native_chain_transaction_is_overspent, METH_VARARGS, "..."},
     {"transaction_is_double_spend",  bitprim_native_chain_transaction_is_double_spend, METH_VARARGS, "..."},
     {"transaction_is_missing_previous_outputs",  bitprim_native_chain_transaction_is_missing_previous_outputs, METH_VARARGS, "..."},

@@ -25,7 +25,7 @@ PyObject* bitprim_native_chain_transaction_total_output_value(PyObject* self, Py
 PyObject* bitprim_native_chain_transaction_is_coinbase(PyObject* self, PyObject* args);
 PyObject* bitprim_native_chain_transaction_is_null_non_coinbase(PyObject* self, PyObject* args);
 PyObject* bitprim_native_chain_transaction_is_oversized_coinbase(PyObject* self, PyObject* args);
-PyObject* bitprim_native_chain_transaction_is_immature(PyObject* self, PyObject* args);
+PyObject* bitprim_native_chain_transaction_is_mature(PyObject* self, PyObject* args);
 PyObject* bitprim_native_chain_transaction_is_overspent(PyObject* self, PyObject* args);
 PyObject* bitprim_native_chain_transaction_is_double_spend(PyObject* self, PyObject* args);
 PyObject* bitprim_native_chain_transaction_is_missing_previous_outputs(PyObject* self, PyObject* args);

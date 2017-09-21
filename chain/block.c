@@ -239,13 +239,14 @@ PyObject * bitprim_native_chain_block_is_extra_coinbases(PyObject* self, PyObjec
 PyObject * bitprim_native_chain_block_is_final(PyObject* self, PyObject* args){
     PyObject* py_block;
     uint64_t py_height;
+    uint32_t py_block_time;
 
-    if ( ! PyArg_ParseTuple(args, "OK", &py_block, &py_height)) {
+    if ( ! PyArg_ParseTuple(args, "OKI", &py_block, &py_height, &py_block_time)) {
         return NULL;
     }
 
     block_t block = (block_t)get_ptr(py_block);
-    int res = chain_block_is_final(block, py_height);
+    int res = chain_block_is_final(block, py_height, py_block_time);
 
     return Py_BuildValue("i", res); 
 }

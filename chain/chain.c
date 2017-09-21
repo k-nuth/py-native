@@ -689,7 +689,7 @@ PyObject* bitprim_native_chain_fetch_spend(PyObject* self, PyObject* args){
     Py_RETURN_NONE;
 }
 
-int chain_subscribe_reorganize_handler(chain_t chain, void* ctx, int error, uint64_t fork_height, block_list_t blocks_incoming, block_list_t blocks_replaced) {
+int chain_subscribe_blockchain_handler(chain_t chain, void* ctx, int error, uint64_t fork_height, block_list_t blocks_incoming, block_list_t blocks_replaced) {
 
     PyGILState_STATE gstate;
     gstate = PyGILState_Ensure();
@@ -705,7 +705,7 @@ int chain_subscribe_reorganize_handler(chain_t chain, void* ctx, int error, uint
     Py_DECREF(arglist);    
     
     if (ret != NULL) {
-        //printf("chain_subscribe_reorganize_handler -  1\n");
+        //printf("chain_subscribe_blockchain_handler -  1\n");
 
 // #if PY_MAJOR_VERSION >= 3
 //         int py_ret = (int)PyLong_AsLong(ret); //TODO(fernando): warning! convertion.. how to conver PyObject to int
@@ -739,7 +739,7 @@ int chain_subscribe_reorganize_handler(chain_t chain, void* ctx, int error, uint
     }     
 }
 
-PyObject* bitprim_native_chain_subscribe_reorganize(PyObject* self, PyObject* args){
+PyObject* bitprim_native_chain_subscribe_blockchain(PyObject* self, PyObject* args){
     PyObject* py_chain;
     PyObject* py_callback;
 
@@ -755,7 +755,7 @@ PyObject* bitprim_native_chain_subscribe_reorganize(PyObject* self, PyObject* ar
     chain_t chain = (chain_t)get_ptr(py_chain);
     Py_XINCREF(py_callback);         /* Add a reference to new callback */
     
-    chain_subscribe_reorganize(chain, py_callback, chain_subscribe_reorganize_handler);
+    chain_subscribe_blockchain(chain, py_callback, chain_subscribe_blockchain_handler);
     Py_RETURN_NONE;
 }
 
