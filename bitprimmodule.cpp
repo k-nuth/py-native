@@ -295,7 +295,10 @@ PyMethodDef BitprimNativeMethods[] = {
     {"chain_fetch_merkle_block_by_height",  bitprim_native_chain_fetch_merkle_block_by_height, METH_VARARGS, "..."},
     {"chain_fetch_merkle_block_by_hash",  bitprim_native_chain_fetch_merkle_block_by_hash, METH_VARARGS, "..."},
     {"chain_fetch_transaction",  bitprim_native_chain_fetch_transaction, METH_VARARGS, "..."},
-    {"chain_fetch_output",  bitprim_native_chain_fetch_output, METH_VARARGS, "..."},
+    
+    // Note: Removed on 3.3.0
+    // {"chain_fetch_output",  bitprim_native_chain_fetch_output, METH_VARARGS, "..."},
+
     {"chain_fetch_transaction_position",  bitprim_native_chain_fetch_transaction_position, METH_VARARGS, "..."},
     {"chain_organize_block",  bitprim_native_chain_organize_block, METH_VARARGS, "..."},
     {"chain_organize_transaction",  bitprim_native_chain_organize_transaction, METH_VARARGS, "..."},
