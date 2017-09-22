@@ -31,6 +31,9 @@ extern "C" {
 // -------------------------------------------------------------------
 
 void chain_fetch_block_handler(chain_t chain, void* ctx, int error , block_t block, uint64_t /*size_t*/ h) {
+    PyGILState_STATE gstate;
+    gstate = PyGILState_Ensure();
+
     PyObject* py_callback = ctx;
 
     PyObject* py_block = to_py_obj(block);
@@ -39,6 +42,8 @@ void chain_fetch_block_handler(chain_t chain, void* ctx, int error , block_t blo
     PyObject_CallObject(py_callback, arglist);
     Py_DECREF(arglist);    
     Py_XDECREF(py_callback);  // Dispose of the call
+
+    PyGILState_Release(gstate);
 }
 
 PyObject* bitprim_native_chain_fetch_block_by_height(PyObject* self, PyObject* args){
@@ -227,12 +232,17 @@ PyObject* bitprim_native_chain_fetch_block_header_by_hash(PyObject* self, PyObje
 // ---------------------------------------------------------
 
 void chain_fetch_last_height_handler(chain_t chain, void* ctx, int error, uint64_t /*size_t*/ h) {
+    PyGILState_STATE gstate;
+    gstate = PyGILState_Ensure();
+
     PyObject* py_callback = ctx;
 
     PyObject* arglist = Py_BuildValue("(iK)", error, h);
     PyObject_CallObject(py_callback, arglist);
     Py_DECREF(arglist);    
     Py_XDECREF(py_callback);  // Dispose of the call
+
+    PyGILState_Release(gstate);    
 }
 
 PyObject* bitprim_native_chain_fetch_last_height(PyObject* self, PyObject* args) {
@@ -385,6 +395,9 @@ PyObject* bitprim_native_chain_fetch_stealth(PyObject* self, PyObject* args) {
 }
 
 void chain_fetch_transaction_handler(chain_t chain, void* ctx, int error, transaction_t transaction, uint64_t index, uint64_t height) {
+    PyGILState_STATE gstate;
+    gstate = PyGILState_Ensure();
+
     PyObject* py_callback = ctx;
     PyObject* py_transaction = to_py_obj(transaction);
 
@@ -392,6 +405,8 @@ void chain_fetch_transaction_handler(chain_t chain, void* ctx, int error, transa
     PyObject_CallObject(py_callback, arglist);
     Py_DECREF(arglist);    
     Py_XDECREF(py_callback);  // Dispose of the call
+
+    PyGILState_Release(gstate);    
 }
 
 PyObject* bitprim_native_chain_fetch_transaction(PyObject* self, PyObject* args) {
