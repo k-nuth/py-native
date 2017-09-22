@@ -178,7 +178,7 @@ PyObject* bitprim_native_chain_transaction_is_oversized_coinbase(PyObject* self,
     return Py_BuildValue("i", res); 
 }
 
-PyObject* bitprim_native_chain_transaction_is_immature(PyObject* self, PyObject* args){
+PyObject* bitprim_native_chain_transaction_is_mature(PyObject* self, PyObject* args){
     PyObject* py_transaction;
     uint64_t py_target_height;
 
@@ -187,7 +187,7 @@ PyObject* bitprim_native_chain_transaction_is_immature(PyObject* self, PyObject*
     }
 
     transaction_t transaction = (transaction_t)get_ptr(py_transaction);
-    int res = chain_transaction_is_immature(transaction, py_target_height);
+    int res = chain_transaction_is_mature(transaction, py_target_height);
     return Py_BuildValue("i", res); 
 }
 
