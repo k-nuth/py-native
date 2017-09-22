@@ -384,11 +384,11 @@ PyObject* bitprim_native_chain_fetch_stealth(PyObject* self, PyObject* args) {
     Py_RETURN_NONE;
 }
 
-void chain_fetch_transaction_handler(chain_t chain, void* ctx, int error, transaction_t transaction, uint64_t height, uint64_t index) {
+void chain_fetch_transaction_handler(chain_t chain, void* ctx, int error, transaction_t transaction, uint64_t index, uint64_t height) {
     PyObject* py_callback = ctx;
     PyObject* py_transaction = to_py_obj(transaction);
 
-    PyObject* arglist = Py_BuildValue("(iOKK)", error, py_transaction, height, index);
+    PyObject* arglist = Py_BuildValue("(iOKK)", error, py_transaction, index, height);
     PyObject_CallObject(py_callback, arglist);
     Py_DECREF(arglist);    
     Py_XDECREF(py_callback);  // Dispose of the call
