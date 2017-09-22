@@ -56,7 +56,7 @@ import os
 
         
 PKG_NAME = 'bitprim_native'
-VERSION = '1.0.53'
+VERSION = '1.0.54'
 SYSTEM = sys.platform
 
 def get_similar_lib(path, pattern):
