@@ -21,3 +21,5 @@ setup.pyc
 blockchain/
 debug.log
 error.log
+
+.vscode/
