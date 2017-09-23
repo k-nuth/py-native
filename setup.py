@@ -34,29 +34,17 @@ import sys
 
 from setuptools import setup, find_packages
 from setuptools.extension import Extension
-
 from distutils import dir_util, file_util
 from distutils import log
-# from distutils.command.build_clib import build_clib
-# from distutils.command.install_lib import install_lib
-# from distutils.command.sdist import sdist
-# from distutils.core import setup
-
 from setuptools.command.install_lib import install_lib
 from setuptools.command.install import install
 from setuptools.command.build_ext import build_ext
 from setuptools.dist import Distribution
-
-
 from conans.client.conan_api import (Conan, default_manifest_folder)
-
-
 import fnmatch
-import os
 
-        
 PKG_NAME = 'bitprim_native'
-VERSION = '1.0.57'
+VERSION = '1.0.58'
 SYSTEM = sys.platform
 
 def get_similar_lib(path, pattern):
