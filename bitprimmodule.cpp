@@ -82,7 +82,7 @@ PyObject* bitprim_native_executor_construct(PyObject* self, PyObject* args) {
 //        PyFile_DecUseCount(p);
 
     executor_t exec = executor_construct(path, sout, serr);
-    printf("bitprim_native_executor_construct exec: %p\n", exec);
+    // printf("bitprim_native_executor_construct exec: %p\n", exec);
     return PyCObject_FromVoidPtr(exec, NULL);
 
 #endif /* PY_MAJOR_VERSION >= 3 */
@@ -126,7 +126,7 @@ PyObject* bitprim_native_executor_initchain(PyObject* self, PyObject* args) {
 // ---------------------------------------------------------
 
 void executor_run_handler(executor_t exec, void* ctx, int error) {
-    printf("C callback (executor_run_handler) called\n");
+    // printf("C callback (executor_run_handler) called\n");
     // printf("Calling Python callback\n");
     
     PyObject* py_callback = (PyObject*)ctx;
@@ -168,7 +168,9 @@ PyObject* bitprim_native_executor_run_wait(PyObject* self, PyObject* args) {
 
     executor_t exec = cast_executor(py_exec);
 
+    // printf("bitprim_native_executor_run_wait - 1\n");
     int res = executor_run_wait(exec);
+    // printf("bitprim_native_executor_run_wait - 2\n");
     return Py_BuildValue("i", res);
 }
 
@@ -208,10 +210,10 @@ PyObject* bitprim_native_executor_get_chain(PyObject* self, PyObject* args) {
 
 PyObject* bitprim_native_wallet_mnemonics_to_seed(PyObject* self, PyObject* args) {
     PyObject* py_wl;
-    printf("bitprim_native_wallet_mnemonics_to_seed - 1\n");
+    // printf("bitprim_native_wallet_mnemonics_to_seed - 1\n");
 
     if ( ! PyArg_ParseTuple(args, "O", &py_wl)) {
-        printf("bitprim_native_wallet_mnemonics_to_seed - 2\n");
+        // printf("bitprim_native_wallet_mnemonics_to_seed - 2\n");
         return NULL;
     }
 
@@ -219,7 +221,7 @@ PyObject* bitprim_native_wallet_mnemonics_to_seed(PyObject* self, PyObject* args
     
     long_hash_t res = wallet_mnemonics_to_seed(wl);
 
-    printf("bitprim_native_wallet_mnemonics_to_seed - res: %p\n", res.hash);
+    // printf("bitprim_native_wallet_mnemonics_to_seed - res: %p\n", res.hash);
 
     return Py_BuildValue("y#", res.hash, 64);    //TODO: warning, hardcoded hash size!
 }
@@ -293,7 +295,10 @@ PyMethodDef BitprimNativeMethods[] = {
     {"chain_fetch_merkle_block_by_height",  bitprim_native_chain_fetch_merkle_block_by_height, METH_VARARGS, "..."},
     {"chain_fetch_merkle_block_by_hash",  bitprim_native_chain_fetch_merkle_block_by_hash, METH_VARARGS, "..."},
     {"chain_fetch_transaction",  bitprim_native_chain_fetch_transaction, METH_VARARGS, "..."},
-    {"chain_fetch_output",  bitprim_native_chain_fetch_output, METH_VARARGS, "..."},
+    
+    // Note: Removed on 3.3.0
+    // {"chain_fetch_output",  bitprim_native_chain_fetch_output, METH_VARARGS, "..."},
+
     {"chain_fetch_transaction_position",  bitprim_native_chain_fetch_transaction_position, METH_VARARGS, "..."},
     {"chain_organize_block",  bitprim_native_chain_organize_block, METH_VARARGS, "..."},
     {"chain_organize_transaction",  bitprim_native_chain_organize_transaction, METH_VARARGS, "..."},
@@ -301,7 +306,7 @@ PyMethodDef BitprimNativeMethods[] = {
     {"chain_fetch_compact_block_by_height",  bitprim_native_chain_fetch_compact_block_by_height, METH_VARARGS, "..."},
     {"chain_fetch_compact_block_by_hash",  bitprim_native_chain_fetch_compact_block_by_hash, METH_VARARGS, "..."},
     {"chain_fetch_spend",  bitprim_native_chain_fetch_spend, METH_VARARGS, "..."},
-    {"chain_subscribe_reorganize",  bitprim_native_chain_subscribe_reorganize, METH_VARARGS, "..."},
+    {"chain_subscribe_blockchain",  bitprim_native_chain_subscribe_blockchain, METH_VARARGS, "..."},
     {"chain_subscribe_transaction",  bitprim_native_chain_subscribe_transaction, METH_VARARGS, "..."},
 
     {"transaction_version",  bitprim_native_chain_transaction_version, METH_VARARGS, "..."},
@@ -318,7 +323,7 @@ PyMethodDef BitprimNativeMethods[] = {
     {"transaction_is_coinbase",  bitprim_native_chain_transaction_is_coinbase, METH_VARARGS, "..."},
     {"transaction_is_null_non_coinbase",  bitprim_native_chain_transaction_is_null_non_coinbase, METH_VARARGS, "..."},
     {"transaction_is_oversized_coinbase",  bitprim_native_chain_transaction_is_oversized_coinbase, METH_VARARGS, "..."},
-    {"transaction_is_immature",  bitprim_native_chain_transaction_is_immature, METH_VARARGS, "..."},
+    {"transaction_is_mature",  bitprim_native_chain_transaction_is_mature, METH_VARARGS, "..."},
     {"transaction_is_overspent",  bitprim_native_chain_transaction_is_overspent, METH_VARARGS, "..."},
     {"transaction_is_double_spend",  bitprim_native_chain_transaction_is_double_spend, METH_VARARGS, "..."},
     {"transaction_is_missing_previous_outputs",  bitprim_native_chain_transaction_is_missing_previous_outputs, METH_VARARGS, "..."},

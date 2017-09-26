@@ -6,6 +6,8 @@ rd /s /q build
 rd /s /q bitprim_native.egg-info
 rd /s /q bitprim_native.so
 
+rd /s /q blockchain
+
 
 rd /s /q bitprim
 rd /s /q conanbuildinfo.cmake

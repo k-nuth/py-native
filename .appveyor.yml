@@ -126,14 +126,12 @@ build_script:
     - "%PYTHON%\\python.exe setup.py build"
     - "%PYTHON%\\python.exe setup.py sdist"
     - "%PYTHON%\\python.exe setup.py bdist_wheel"
-    - twine upload -u %PYPI_USER_NAME% -p %PYPI_PASSWORD% dist/* || true
 
-
-
-
-
-
-
+    - IF "%APPVEYOR_REPO_BRANCH%"=="master" (
+        twine upload -u %PYPI_USER_NAME% -p %PYPI_PASSWORD% dist/* || true
+      ) ELSE (
+        twine upload -u %PYPI_USER_NAME% -p %PYPI_PASSWORD% --repository-url https://test.pypi.org/legacy/ dist/*  || true
+      )
 
 
 

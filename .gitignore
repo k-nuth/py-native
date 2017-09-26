@@ -14,10 +14,12 @@ examples/debug.log
 examples/error.log
 examples/hosts.cache
 
-
 bitprim_native.so
 conanfile.pyc
 setup.pyc
 
+blockchain/
 debug.log
 error.log
+
+.vscode/
