@@ -1,6 +1,7 @@
 from conans import ConanFile, CMake
 # import os
 
+
 class BitprimTestForPy(ConanFile):
     name = "bitprim-test-for-py"
     version = "0.1"
