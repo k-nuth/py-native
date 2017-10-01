@@ -44,7 +44,7 @@ from conans.client.conan_api import (Conan, default_manifest_folder)
 import fnmatch
 
 PKG_NAME = 'bitprim_native'
-VERSION = '1.1.1'
+VERSION = '1.1.01'
 SYSTEM = sys.platform
 
 def get_similar_lib(path, pattern):
