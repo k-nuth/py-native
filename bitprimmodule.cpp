@@ -95,12 +95,16 @@ PyObject* bitprim_native_executor_construct(PyObject* self, PyObject* args) {
 PyObject* bitprim_native_executor_destruct(PyObject* self, PyObject* args) {
     PyObject* py_exec;
 
+    PyGILState_STATE gstate;
+    gstate = PyGILState_Ensure();
+
     if ( ! PyArg_ParseTuple(args, "O", &py_exec))
         return NULL;
 
     executor_t exec = cast_executor(py_exec);
 
     executor_destruct(exec);
+    PyGILState_Release(gstate);
     Py_RETURN_NONE;
 }
 
@@ -196,12 +200,17 @@ PyObject* bitprim_native_executor_stopped(PyObject* self, PyObject* args) {
 PyObject* bitprim_native_executor_stop(PyObject* self, PyObject* args) {
     PyObject* py_exec;
 
+    PyGILState_STATE gstate;
+    gstate = PyGILState_Ensure();
+
     if ( ! PyArg_ParseTuple(args, "O", &py_exec))
         return NULL;
 
     executor_t exec = cast_executor(py_exec);
 
     executor_stop(exec);
+
+    PyGILState_Release(gstate);
     Py_RETURN_NONE;
 }
 
@@ -326,6 +335,9 @@ PyMethodDef BitprimNativeMethods[] = {
     {"chain_fetch_spend",  bitprim_native_chain_fetch_spend, METH_VARARGS, "..."},
     {"chain_subscribe_blockchain",  bitprim_native_chain_subscribe_blockchain, METH_VARARGS, "..."},
     {"chain_subscribe_transaction",  bitprim_native_chain_subscribe_transaction, METH_VARARGS, "..."},
+    {"chain_unsubscribe",  bitprim_native_chain_unsubscribe, METH_VARARGS, "..."},
+    
+    
 
     {"transaction_version",  bitprim_native_chain_transaction_version, METH_VARARGS, "..."},
     {"transaction_set_version",  bitprim_native_chain_transaction_set_version, METH_VARARGS, "..."},
