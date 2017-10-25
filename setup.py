@@ -44,7 +44,7 @@ from conans.client.conan_api import (Conan, default_manifest_folder)
 import fnmatch
 
 PKG_NAME = 'bitprim_native'
-VERSION = '1.1.01'
+VERSION = '1.1.02'
 SYSTEM = sys.platform
 
 def get_similar_lib(path, pattern):
@@ -147,10 +147,10 @@ refe = "."
 # c.install(refe, verify=None, manifests=None)
 c.install(refe, verify=None, manifests_interactive=None, manifests=None)
 
-print('-----------------------------------------------------------------------------------')
+# print('-----------------------------------------------------------------------------------')
 xxx = get_similar_lib('./bitprim/lib', "*boost_atomic*")
-print(xxx)
-print('-----------------------------------------------------------------------------------')
+# print(xxx)
+# print('-----------------------------------------------------------------------------------')
 
 
 
@@ -170,14 +170,14 @@ def get_libraries():
     if platform == "win32":
         winlibs = fixed
         for lib in libraries:
-            print(lib)
+            # print(lib)
             xxx = get_similar_lib('bitprim/lib', "*" + lib + "*")
             if xxx != '':
                 xxx = xxx.replace('.lib', '')
-                print(xxx)
+                # print(xxx)
                 winlibs.append(xxx)
     
-        print(winlibs)
+        # print(winlibs)
         return winlibs
     else:
         return fixed + libraries

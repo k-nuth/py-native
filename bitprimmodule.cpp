@@ -176,6 +176,23 @@ PyObject* bitprim_native_executor_run_wait(PyObject* self, PyObject* args) {
 
 // ---------------------------------------------------------
 
+PyObject* bitprim_native_executor_stopped(PyObject* self, PyObject* args) {
+    PyObject* py_exec;
+
+    if ( ! PyArg_ParseTuple(args, "O", &py_exec))
+        return NULL;
+
+    executor_t exec = cast_executor(py_exec);
+
+    // printf("executor_stopped - 1\n");
+    int res = executor_stopped(exec);
+    // printf("executor_stopped - 2\n");
+    return Py_BuildValue("i", res);
+}
+
+
+// ---------------------------------------------------------
+
 PyObject* bitprim_native_executor_stop(PyObject* self, PyObject* args) {
     PyObject* py_exec;
 
@@ -282,6 +299,7 @@ PyMethodDef BitprimNativeMethods[] = {
     {"run",  bitprim_native_executor_run, METH_VARARGS, "Node run."},
     {"run_wait",  bitprim_native_executor_run_wait, METH_VARARGS, "Node run."},
     {"stop",  bitprim_native_executor_stop, METH_VARARGS, "Node stop."},
+    {"stopped",  bitprim_native_executor_stopped, METH_VARARGS, "Know if the Node stopped."},
     {"get_chain",  bitprim_native_executor_get_chain, METH_VARARGS, "Get Chain."},
 
     {"chain_fetch_last_height",  bitprim_native_chain_fetch_last_height, METH_VARARGS, "..."},
