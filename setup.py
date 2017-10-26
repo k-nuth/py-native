@@ -133,8 +133,8 @@ def get_similar_lib(path, pattern):
 
 # ------------------------------------------------
 
-c = Conan.factory()
-
+# New API in Conan 0.28
+c, _, _ = Conan.factory()
 
 try:
     # c.remote_add(remote, url, verify_ssl, args.insert)
