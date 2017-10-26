@@ -95,12 +95,16 @@ PyObject* bitprim_native_executor_construct(PyObject* self, PyObject* args) {
 PyObject* bitprim_native_executor_destruct(PyObject* self, PyObject* args) {
     PyObject* py_exec;
 
+    PyGILState_STATE gstate;
+    gstate = PyGILState_Ensure();
+
     if ( ! PyArg_ParseTuple(args, "O", &py_exec))
         return NULL;
 
     executor_t exec = cast_executor(py_exec);
 
     executor_destruct(exec);
+    PyGILState_Release(gstate);
     Py_RETURN_NONE;
 }
 
@@ -176,7 +180,7 @@ PyObject* bitprim_native_executor_run_wait(PyObject* self, PyObject* args) {
 
 // ---------------------------------------------------------
 
-PyObject* bitprim_native_executor_stop(PyObject* self, PyObject* args) {
+PyObject* bitprim_native_executor_stopped(PyObject* self, PyObject* args) {
     PyObject* py_exec;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_exec))
@@ -184,7 +188,29 @@ PyObject* bitprim_native_executor_stop(PyObject* self, PyObject* args) {
 
     executor_t exec = cast_executor(py_exec);
 
+    // printf("executor_stopped - 1\n");
+    int res = executor_stopped(exec);
+    // printf("executor_stopped - 2\n");
+    return Py_BuildValue("i", res);
+}
+
+
+// ---------------------------------------------------------
+
+PyObject* bitprim_native_executor_stop(PyObject* self, PyObject* args) {
+    PyObject* py_exec;
+
+    PyGILState_STATE gstate;
+    gstate = PyGILState_Ensure();
+
+    if ( ! PyArg_ParseTuple(args, "O", &py_exec))
+        return NULL;
+
+    executor_t exec = cast_executor(py_exec);
+
     executor_stop(exec);
+
+    PyGILState_Release(gstate);
     Py_RETURN_NONE;
 }
 
@@ -282,6 +308,7 @@ PyMethodDef BitprimNativeMethods[] = {
     {"run",  bitprim_native_executor_run, METH_VARARGS, "Node run."},
     {"run_wait",  bitprim_native_executor_run_wait, METH_VARARGS, "Node run."},
     {"stop",  bitprim_native_executor_stop, METH_VARARGS, "Node stop."},
+    {"stopped",  bitprim_native_executor_stopped, METH_VARARGS, "Know if the Node stopped."},
     {"get_chain",  bitprim_native_executor_get_chain, METH_VARARGS, "Get Chain."},
 
     {"chain_fetch_last_height",  bitprim_native_chain_fetch_last_height, METH_VARARGS, "..."},
@@ -308,6 +335,9 @@ PyMethodDef BitprimNativeMethods[] = {
     {"chain_fetch_spend",  bitprim_native_chain_fetch_spend, METH_VARARGS, "..."},
     {"chain_subscribe_blockchain",  bitprim_native_chain_subscribe_blockchain, METH_VARARGS, "..."},
     {"chain_subscribe_transaction",  bitprim_native_chain_subscribe_transaction, METH_VARARGS, "..."},
+    {"chain_unsubscribe",  bitprim_native_chain_unsubscribe, METH_VARARGS, "..."},
+    
+    
 
     {"transaction_version",  bitprim_native_chain_transaction_version, METH_VARARGS, "..."},
     {"transaction_set_version",  bitprim_native_chain_transaction_set_version, METH_VARARGS, "..."},

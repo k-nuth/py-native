@@ -32,6 +32,9 @@ PyObject* bitprim_native_chain_fetch_spend(PyObject* self, PyObject* args);
 PyObject* bitprim_native_chain_subscribe_blockchain(PyObject* self, PyObject* args);
 PyObject* bitprim_native_chain_subscribe_transaction(PyObject* self, PyObject* args);
 
+PyObject* bitprim_native_chain_unsubscribe(PyObject* self, PyObject* args);
+
+
 #ifdef __cplusplus
 } //extern "C"
 #endif  

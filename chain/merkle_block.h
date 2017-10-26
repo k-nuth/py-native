@@ -7,7 +7,6 @@
 extern "C" {  
 #endif  
 
-
 PyObject* bitprim_native_chain_merkle_block_get_header(PyObject* self, PyObject* args);
 PyObject* bitprim_native_chain_merkle_block_is_valid(PyObject* self, PyObject* args);
 PyObject* bitprim_native_chain_merkle_block_hash_count(PyObject* self, PyObject* args);

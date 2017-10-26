@@ -730,6 +730,7 @@ int chain_subscribe_blockchain_handler(chain_t chain, void* ctx, int error, uint
 // #endif /* PY_MAJOR_VERSION >= 3 */
 
         int truthy = PyObject_IsTrue(ret);
+        printf("chain_subscribe_blockchain_handler - truthy: %d\n", truthy);
 
         Py_DECREF(ret);
         
@@ -749,7 +750,7 @@ int chain_subscribe_blockchain_handler(chain_t chain, void* ctx, int error, uint
         // Py_DECREF(pFunc);
         // Py_DECREF(pModule);
         // PyErr_Print();
-        fprintf(stderr,"Call failed\n");
+        // fprintf(stderr, "Call failed\n");
         PyGILState_Release(gstate);    
         return 0;
     }     
@@ -822,6 +823,19 @@ PyObject* bitprim_native_chain_subscribe_transaction(PyObject* self, PyObject* a
     chain_t chain = (chain_t)get_ptr(py_chain);
     Py_XINCREF(py_callback);         /* Add a reference to new callback */
     chain_subscribe_transaction(chain, py_callback, chain_subscribe_transaction_handler);
+    Py_RETURN_NONE;
+}
+
+PyObject* bitprim_native_chain_unsubscribe(PyObject* self, PyObject* args){
+    PyObject* py_chain;
+
+    if ( ! PyArg_ParseTuple(args, "O", &py_chain)) {
+        return NULL;
+    }
+
+    chain_t chain = (chain_t)get_ptr(py_chain);
+    
+    chain_unsubscribe(chain);
     Py_RETURN_NONE;
 }
 
