@@ -31,9 +31,10 @@ extern "C" {
 // -------------------------------------------------------------------
 
 void chain_fetch_block_handler(chain_t chain, void* ctx, int error , block_t block, uint64_t /*size_t*/ h) {
+
     PyGILState_STATE gstate;
     gstate = PyGILState_Ensure();
-
+    
     PyObject* py_callback = ctx;
 
     PyObject* py_block = to_py_obj(block);
@@ -52,7 +53,6 @@ PyObject* bitprim_native_chain_fetch_block_by_height(PyObject* self, PyObject* a
     PyObject* py_callback;
 
     if ( ! PyArg_ParseTuple(args, "OKO", &py_chain, &py_height, &py_callback)) {
-        //printf("bitprim_native_chain_fetch_block_header_by_height - 2\n");
         return NULL;
     }
 
@@ -182,7 +182,6 @@ PyObject* bitprim_native_chain_fetch_block_header_by_height(PyObject* self, PyOb
     PyObject* py_callback;
 
     if ( ! PyArg_ParseTuple(args, "OKO", &py_chain, &py_height, &py_callback)) {
-        //printf("bitprim_native_chain_fetch_block_header_by_height - 2\n");
         return NULL;
     }
 
@@ -232,6 +231,7 @@ PyObject* bitprim_native_chain_fetch_block_header_by_hash(PyObject* self, PyObje
 // ---------------------------------------------------------
 
 void chain_fetch_last_height_handler(chain_t chain, void* ctx, int error, uint64_t /*size_t*/ h) {
+
     PyGILState_STATE gstate;
     gstate = PyGILState_Ensure();
 
@@ -242,7 +242,7 @@ void chain_fetch_last_height_handler(chain_t chain, void* ctx, int error, uint64
     Py_DECREF(arglist);    
     Py_XDECREF(py_callback);  // Dispose of the call
 
-    PyGILState_Release(gstate);    
+    PyGILState_Release(gstate);
 }
 
 PyObject* bitprim_native_chain_fetch_last_height(PyObject* self, PyObject* args) {
@@ -395,6 +395,7 @@ PyObject* bitprim_native_chain_fetch_stealth(PyObject* self, PyObject* args) {
 }
 
 void chain_fetch_transaction_handler(chain_t chain, void* ctx, int error, transaction_t transaction, uint64_t index, uint64_t height) {
+
     PyGILState_STATE gstate;
     gstate = PyGILState_Ensure();
 
@@ -406,7 +407,7 @@ void chain_fetch_transaction_handler(chain_t chain, void* ctx, int error, transa
     Py_DECREF(arglist);    
     Py_XDECREF(py_callback);  // Dispose of the call
 
-    PyGILState_Release(gstate);    
+    PyGILState_Release(gstate);
 }
 
 PyObject* bitprim_native_chain_fetch_transaction(PyObject* self, PyObject* args) {
@@ -705,62 +706,46 @@ PyObject* bitprim_native_chain_fetch_spend(PyObject* self, PyObject* args){
     Py_RETURN_NONE;
 }
 
-int chain_subscribe_blockchain_handler(chain_t chain, void* ctx, int error, uint64_t fork_height, block_list_t blocks_incoming, block_list_t blocks_replaced) {
+int chain_subscribe_blockchain_handler(executor_t exec, chain_t chain, void* ctx, int error, uint64_t fork_height, block_list_t blocks_incoming, block_list_t blocks_replaced) {
+    
+    //TODO(fernando): hardcoded error code, libbitcoin::error::service_stopped
+    // if (exec->actual.stopped() || error == 1) {
+    if (executor_stopped(exec) != 0 || error == 1) {
+        return 0;
+    }
 
     PyGILState_STATE gstate;
     gstate = PyGILState_Ensure();
 
     PyObject* py_callback = ctx;
-
-    PyObject* py_blocks_incoming = to_py_obj(blocks_incoming);
-    PyObject* py_blocks_replaced = to_py_obj(blocks_replaced);
+    
+    PyObject* py_blocks_incoming = blocks_incoming != NULL ? to_py_obj(blocks_incoming) : Py_None;
+    PyObject* py_blocks_replaced = blocks_replaced != NULL ? to_py_obj(blocks_replaced) : Py_None;
     PyObject* arglist = Py_BuildValue("(iKOO)", error, fork_height, py_blocks_incoming, py_blocks_replaced);
 
     PyObject* ret = PyObject_CallObject(py_callback, arglist);
-    
     Py_DECREF(arglist);    
     
     if (ret != NULL) {
-        //printf("chain_subscribe_blockchain_handler -  1\n");
-
-// #if PY_MAJOR_VERSION >= 3
-//         int py_ret = (int)PyLong_AsLong(ret); //TODO(fernando): warning! convertion.. how to conver PyObject to int
-// #else /* PY_MAJOR_VERSION >= 3 */
-//         int py_ret = (int)PyInt_AsLong(ret); //TODO(fernando): warning! convertion.. how to conver PyObject to int
-// #endif /* PY_MAJOR_VERSION >= 3 */
-
         int truthy = PyObject_IsTrue(ret);
-        printf("chain_subscribe_blockchain_handler - truthy: %d\n", truthy);
-
         Py_DECREF(ret);
         
-        //TODO(rama):
-        //if (truthy == -1) return APPROPRIATEERRORRETURN;
-
-        PyGILState_Release(gstate);    
-        
-        if (truthy) {
-            return 1;
-        } else {
-            return 0;    
-        }
+        PyGILState_Release(gstate);
+            
+        return truthy == 1 ? 1 : 0;
 
     }
-    else {
-        // Py_DECREF(pFunc);
-        // Py_DECREF(pModule);
-        // PyErr_Print();
-        // fprintf(stderr, "Call failed\n");
-        PyGILState_Release(gstate);    
-        return 0;
-    }     
+
+    PyGILState_Release(gstate);
+    return 0;
 }
 
 PyObject* bitprim_native_chain_subscribe_blockchain(PyObject* self, PyObject* args){
+    PyObject* py_exec;
     PyObject* py_chain;
     PyObject* py_callback;
 
-    if ( ! PyArg_ParseTuple(args, "OO:set_callback", &py_chain, &py_callback)) {
+    if ( ! PyArg_ParseTuple(args, "OOO:set_callback", &py_exec, &py_chain, &py_callback)) {
         return NULL;
     }
 
@@ -769,14 +754,25 @@ PyObject* bitprim_native_chain_subscribe_blockchain(PyObject* self, PyObject* ar
         return NULL;
     }
 
+    executor_t exec = cast_executor(py_exec);
     chain_t chain = (chain_t)get_ptr(py_chain);
     Py_XINCREF(py_callback);         /* Add a reference to new callback */
     
-    chain_subscribe_blockchain(chain, py_callback, chain_subscribe_blockchain_handler);
+    chain_subscribe_blockchain(exec, chain, py_callback, chain_subscribe_blockchain_handler);
     Py_RETURN_NONE;
 }
 
-int chain_subscribe_transaction_handler(chain_t chain, void* ctx, int error, transaction_t tx) {
+int chain_subscribe_transaction_handler(executor_t exec, chain_t chain, void* ctx, int error, transaction_t tx) {
+
+    //TODO(fernando): hardcoded error code, libbitcoin::error::service_stopped
+    // if (exec->actual.stopped() || error == 1) {
+    if (executor_stopped(exec) != 0 || error == 1) {
+        return 0;
+    }
+    
+    PyGILState_STATE gstate;
+    gstate = PyGILState_Ensure();
+
     PyObject* py_callback = ctx;
     PyObject* py_transaction = to_py_obj(tx);
 
@@ -794,24 +790,23 @@ int chain_subscribe_transaction_handler(chain_t chain, void* ctx, int error, tra
 #endif /* PY_MAJOR_VERSION >= 3 */
 
 
-        printf("Result of call: %d\n", py_ret);
         Py_DECREF(ret);
+
+        PyGILState_Release(gstate);
+        
         return py_ret;
     }
-    else {
-        // Py_DECREF(pFunc);
-        // Py_DECREF(pModule);
-        // PyErr_Print();
-        fprintf(stderr,"Call failed\n");
-        return 0;
-    }    
+
+    PyGILState_Release(gstate);
+    return 0;
 }
 
 PyObject* bitprim_native_chain_subscribe_transaction(PyObject* self, PyObject* args){
+    PyObject* py_exec;
     PyObject* py_chain;
     PyObject* py_callback;
 
-    if ( ! PyArg_ParseTuple(args, "OO", &py_chain, &py_callback)) {
+    if ( ! PyArg_ParseTuple(args, "OOO:set_callback", &py_exec, &py_chain, &py_callback)) {
         return NULL;
     }
 
@@ -820,9 +815,10 @@ PyObject* bitprim_native_chain_subscribe_transaction(PyObject* self, PyObject* a
         return NULL;
     }
 
+    executor_t exec = cast_executor(py_exec);
     chain_t chain = (chain_t)get_ptr(py_chain);
     Py_XINCREF(py_callback);         /* Add a reference to new callback */
-    chain_subscribe_transaction(chain, py_callback, chain_subscribe_transaction_handler);
+    chain_subscribe_transaction(exec, chain, py_callback, chain_subscribe_transaction_handler);
     Py_RETURN_NONE;
 }
 

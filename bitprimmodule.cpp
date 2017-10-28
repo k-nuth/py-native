@@ -21,6 +21,7 @@
 //          https://docs.python.org/3/howto/cporting.html
 
 #include <Python.h>
+#include "bitprimmodule.h"
 #include "binary.h"
 #include "utils.h"
 #include "chain/point.h"
@@ -67,7 +68,6 @@ PyObject* bitprim_native_executor_construct(PyObject* self, PyObject* args) {
     int serr_fd = py_err == Py_None ? -1 : PyObject_AsFileDescriptor(py_err);
 
     executor_t exec = executor_construct_fd(path, sout_fd, serr_fd);
-    // printf("bitprim_native_executor_construct exec: %p\n", exec);
     return PyCapsule_New(exec, NULL, NULL);
 
 #else /* PY_MAJOR_VERSION >= 3 */
@@ -82,7 +82,6 @@ PyObject* bitprim_native_executor_construct(PyObject* self, PyObject* args) {
 //        PyFile_DecUseCount(p);
 
     executor_t exec = executor_construct(path, sout, serr);
-    // printf("bitprim_native_executor_construct exec: %p\n", exec);
     return PyCObject_FromVoidPtr(exec, NULL);
 
 #endif /* PY_MAJOR_VERSION >= 3 */
@@ -95,8 +94,8 @@ PyObject* bitprim_native_executor_construct(PyObject* self, PyObject* args) {
 PyObject* bitprim_native_executor_destruct(PyObject* self, PyObject* args) {
     PyObject* py_exec;
 
-    PyGILState_STATE gstate;
-    gstate = PyGILState_Ensure();
+    // PyGILState_STATE gstate;
+    // gstate = PyGILState_Ensure();
 
     if ( ! PyArg_ParseTuple(args, "O", &py_exec))
         return NULL;
@@ -104,15 +103,13 @@ PyObject* bitprim_native_executor_destruct(PyObject* self, PyObject* args) {
     executor_t exec = cast_executor(py_exec);
 
     executor_destruct(exec);
-    PyGILState_Release(gstate);
+    // PyGILState_Release(gstate);
     Py_RETURN_NONE;
 }
 
 // ---------------------------------------------------------
 
 PyObject* bitprim_native_executor_initchain(PyObject* self, PyObject* args) {
-
-    // printf("C bitprim_native_executor_initchain called\n");
 
     PyObject* py_exec;
 
@@ -130,8 +127,6 @@ PyObject* bitprim_native_executor_initchain(PyObject* self, PyObject* args) {
 // ---------------------------------------------------------
 
 void executor_run_handler(executor_t exec, void* ctx, int error) {
-    // printf("C callback (executor_run_handler) called\n");
-    // printf("Calling Python callback\n");
     
     PyObject* py_callback = (PyObject*)ctx;
 
@@ -172,9 +167,7 @@ PyObject* bitprim_native_executor_run_wait(PyObject* self, PyObject* args) {
 
     executor_t exec = cast_executor(py_exec);
 
-    // printf("bitprim_native_executor_run_wait - 1\n");
     int res = executor_run_wait(exec);
-    // printf("bitprim_native_executor_run_wait - 2\n");
     return Py_BuildValue("i", res);
 }
 
@@ -188,9 +181,7 @@ PyObject* bitprim_native_executor_stopped(PyObject* self, PyObject* args) {
 
     executor_t exec = cast_executor(py_exec);
 
-    // printf("executor_stopped - 1\n");
     int res = executor_stopped(exec);
-    // printf("executor_stopped - 2\n");
     return Py_BuildValue("i", res);
 }
 
@@ -200,17 +191,13 @@ PyObject* bitprim_native_executor_stopped(PyObject* self, PyObject* args) {
 PyObject* bitprim_native_executor_stop(PyObject* self, PyObject* args) {
     PyObject* py_exec;
 
-    PyGILState_STATE gstate;
-    gstate = PyGILState_Ensure();
-
     if ( ! PyArg_ParseTuple(args, "O", &py_exec))
         return NULL;
 
     executor_t exec = cast_executor(py_exec);
-
+        
     executor_stop(exec);
 
-    PyGILState_Release(gstate);
     Py_RETURN_NONE;
 }
 
@@ -236,18 +223,14 @@ PyObject* bitprim_native_executor_get_chain(PyObject* self, PyObject* args) {
 
 PyObject* bitprim_native_wallet_mnemonics_to_seed(PyObject* self, PyObject* args) {
     PyObject* py_wl;
-    // printf("bitprim_native_wallet_mnemonics_to_seed - 1\n");
 
     if ( ! PyArg_ParseTuple(args, "O", &py_wl)) {
-        // printf("bitprim_native_wallet_mnemonics_to_seed - 2\n");
         return NULL;
     }
 
     word_list_t wl = (word_list_t)get_ptr(py_wl);
     
     long_hash_t res = wallet_mnemonics_to_seed(wl);
-
-    // printf("bitprim_native_wallet_mnemonics_to_seed - res: %p\n", res.hash);
 
     return Py_BuildValue("y#", res.hash, 64);    //TODO: warning, hardcoded hash size!
 }
@@ -256,19 +239,12 @@ PyObject* bitprim_native_wallet_mnemonics_to_seed(PyObject* self, PyObject* args
 PyObject* bitprim_native_long_hash_t_to_str(PyObject* self, PyObject* args) {
     PyObject* py_lh;
 
-    printf("bitprim_native_long_hash_t_to_str - 1\n");
-
     if ( ! PyArg_ParseTuple(args, "O", &py_lh)) {
-        printf("bitprim_native_long_hash_t_to_str - 2\n");
         return NULL;
     }
 
     // long_hash_t lh = (long_hash_t)PyCObject_AsVoidPtr(py_lh);
     long_hash_t lh = (long_hash_t)PyCapsule_GetPointer(py_lh, NULL);
-
-    printf("bitprim_native_long_hash_t_to_str - res: %p\n", lh);
-
-    printf("bitprim_native_long_hash_t_to_str - 3\n");
 
     return Py_BuildValue("y#", lh, 32 * 2);    //TODO: warning, hardcoded long hash size!
 }
@@ -277,22 +253,16 @@ PyObject* bitprim_native_long_hash_t_to_str(PyObject* self, PyObject* args) {
 PyObject* bitprim_native_long_hash_t_free(PyObject* self, PyObject* args) {
     PyObject* py_lh;
 
-    printf("bitprim_native_long_hash_t_free - 1\n");
-
     if ( ! PyArg_ParseTuple(args, "O", &py_lh)) {
-        printf("bitprim_native_long_hash_t_free - 2\n");
         return NULL;
     }
 
     // long_hash_t lh = (long_hash_t)PyCObject_AsVoidPtr(py_lh);
     long_hash_t lh = (long_hash_t)PyCapsule_GetPointer(py_lh, NULL);
-    printf("bitprim_native_long_hash_t_free - res: %p\n", lh);
-    printf("bitprim_native_long_hash_t_free - 3\n");
     
     // free(lh);
     long_hash_destroy(lh);
 
-    printf("bitprim_native_long_hash_t_free - 4\n");
     Py_RETURN_NONE;
 }*/
 
