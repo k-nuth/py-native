@@ -31,10 +31,9 @@ extern "C" {
 // -------------------------------------------------------------------
 
 void chain_fetch_block_handler(chain_t chain, void* ctx, int error , block_t block, uint64_t /*size_t*/ h) {
-
     PyGILState_STATE gstate;
     gstate = PyGILState_Ensure();
-    
+
     PyObject* py_callback = ctx;
 
     PyObject* py_block = to_py_obj(block);
@@ -231,7 +230,6 @@ PyObject* bitprim_native_chain_fetch_block_header_by_hash(PyObject* self, PyObje
 // ---------------------------------------------------------
 
 void chain_fetch_last_height_handler(chain_t chain, void* ctx, int error, uint64_t /*size_t*/ h) {
-
     PyGILState_STATE gstate;
     gstate = PyGILState_Ensure();
 
@@ -395,7 +393,6 @@ PyObject* bitprim_native_chain_fetch_stealth(PyObject* self, PyObject* args) {
 }
 
 void chain_fetch_transaction_handler(chain_t chain, void* ctx, int error, transaction_t transaction, uint64_t index, uint64_t height) {
-
     PyGILState_STATE gstate;
     gstate = PyGILState_Ensure();
 

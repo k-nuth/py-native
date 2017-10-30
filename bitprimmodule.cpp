@@ -127,7 +127,7 @@ PyObject* bitprim_native_executor_initchain(PyObject* self, PyObject* args) {
 // ---------------------------------------------------------
 
 void executor_run_handler(executor_t exec, void* ctx, int error) {
-    
+ 
     PyObject* py_callback = (PyObject*)ctx;
 
     PyObject* arglist = Py_BuildValue("(i)", error);
@@ -191,13 +191,17 @@ PyObject* bitprim_native_executor_stopped(PyObject* self, PyObject* args) {
 PyObject* bitprim_native_executor_stop(PyObject* self, PyObject* args) {
     PyObject* py_exec;
 
+    // PyGILState_STATE gstate;
+    // gstate = PyGILState_Ensure();
+    
     if ( ! PyArg_ParseTuple(args, "O", &py_exec))
         return NULL;
 
     executor_t exec = cast_executor(py_exec);
-        
+
     executor_stop(exec);
 
+    // PyGILState_Release(gstate);
     Py_RETURN_NONE;
 }
 
