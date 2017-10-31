@@ -21,7 +21,7 @@ Development version:
     $ pip install --upgrade --index-url https://test.pypi.org/pypi/ bitprim-native
 
 
-If you want a fully optimized binary for a specific microarchitecture.:
+If you want a fully optimized binary for a specific microarchitecture, for example:
 
 .. code-block:: bash
 
