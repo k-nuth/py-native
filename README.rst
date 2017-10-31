@@ -42,4 +42,5 @@ For more detailed documentation, please refer to `<https://www.bitprim.org/>`_.
 .. |appveyor| image:: https://ci.appveyor.com/api/projects/status/github/bitprim/bitprim?branch=master&svg=true
   		     :target: https://ci.appveyor.com/project/hanchon/bitprim?branch=master
 
-
+.. role:: bash(code)
+   :language: bash
