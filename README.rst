@@ -8,9 +8,18 @@ Bitcoin (and Litecoin) development platform for Python applications
 Getting started 
 ---------------
 
+Stable version:
+
 .. code-block:: bash
 
-    $ pip install bitprim
+    $ pip install --upgrade bitprim-native
+
+Development version:
+
+.. code-block:: bash
+
+    $ pip install --upgrade --index-url https://test.pypi.org/pypi/ bitprim-native
+
 
 Reference documentation
 -----------------------
