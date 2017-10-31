@@ -46,7 +46,7 @@ import fnmatch
 from sys import platform
 
 PKG_NAME = 'bitprim_native'
-VERSION = '1.1.7'
+VERSION = '1.1.8'
 SYSTEM = sys.platform
 
 def get_similar_lib(path, pattern):
@@ -185,6 +185,8 @@ class InstallCommand(install):
 
         print('*********************************** InstallCommand run microarch')
         print(microarch)
+
+        do_build_stuff(microarch)
 
         install.run(self)
 
