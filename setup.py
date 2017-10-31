@@ -46,8 +46,10 @@ import fnmatch
 from sys import platform
 
 PKG_NAME = 'bitprim_native'
-VERSION = '1.1.8'
+VERSION = '1.1.9'
 SYSTEM = sys.platform
+
+
 
 def get_similar_lib(path, pattern):
     # for file in os.listdir('.'):
@@ -115,7 +117,29 @@ def do_conan_stuff(microarch=None):
     
 
 def do_build_stuff(microarch=None):
+
+    print('*********************************************************************************************************')
+    print(os.path.dirname(os.path.abspath(__file__)))
+    print(os.getcwd())
+    print('*********************************************************************************************************')
+
+    prev_dir = os.getcwd()
+
     do_conan_stuff(microarch)
+
+    print('*********************************************************************************************************')
+    print(os.path.dirname(os.path.abspath(__file__)))
+    print(os.getcwd())
+    print('*********************************************************************************************************')
+
+    os.chdir(prev_dir) 
+
+    print('*********************************************************************************************************')
+    print(os.path.dirname(os.path.abspath(__file__)))
+    print(os.getcwd())
+    print('*********************************************************************************************************')
+
+
     # libraries = ['bitprim-node-cint', 'bitprim-node', 'bitprim-blockchain', 'bitprim-network', 'bitprim-consensus', 'bitprim-database', 'bitprim-core', 'boost_atomic', 'boost_chrono', 'boost_date_time', 'boost_filesystem', 'boost_iostreams', 'boost_locale', 'boost_log', 'boost_log_setup', 'boost_program_options', 'boost_random', 'boost_regex', 'boost_system', 'boost_unit_test_framework', 'boost_prg_exec_monitor', 'boost_test_exec_monitor', 'boost_thread', 'boost_timer', 'secp256k1', 'bz2', 'gmp', 'z',],
     # libraries = get_libraries()
     extensions[0].libraries = get_libraries()
@@ -137,33 +161,12 @@ class DevelopCommand(develop):
         global microarch
         microarch = self.microarch
 
-        print('DevelopCommand run microarch')
+        print('*********************************** DevelopCommand run microarch')
         print(microarch)
 
         do_build_stuff(microarch)
+
         develop.run(self)
-
-# class EggInfoCommand(egg_info):
-#     user_options = egg_info.user_options + [
-#         ('microarch=', None, 'CPU microarchitecture')
-#     ]
-
-#     def initialize_options(self):
-#         egg_info.initialize_options(self)
-#         self.microarch = None
-
-#     def finalize_options(self):
-#         egg_info.finalize_options(self)
-
-#     def run(self):
-#         global microarch
-#         microarch = self.microarch
-
-#         print('EggInfoCommand run microarch')
-#         print(microarch)
-
-#         do_build_stuff(microarch)
-#         egg_info.run(self)
 
 
 
@@ -188,6 +191,7 @@ class InstallCommand(install):
 
         do_build_stuff(microarch)
 
+
         install.run(self)
 
 
@@ -211,6 +215,7 @@ class BuildCommand(build):
         print(microarch)
 
         do_build_stuff(microarch)
+
 
         build.run(self)
 
