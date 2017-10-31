@@ -33,6 +33,7 @@ from distutils import log
 from setuptools.command.install_lib import install_lib
 from setuptools.command.install import install
 from setuptools.command.develop import develop
+from setuptools.command.egg_info import egg_info
 from setuptools.command.build_ext import build_ext
 
 from distutils.command.build import build
@@ -45,7 +46,7 @@ import fnmatch
 from sys import platform
 
 PKG_NAME = 'bitprim_native'
-VERSION = '1.1.5'
+VERSION = '1.1.6'
 SYSTEM = sys.platform
 
 def get_similar_lib(path, pattern):
@@ -134,6 +135,28 @@ class DevelopCommand(develop):
 
         do_conan_stuff(microarch)
         develop.run(self)
+
+class EggInfoCommand(egg_info):
+    user_options = egg_info.user_options + [
+        ('microarch=', None, 'CPU microarchitecture')
+    ]
+
+    def initialize_options(self):
+        egg_info.initialize_options(self)
+        self.microarch = None
+
+    def finalize_options(self):
+        egg_info.finalize_options(self)
+
+    def run(self):
+        global microarch
+        microarch = self.microarch
+
+        print('EggInfoCommand run microarch')
+        print(microarch)
+
+        do_conan_stuff(microarch)
+        egg_info.run(self)
 
 
 
@@ -320,6 +343,8 @@ setup(
         'build': BuildCommand,
         'install': InstallCommand,
         'develop': DevelopCommand,
+        'egg_info': EggInfoCommand,
+        
     },
 
 )
