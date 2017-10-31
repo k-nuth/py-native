@@ -45,7 +45,7 @@ import fnmatch
 from sys import platform
 
 PKG_NAME = 'bitprim_native'
-VERSION = '1.1.4'
+VERSION = '1.1.5'
 SYSTEM = sys.platform
 
 def get_similar_lib(path, pattern):
@@ -177,6 +177,8 @@ class BuildCommand(build):
 
         print('--------------------------------------- BuildCommand run microarch')
         print(microarch)
+
+        do_conan_stuff(microarch)
 
         build.run(self)
 
