@@ -27,7 +27,7 @@ If you want a fully optimized binary for a specific microarchitecture, for examp
 
     $ pip install --upgrade --install-option="--microarch=skylake" bitprim-native
 
-(use :bash:`--index-url https://test.pypi.org/pypi/` for Dev version)
+(use :code:`--index-url https://test.pypi.org/pypi/` for Dev version)
 
 
 Reference documentation
