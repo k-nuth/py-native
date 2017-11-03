@@ -46,7 +46,7 @@ import fnmatch
 from sys import platform
 
 PKG_NAME = 'bitprim_native'
-VERSION = '1.1.9'
+# VERSION = '1.1.9'
 SYSTEM = sys.platform
 
 
@@ -245,9 +245,12 @@ extensions = [
 
 
 
+exec(open('./version.py').read())
 setup(
     name=PKG_NAME,
-    version=VERSION,
+    # version=VERSION,
+    version=__version__,
+    
 
     description='Bitprim Platform',
     long_description='Bitprim Platform',
