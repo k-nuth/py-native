@@ -39,7 +39,6 @@ PyObject* bitprim_native_binary_construct_string(PyObject* self, PyObject* args)
     char const* filter;
 
     if ( ! PyArg_ParseTuple(args, "s", &filter)) {
-        printf("bitprim_native_binary_construct_string - 2\n");
         return NULL;
     }
 

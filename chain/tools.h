@@ -7,6 +7,7 @@ extern "C" {
 #endif  
 
 void print_thread_id();
+void sleep_for_30();
 
 #ifdef __cplusplus
 } //extern "C"

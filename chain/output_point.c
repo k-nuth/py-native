@@ -78,7 +78,6 @@ PyObject* bitprim_native_point_is_valid(PyObject* self, PyObject* args) {
     PyObject* py_point;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_point)) {
-        // printf("bitprim_native_point_is_valid - 2\n");
         return NULL;
     }
 
@@ -98,7 +97,6 @@ PyObject* bitprim_native_point_get_checksum(PyObject* self, PyObject* args) {
     PyObject* py_point;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_point)) {
-        // printf("bitprim_native_point_get_checksum - 2\n");
         return NULL;
     }
 

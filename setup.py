@@ -19,12 +19,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # 
 
-#!/usr/bin/env python
-# Python binding for Keystone engine. Nguyen Anh Quynh <aquynh@gmail.com>
-
-# upload TestPyPi package with: $ python setup.py sdist upload -r pypitest
-# upload PyPi package with: $ python setup.py sdist upload -r pypi
-
 import glob
 import os
 import platform
@@ -38,14 +32,24 @@ from distutils import dir_util, file_util
 from distutils import log
 from setuptools.command.install_lib import install_lib
 from setuptools.command.install import install
+from setuptools.command.develop import develop
+# from setuptools.command.egg_info import egg_info
 from setuptools.command.build_ext import build_ext
+
+from distutils.command.build import build
+from setuptools.command.install import install
+
 from setuptools.dist import Distribution
 from conans.client.conan_api import (Conan, default_manifest_folder)
 import fnmatch
 
+from sys import platform
+
 PKG_NAME = 'bitprim_native'
-VERSION = '1.1.01'
+# VERSION = '1.1.9'
 SYSTEM = sys.platform
+
+
 
 def get_similar_lib(path, pattern):
     # for file in os.listdir('.'):
@@ -56,105 +60,7 @@ def get_similar_lib(path, pattern):
             return file
     return ""
 
-# class CustomInstallCommand(install):
-#     """Customized setuptools install command - prints a friendly greeting."""
-#     def run(self):
-#         print "Hello, developer, how are you? :)"
-#         install.run(self)
 
-# class CustomInstall(install_lib):
-#     def install(self):
-#         print('CustomInstall.install')
-#         install_lib.install(self)
-
-#         build_ext = self.get_finalized_command('build_ext')
-        
-
-#         for key in build_ext.compiler.executables.keys():
-#             # self.set_executable(key, build_ext.compiler.executables[key])
-#             print("executables - key: %s, value: %s" % (key, build_ext.compiler.executables[key]))
-
-# class build_ext_subclass( build_ext ):
-#     def build_extensions(self):
-
-#         print("build_ext_subclass.build_extensions")
-#         print("self.compiler.compiler_type")
-#         print(self.compiler.compiler_type)
-
-#         for key in self.compiler.executables.keys():
-#             print("executables - key: %s, value: %s" % (key, self.compiler.executables[key]))
-
-#         # c = self.compiler.compiler_type
-#         # if copt.has_key(c):
-#         #    for e in self.extensions:
-#         #        e.extra_compile_args = copt[ c ]
-#         # if lopt.has_key(c):
-#         #     for e in self.extensions:
-#         #         e.extra_link_args = lopt[ c ]
-#         build_ext.build_extensions(self)
-
-# class CustomInstall(install_lib):
-#     def install(self):
-#         print('CustomInstall.install')
-#         install_lib.install(self)
-#         bitprim_install_dir = os.path.join(self.install_dir, 'bitprim/')
-        
-#         if not os.path.exists(bitprim_install_dir):
-#             os.makedirs(bitprim_install_dir)
-
-#         log.info("bitprim_install_dir: %s" % (bitprim_install_dir, ))
-#         log.debug("bitprim_install_dir: %s" % (bitprim_install_dir, ))
-#         print("bitprim_install_dir: %s" % (bitprim_install_dir, ))
-
-#         for lib_file in SETUP_DATA_FILES:
-#             log.info("lib_file: %s" % (lib_file, ))
-#             log.debug("lib_file: %s" % (lib_file, ))
-#             print("lib_file: %s" % (lib_file, ))
-
-#             filename = os.path.basename(lib_file)
-#             log.info("filename: %s" % (filename, ))
-#             log.debug("filename: %s" % (filename, ))
-#             print("filename: %s" % (filename, ))
-
-#             dest_file = os.path.join(self.install_dir, 'bitprim', filename)
-
-#             log.info("dest_file: %s" % (dest_file, ))
-#             log.debug("dest_file: %s" % (dest_file, ))
-#             print("dest_file: %s" % (dest_file, ))
-
-#             # file_util.copy_file(lib_file, bitprim_install_dir)
-#             file_util.copy_file(lib_file, dest_file)
-
-# class MyDist(Distribution):
-#      def has_ext_modules(self):
-#          return True
-
-
-
-# ------------------------------------------------
-
-c = Conan.factory()
-
-
-try:
-    # c.remote_add(remote, url, verify_ssl, args.insert)
-    c.remote_add('bitprim', 'https://api.bintray.com/conan/bitprim/bitprim')
-except:
-    print ("Conan Remote exists, ignoring exception")
-
-refe = "."
-
-# c.install(refe, verify=None, manifests=None)
-c.install(refe, verify=None, manifests_interactive=None, manifests=None)
-
-print('-----------------------------------------------------------------------------------')
-xxx = get_similar_lib('./bitprim/lib', "*boost_atomic*")
-print(xxx)
-print('-----------------------------------------------------------------------------------')
-
-
-
-from sys import platform
 # if platform == "linux" or platform == "linux2":
 #     # linux
 # elif platform == "darwin":
@@ -165,22 +71,159 @@ from sys import platform
 def get_libraries():
     # libraries = ['bitprim-node-cint', 'bitprim-node', 'bitprim-blockchain', 'bitprim-network', 'bitprim-consensus', 'bitprim-database', 'bitprim-core', 'boost_atomic', 'boost_chrono', 'boost_date_time', 'boost_filesystem', 'boost_iostreams', 'boost_locale', 'boost_log', 'boost_log_setup', 'boost_program_options', 'boost_random', 'boost_regex', 'boost_system', 'boost_unit_test_framework', 'boost_prg_exec_monitor', 'boost_test_exec_monitor', 'boost_thread', 'boost_timer', 'secp256k1', 'bz2', 'gmp', 'z',]
     fixed = ['bitprim-node-cint', 'bitprim-node', 'bitprim-blockchain', 'bitprim-network', 'bitprim-consensus', 'bitprim-database', 'bitprim-core']
-    libraries = ['boost_atomic', 'boost_chrono', 'boost_date_time', 'boost_filesystem', 'boost_iostreams', 'boost_locale', 'boost_log', 'boost_log_setup', 'boost_program_options', 'boost_random', 'boost_regex', 'boost_system', 'boost_unit_test_framework', 'boost_prg_exec_monitor', 'boost_test_exec_monitor', 'boost_thread', 'boost_timer', 'secp256k1', 'bz2', 'gmp', 'z',]
 
     if platform == "win32":
+        libraries = ['boost_atomic', 'boost_chrono', 'boost_date_time', 'boost_filesystem', 'boost_iostreams', 'boost_locale', 'boost_log', 'boost_log_setup', 'boost_program_options', 'boost_random', 'boost_regex', 'boost_system', 'boost_unit_test_framework', 'boost_prg_exec_monitor', 'boost_test_exec_monitor', 'boost_thread', 'boost_timer', 'secp256k1', 'bz2', 'mpir', 'z',]
         winlibs = fixed
         for lib in libraries:
-            print(lib)
+            # print(lib)
             xxx = get_similar_lib('bitprim/lib', "*" + lib + "*")
             if xxx != '':
                 xxx = xxx.replace('.lib', '')
-                print(xxx)
+                # print(xxx)
                 winlibs.append(xxx)
     
-        print(winlibs)
+        # print(winlibs)
         return winlibs
     else:
+        libraries = ['boost_atomic', 'boost_chrono', 'boost_date_time', 'boost_filesystem', 'boost_iostreams', 'boost_locale', 'boost_log', 'boost_log_setup', 'boost_program_options', 'boost_random', 'boost_regex', 'boost_system', 'boost_unit_test_framework', 'boost_prg_exec_monitor', 'boost_test_exec_monitor', 'boost_thread', 'boost_timer', 'secp256k1', 'bz2', 'gmp', 'z',]
         return fixed + libraries
+
+def do_conan_stuff(microarch=None):
+
+    # if not microarch:
+    #     microarch = 'x86_64'
+
+    print('do_conan_stuff microarch')
+    print(microarch)
+
+    # New API in Conan 0.28
+    c, _, _ = Conan.factory()
+
+    try:
+        # c.remote_add(remote, url, verify_ssl, args.insert)
+        c.remote_add('bitprim', 'https://api.bintray.com/conan/bitprim/bitprim')
+    except:
+        print ("Conan Remote exists, ignoring exception")
+
+    refe = "."
+
+    if microarch:
+        # c.install(refe, verify=None, manifests=None)
+        opts = ['*:microarchitecture=%s' % (microarch,)]
+        c.install(refe, verify=None, manifests_interactive=None, manifests=None, options=opts)
+    else:
+        c.install(refe, verify=None, manifests_interactive=None, manifests=None)
+    
+
+def do_build_stuff(microarch=None):
+
+    print('*********************************************************************************************************')
+    print(os.path.dirname(os.path.abspath(__file__)))
+    print(os.getcwd())
+    print('*********************************************************************************************************')
+
+    prev_dir = os.getcwd()
+
+    do_conan_stuff(microarch)
+
+    print('*********************************************************************************************************')
+    print(os.path.dirname(os.path.abspath(__file__)))
+    print(os.getcwd())
+    print('*********************************************************************************************************')
+
+    os.chdir(prev_dir) 
+
+    print('*********************************************************************************************************')
+    print(os.path.dirname(os.path.abspath(__file__)))
+    print(os.getcwd())
+    print('*********************************************************************************************************')
+
+
+    # libraries = ['bitprim-node-cint', 'bitprim-node', 'bitprim-blockchain', 'bitprim-network', 'bitprim-consensus', 'bitprim-database', 'bitprim-core', 'boost_atomic', 'boost_chrono', 'boost_date_time', 'boost_filesystem', 'boost_iostreams', 'boost_locale', 'boost_log', 'boost_log_setup', 'boost_program_options', 'boost_random', 'boost_regex', 'boost_system', 'boost_unit_test_framework', 'boost_prg_exec_monitor', 'boost_test_exec_monitor', 'boost_thread', 'boost_timer', 'secp256k1', 'bz2', 'gmp', 'z',],
+    # libraries = get_libraries()
+    extensions[0].libraries = get_libraries()
+    
+
+class DevelopCommand(develop):
+    user_options = develop.user_options + [
+        ('microarch=', None, 'CPU microarchitecture')
+    ]
+
+    def initialize_options(self):
+        develop.initialize_options(self)
+        self.microarch = None
+
+    def finalize_options(self):
+        develop.finalize_options(self)
+
+    def run(self):
+        global microarch
+        microarch = self.microarch
+
+        print('*********************************** DevelopCommand run microarch')
+        print(microarch)
+
+        do_build_stuff(microarch)
+
+        develop.run(self)
+
+
+
+class InstallCommand(install):
+    user_options = install.user_options + [
+        ('microarch=', None, 'CPU microarchitecture')
+    ]
+
+    def initialize_options(self):
+        install.initialize_options(self)
+        self.microarch = None
+
+    def finalize_options(self):
+        install.finalize_options(self)
+
+    def run(self):
+        global microarch
+        microarch = self.microarch
+
+        print('*********************************** InstallCommand run microarch')
+        print(microarch)
+
+        do_build_stuff(microarch)
+
+
+        install.run(self)
+
+
+class BuildCommand(build):
+    user_options = build.user_options + [
+        ('microarch=', None, 'CPU microarchitecture')
+    ]
+
+    def initialize_options(self):
+        build.initialize_options(self)
+        self.microarch = None
+
+    def finalize_options(self):
+        build.finalize_options(self)
+
+    def run(self):
+        global microarch
+        microarch = self.microarch
+
+        print('--------------------------------------- BuildCommand run microarch')
+        print(microarch)
+
+        do_build_stuff(microarch)
+
+
+        build.run(self)
+
+
+# ------------------------------------------------
+
+microarch = ''
+
 
 extensions = [
 	Extension('bitprim_native',
@@ -196,15 +239,18 @@ extensions = [
         include_dirs=['bitprim/include'],
         library_dirs=['bitprim/lib'],
         # libraries = ['bitprim-node-cint', 'bitprim-node', 'bitprim-blockchain', 'bitprim-network', 'bitprim-consensus', 'bitprim-database', 'bitprim-core', 'boost_atomic', 'boost_chrono', 'boost_date_time', 'boost_filesystem', 'boost_iostreams', 'boost_locale', 'boost_log', 'boost_log_setup', 'boost_program_options', 'boost_random', 'boost_regex', 'boost_system', 'boost_unit_test_framework', 'boost_prg_exec_monitor', 'boost_test_exec_monitor', 'boost_thread', 'boost_timer', 'secp256k1', 'bz2', 'gmp', 'z',],
-        libraries = get_libraries()
+        # libraries = get_libraries()
     ),
 ]
 
 
 
+exec(open('./version.py').read())
 setup(
     name=PKG_NAME,
-    version=VERSION,
+    # version=VERSION,
+    version=__version__,
+    
 
     description='Bitprim Platform',
     long_description='Bitprim Platform',
@@ -309,4 +355,90 @@ setup(
 
     # cmdclass = {'build_ext': build_ext_subclass },
 
+
+    cmdclass={
+        'build': BuildCommand,
+        'install': InstallCommand,
+        'develop': DevelopCommand,
+        # 'egg_info': EggInfoCommand,
+        
+    },
+
 )
+
+
+
+
+
+# class CustomInstallCommand(install):
+#     """Customized setuptools install command - prints a friendly greeting."""
+#     def run(self):
+#         print "Hello, developer, how are you? :)"
+#         install.run(self)
+
+# class CustomInstall(install_lib):
+#     def install(self):
+#         print('CustomInstall.install')
+#         install_lib.install(self)
+
+#         build_ext = self.get_finalized_command('build_ext')
+        
+
+#         for key in build_ext.compiler.executables.keys():
+#             # self.set_executable(key, build_ext.compiler.executables[key])
+#             print("executables - key: %s, value: %s" % (key, build_ext.compiler.executables[key]))
+
+# class build_ext_subclass( build_ext ):
+#     def build_extensions(self):
+
+#         print("build_ext_subclass.build_extensions")
+#         print("self.compiler.compiler_type")
+#         print(self.compiler.compiler_type)
+
+#         for key in self.compiler.executables.keys():
+#             print("executables - key: %s, value: %s" % (key, self.compiler.executables[key]))
+
+#         # c = self.compiler.compiler_type
+#         # if copt.has_key(c):
+#         #    for e in self.extensions:
+#         #        e.extra_compile_args = copt[ c ]
+#         # if lopt.has_key(c):
+#         #     for e in self.extensions:
+#         #         e.extra_link_args = lopt[ c ]
+#         build_ext.build_extensions(self)
+
+# class CustomInstall(install_lib):
+#     def install(self):
+#         print('CustomInstall.install')
+#         install_lib.install(self)
+#         bitprim_install_dir = os.path.join(self.install_dir, 'bitprim/')
+        
+#         if not os.path.exists(bitprim_install_dir):
+#             os.makedirs(bitprim_install_dir)
+
+#         log.info("bitprim_install_dir: %s" % (bitprim_install_dir, ))
+#         log.debug("bitprim_install_dir: %s" % (bitprim_install_dir, ))
+#         print("bitprim_install_dir: %s" % (bitprim_install_dir, ))
+
+#         for lib_file in SETUP_DATA_FILES:
+#             log.info("lib_file: %s" % (lib_file, ))
+#             log.debug("lib_file: %s" % (lib_file, ))
+#             print("lib_file: %s" % (lib_file, ))
+
+#             filename = os.path.basename(lib_file)
+#             log.info("filename: %s" % (filename, ))
+#             log.debug("filename: %s" % (filename, ))
+#             print("filename: %s" % (filename, ))
+
+#             dest_file = os.path.join(self.install_dir, 'bitprim', filename)
+
+#             log.info("dest_file: %s" % (dest_file, ))
+#             log.debug("dest_file: %s" % (dest_file, ))
+#             print("dest_file: %s" % (dest_file, ))
+
+#             # file_util.copy_file(lib_file, bitprim_install_dir)
+#             file_util.copy_file(lib_file, dest_file)
+
+# class MyDist(Distribution):
+#      def has_ext_modules(self):
+#          return True

@@ -57,7 +57,7 @@ PyObject* bitprim_native_chain_input_signature_operations(PyObject* self, PyObje
     PyObject* py_input;
     int py_bip16_active;
     
-    if ( ! PyArg_ParseTuple(args, "O", &py_input, &py_bip16_active)) {
+    if ( ! PyArg_ParseTuple(args, "Oi", &py_input, &py_bip16_active)) {
         return NULL;
     }
 

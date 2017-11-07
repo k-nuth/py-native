@@ -23,5 +23,4 @@ debug.log
 error.log
 
 .vscode/
-
 bitprim_native.pyd

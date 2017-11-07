@@ -26,3 +26,7 @@ void print_thread_id() {
     printf("thread %d\n", this_id);
 }
 
+
+void sleep_for_30() {
+    std::this_thread::sleep_for(std::chrono::seconds(30));
+}

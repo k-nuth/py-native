@@ -1,6 +1,7 @@
 from conans import ConanFile, CMake
 # import os
 
+
 class BitprimTestForPy(ConanFile):
     name = "bitprim-test-for-py"
     version = "0.1"
@@ -16,11 +17,11 @@ class BitprimTestForPy(ConanFile):
     # build_policy = "missing"
 
     # TODO(fernando): queda pendiente seleccionar el default Shared=False
-    requires = (("bitprim-node-cint/0.2@bitprim/stable"))
+    requires = (("bitprim-node-cint/0.3@bitprim/stable"))
     # default_options = "bitprim-node-cint:shared=False" #, "OpenSSL:shared=True"
 
 
-    # conan install bitprim-node-cint/0.2@bitprim/stable -o shared=True
+    # conan install bitprim-node-cint/0.3@bitprim/stable -o shared=True
     # conan install -o Pkg:shared=True -o OtherPkg:option=value
 
     def imports(self):

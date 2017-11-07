@@ -96,9 +96,9 @@ PyObject* bitprim_native_chain_script_sigops(PyObject* self, PyObject* args){
 
 PyObject* bitprim_native_chain_script_embedded_sigops(PyObject* self, PyObject* args){
     PyObject* py_script;
-    PyObject* py_prevout_script;
+    PyObject* py_prevout_script; 
 
-    if ( ! PyArg_ParseTuple(args, "Oi", &py_script, &py_prevout_script)) {
+    if ( ! PyArg_ParseTuple(args, "OO", &py_script, &py_prevout_script)) {
         return NULL;
     }
 
