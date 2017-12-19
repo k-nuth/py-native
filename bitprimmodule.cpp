@@ -258,6 +258,33 @@ PyObject* bitprim_native_wallet_ec_new(PyObject* self, PyObject* args) {
 }
 
 
+PyObject* bitprim_native_wallet_ec_to_public(PyObject* self, PyObject* args) {
+
+    PyObject* py_secret;
+    int py_uncompressed;
+    
+    if ( ! PyArg_ParseTuple(args, "Oi", &py_secret, &py_uncompressed)) {
+        return NULL;
+    }
+
+    ec_secret_t secret = (ec_secret_t)get_ptr(py_secret);
+    ec_public_t res = wallet_ec_to_public(secret, py_uncompressed);
+    return to_py_obj(res);
+}
+
+PyObject* bitprim_native_wallet_ec_to_address(PyObject* self, PyObject* args) {
+    PyObject* py_point;
+    uint32_t py_version;
+
+    if ( ! PyArg_ParseTuple(args, "OI", &py_point, &py_version)) {
+        return NULL;
+    }
+
+    ec_public_t point = (ec_public_t)get_ptr(py_point);
+    payment_address_t res = wallet_ec_to_address(point, py_version);
+    return to_py_obj(res);
+}
+
 /*
 PyObject* bitprim_native_long_hash_t_to_str(PyObject* self, PyObject* args) {
     PyObject* py_lh;
@@ -449,6 +476,9 @@ PyMethodDef BitprimNativeMethods[] = {
 
     {"wallet_mnemonics_to_seed",  bitprim_native_wallet_mnemonics_to_seed, METH_VARARGS, "..."},
     {"wallet_ec_new",  bitprim_native_wallet_ec_new, METH_VARARGS, "..."},
+    {"wallet_ec_to_public",  bitprim_native_wallet_ec_to_public, METH_VARARGS, "..."},
+    {"wallet_ec_to_address",  bitprim_native_wallet_ec_to_address, METH_VARARGS, "..."},
+
 
 
     {"script_destruct",  bitprim_native_chain_script_destruct, METH_VARARGS, "..."},
