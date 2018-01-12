@@ -239,6 +239,52 @@ PyObject* bitprim_native_wallet_mnemonics_to_seed(PyObject* self, PyObject* args
     return Py_BuildValue("y#", res.hash, 64);    //TODO: warning, hardcoded hash size!
 }
 
+PyObject* bitprim_native_wallet_ec_new(PyObject* self, PyObject* args) {
+    uint8_t* py_seed;
+    size_t py_n;
+
+#if PY_MAJOR_VERSION >= 3
+    if ( ! PyArg_ParseTuple(args, "y#", &py_seed, &py_n)) {
+#else
+    if ( ! PyArg_ParseTuple(args, "s#", &py_seed, &py_n)) {
+#endif
+        return NULL;
+    }
+    
+    ec_secret_t res = wallet_ec_new(py_seed, py_n);
+    return to_py_obj(res);
+
+    // return Py_BuildValue("y#", res.hash, 64);    //TODO: warning, hardcoded hash size!
+}
+
+
+PyObject* bitprim_native_wallet_ec_to_public(PyObject* self, PyObject* args) {
+
+    PyObject* py_secret;
+    int py_uncompressed;
+    
+    if ( ! PyArg_ParseTuple(args, "Oi", &py_secret, &py_uncompressed)) {
+        return NULL;
+    }
+
+    ec_secret_t secret = (ec_secret_t)get_ptr(py_secret);
+    ec_public_t res = wallet_ec_to_public(secret, py_uncompressed);
+    return to_py_obj(res);
+}
+
+PyObject* bitprim_native_wallet_ec_to_address(PyObject* self, PyObject* args) {
+    PyObject* py_point;
+    uint32_t py_version;
+
+    if ( ! PyArg_ParseTuple(args, "OI", &py_point, &py_version)) {
+        return NULL;
+    }
+
+    ec_public_t point = (ec_public_t)get_ptr(py_point);
+    payment_address_t res = wallet_ec_to_address(point, py_version);
+    return to_py_obj(res);
+}
+
 /*
 PyObject* bitprim_native_long_hash_t_to_str(PyObject* self, PyObject* args) {
     PyObject* py_lh;
@@ -429,6 +475,10 @@ PyMethodDef BitprimNativeMethods[] = {
     {"word_list_add_word",  bitprim_native_word_list_add_word, METH_VARARGS, "..."},
 
     {"wallet_mnemonics_to_seed",  bitprim_native_wallet_mnemonics_to_seed, METH_VARARGS, "..."},
+    {"wallet_ec_new",  bitprim_native_wallet_ec_new, METH_VARARGS, "..."},
+    {"wallet_ec_to_public",  bitprim_native_wallet_ec_to_public, METH_VARARGS, "..."},
+    {"wallet_ec_to_address",  bitprim_native_wallet_ec_to_address, METH_VARARGS, "..."},
+
 
 
     {"script_destruct",  bitprim_native_chain_script_destruct, METH_VARARGS, "..."},
