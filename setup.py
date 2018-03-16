@@ -73,7 +73,8 @@ def get_libraries():
     fixed = ['bitprim-node-cint', 'bitprim-node', 'bitprim-blockchain', 'bitprim-network', 'bitprim-consensus', 'bitprim-database', 'bitprim-core']
 
     if platform == "win32":
-        libraries = ['boost_atomic', 'boost_chrono', 'boost_date_time', 'boost_filesystem', 'boost_iostreams', 'boost_locale', 'boost_log', 'boost_log_setup', 'boost_program_options', 'boost_random', 'boost_regex', 'boost_system', 'boost_unit_test_framework', 'boost_prg_exec_monitor', 'boost_test_exec_monitor', 'boost_thread', 'boost_timer', 'secp256k1', 'bz2', 'mpir', 'z',]
+        # libraries = ['boost_atomic', 'boost_chrono', 'boost_date_time', 'boost_filesystem', 'boost_iostreams', 'boost_locale', 'boost_log', 'boost_log_setup', 'boost_program_options', 'boost_random', 'boost_regex', 'boost_system', 'boost_unit_test_framework', 'boost_prg_exec_monitor', 'boost_test_exec_monitor', 'boost_thread', 'boost_timer', 'secp256k1', 'bz2', 'mpir', 'z',]
+        libraries = ['boost_atomic', 'boost_chrono', 'boost_date_time', 'boost_filesystem', 'boost_iostreams', 'boost_locale', 'boost_log', 'boost_log_setup', 'boost_program_options', 'boost_random', 'boost_regex', 'boost_system', 'boost_unit_test_framework', 'boost_prg_exec_monitor', 'boost_test_exec_monitor', 'boost_thread', 'boost_timer', 'secp256k1', 'mpir', 'z',]
         winlibs = fixed
         for lib in libraries:
             # print(lib)
@@ -86,15 +87,16 @@ def get_libraries():
         # print(winlibs)
         return winlibs
     else:
-        libraries = ['boost_atomic', 'boost_chrono', 'boost_date_time', 'boost_filesystem', 'boost_iostreams', 'boost_locale', 'boost_log', 'boost_log_setup', 'boost_program_options', 'boost_random', 'boost_regex', 'boost_system', 'boost_unit_test_framework', 'boost_prg_exec_monitor', 'boost_test_exec_monitor', 'boost_thread', 'boost_timer', 'secp256k1', 'bz2', 'gmp', 'z',]
+        # libraries = ['boost_atomic', 'boost_chrono', 'boost_date_time', 'boost_filesystem', 'boost_iostreams', 'boost_locale', 'boost_log', 'boost_log_setup', 'boost_program_options', 'boost_random', 'boost_regex', 'boost_system', 'boost_unit_test_framework', 'boost_prg_exec_monitor', 'boost_test_exec_monitor', 'boost_thread', 'boost_timer', 'secp256k1', 'bz2', 'gmp', 'z',]
+        libraries = ['boost_atomic', 'boost_chrono', 'boost_date_time', 'boost_filesystem', 'boost_iostreams', 'boost_locale', 'boost_log', 'boost_log_setup', 'boost_program_options', 'boost_random', 'boost_regex', 'boost_system', 'boost_unit_test_framework', 'boost_prg_exec_monitor', 'boost_test_exec_monitor', 'boost_thread', 'boost_timer', 'secp256k1', 'gmp', 'z',]
         return fixed + libraries
 
-def do_conan_stuff(microarch=None):
+def do_conan_stuff(microarch=None, currency=None):
 
     # if not microarch:
     #     microarch = 'x86_64'
 
-    print('do_conan_stuff microarch')
+    print('do_conan_stuff microarch currency')
     print(microarch)
 
     # New API in Conan 0.28
@@ -108,15 +110,29 @@ def do_conan_stuff(microarch=None):
 
     refe = "."
 
+    opts = None
+
+    # if microarch:
+    #     # c.install(refe, verify=None, manifests=None)
+    #     opts = ['*:microarchitecture=%s' % (microarch,)]
+    #     c.install(refe, verify=None, manifests_interactive=None, manifests=None, options=opts)
+    # else:
+    #     c.install(refe, verify=None, manifests_interactive=None, manifests=None)
+
     if microarch:
-        # c.install(refe, verify=None, manifests=None)
         opts = ['*:microarchitecture=%s' % (microarch,)]
-        c.install(refe, verify=None, manifests_interactive=None, manifests=None, options=opts)
-    else:
-        c.install(refe, verify=None, manifests_interactive=None, manifests=None)
+
+    if currency:
+        if opts:
+            opts.append('*:currency=%s' % (currency,))    
+        else:
+            opts = ['*:currency=%s' % (currency,)]
+
+    c.install(refe, verify=None, manifests_interactive=None, manifests=None, options=opts)
+
     
 
-def do_build_stuff(microarch=None):
+def do_build_stuff(microarch=None, currency=None):
 
     print('*********************************************************************************************************')
     print(os.path.dirname(os.path.abspath(__file__)))
@@ -125,7 +141,7 @@ def do_build_stuff(microarch=None):
 
     prev_dir = os.getcwd()
 
-    do_conan_stuff(microarch)
+    do_conan_stuff(microarch, currency)
 
     print('*********************************************************************************************************')
     print(os.path.dirname(os.path.abspath(__file__)))
@@ -147,12 +163,14 @@ def do_build_stuff(microarch=None):
 
 class DevelopCommand(develop):
     user_options = develop.user_options + [
-        ('microarch=', None, 'CPU microarchitecture')
+        ('microarch=', None, 'CPU microarchitecture'),
+        ('currency=', None, 'Cryptocurrency')
     ]
 
     def initialize_options(self):
         develop.initialize_options(self)
         self.microarch = None
+        self.currency = None
 
     def finalize_options(self):
         develop.finalize_options(self)
@@ -161,10 +179,14 @@ class DevelopCommand(develop):
         global microarch
         microarch = self.microarch
 
-        print('*********************************** DevelopCommand run microarch')
-        print(microarch)
+        global currency
+        currency = self.currency
 
-        do_build_stuff(microarch)
+        print('*********************************** DevelopCommand run microarch currency')
+        print(microarch)
+        print(currency)
+
+        do_build_stuff(microarch, currency)
 
         develop.run(self)
 
@@ -172,12 +194,14 @@ class DevelopCommand(develop):
 
 class InstallCommand(install):
     user_options = install.user_options + [
-        ('microarch=', None, 'CPU microarchitecture')
+        ('microarch=', None, 'CPU microarchitecture'),
+        ('currency=', None, 'Cryptocurrency')
     ]
 
     def initialize_options(self):
         install.initialize_options(self)
         self.microarch = None
+        self.currency = None
 
     def finalize_options(self):
         install.finalize_options(self)
@@ -186,23 +210,28 @@ class InstallCommand(install):
         global microarch
         microarch = self.microarch
 
-        print('*********************************** InstallCommand run microarch')
+        global currency
+        currency = self.currency
+
+        print('*********************************** InstallCommand run microarch currency')
         print(microarch)
+        print(currency)
 
-        do_build_stuff(microarch)
-
+        do_build_stuff(microarch, currency)
 
         install.run(self)
 
 
 class BuildCommand(build):
     user_options = build.user_options + [
-        ('microarch=', None, 'CPU microarchitecture')
+        ('microarch=', None, 'CPU microarchitecture'),
+        ('currency=', None, 'Cryptocurrency')
     ]
 
     def initialize_options(self):
         build.initialize_options(self)
         self.microarch = None
+        self.currency = None
 
     def finalize_options(self):
         build.finalize_options(self)
@@ -211,11 +240,14 @@ class BuildCommand(build):
         global microarch
         microarch = self.microarch
 
-        print('--------------------------------------- BuildCommand run microarch')
+        global currency
+        currency = self.currency
+
+        print('--------------------------------------- BuildCommand run microarch currency')
         print(microarch)
+        print(currency)
 
-        do_build_stuff(microarch)
-
+        do_build_stuff(microarch, currency)
 
         build.run(self)
 

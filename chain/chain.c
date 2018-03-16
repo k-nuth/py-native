@@ -30,7 +30,7 @@ extern "C" {
 // fetch_block
 // -------------------------------------------------------------------
 
-void chain_fetch_block_handler(chain_t chain, void* ctx, int error , block_t block, uint64_t /*size_t*/ h) {
+void chain_fetch_block_handler(chain_t chain, void* ctx, error_code_t error , block_t block, uint64_t /*size_t*/ h) {
     PyGILState_STATE gstate;
     gstate = PyGILState_Ensure();
 
@@ -99,7 +99,7 @@ PyObject* bitprim_native_chain_fetch_block_by_hash(PyObject* self, PyObject* arg
 // fetch_merkle_block
 // -------------------------------------------------------------------
 
-void chain_fetch_merkle_block_handler(chain_t chain, void* ctx, int error, merkle_block_t merkle, uint64_t /*size_t*/ h) {
+void chain_fetch_merkle_block_handler(chain_t chain, void* ctx, error_code_t error, merkle_block_t merkle, uint64_t /*size_t*/ h) {
     PyObject* py_callback = ctx;
 
     PyObject* py_merkle = to_py_obj(merkle);
@@ -164,7 +164,7 @@ PyObject* bitprim_native_chain_fetch_merkle_block_by_hash(PyObject* self, PyObje
 // fetch block header
 // -------------------------------------------------------------------
 
-void chain_fetch_block_header_handler(chain_t chain, void* ctx, int error , header_t header, uint64_t /*size_t*/ h) {
+void chain_fetch_block_header_handler(chain_t chain, void* ctx, error_code_t error , header_t header, uint64_t /*size_t*/ h) {
     PyObject* py_callback = ctx;
 
     PyObject* py_header = to_py_obj(header);
@@ -229,7 +229,7 @@ PyObject* bitprim_native_chain_fetch_block_header_by_hash(PyObject* self, PyObje
 // chain_fetch_last_height
 // ---------------------------------------------------------
 
-void chain_fetch_last_height_handler(chain_t chain, void* ctx, int error, uint64_t /*size_t*/ h) {
+void chain_fetch_last_height_handler(chain_t chain, void* ctx, error_code_t error, uint64_t /*size_t*/ h) {
     PyGILState_STATE gstate;
     gstate = PyGILState_Ensure();
 
@@ -267,7 +267,7 @@ PyObject* bitprim_native_chain_fetch_last_height(PyObject* self, PyObject* args)
 // chain_fetch_history
 // ---------------------------------------------------------
 
-void chain_fetch_history_handler(chain_t chain, void* ctx, int error, history_compact_list_t history_list) {
+void chain_fetch_history_handler(chain_t chain, void* ctx, error_code_t error, history_compact_list_t history_list) {
 
     PyObject* py_callback = ctx;
     PyObject* py_history_list = to_py_obj(history_list);
@@ -313,7 +313,7 @@ PyObject* bitprim_native_chain_fetch_history(PyObject* self, PyObject* args) {
 // chain_fetch_block_height
 // ---------------------------------------------------------
 
-void chain_block_height_fetch_handler(chain_t chain, void* ctx, int error, uint64_t /*size_t*/ h) {
+void chain_block_height_fetch_handler(chain_t chain, void* ctx, error_code_t error, uint64_t /*size_t*/ h) {
 
     PyObject* py_callback = ctx;
 
@@ -357,7 +357,7 @@ PyObject* bitprim_native_chain_fetch_block_height(PyObject* self, PyObject* args
 // stealth_history
 // ---------------------------------------------------------
 
-void chain_stealth_fetch_handler(chain_t chain, void* ctx, int error, stealth_compact_list_t stealth_list) {
+void chain_stealth_fetch_handler(chain_t chain, void* ctx, error_code_t error, stealth_compact_list_t stealth_list) {
     PyObject* py_callback = ctx;
 
     PyObject* py_stealth_list = to_py_obj(stealth_list);
@@ -392,7 +392,7 @@ PyObject* bitprim_native_chain_fetch_stealth(PyObject* self, PyObject* args) {
     Py_RETURN_NONE;
 }
 
-void chain_fetch_transaction_handler(chain_t chain, void* ctx, int error, transaction_t transaction, uint64_t index, uint64_t height) {
+void chain_fetch_transaction_handler(chain_t chain, void* ctx, error_code_t error, transaction_t transaction, uint64_t index, uint64_t height) {
     PyGILState_STATE gstate;
     gstate = PyGILState_Ensure();
 
@@ -439,7 +439,7 @@ PyObject* bitprim_native_chain_fetch_transaction(PyObject* self, PyObject* args)
 
 
 // Note: Removed on 3.3.0
-// void chain_fetch_output_handler(chain_t chain, void* ctx, int error, output_t output) {
+// void chain_fetch_output_handler(chain_t chain, void* ctx, error_code_t error, output_t output) {
 //     PyObject* py_callback = ctx;
 //     PyObject* py_output = to_py_obj(output);
 
@@ -481,7 +481,7 @@ PyObject* bitprim_native_chain_fetch_transaction(PyObject* self, PyObject* args)
 //     Py_RETURN_NONE;
 // }
 
-void chain_fetch_transaction_position_handler(chain_t chain, void* ctx, int error, uint64_t position, uint64_t height) {
+void chain_fetch_transaction_position_handler(chain_t chain, void* ctx, error_code_t error, uint64_t position, uint64_t height) {
     PyObject* py_callback = ctx;
     PyObject* arglist = Py_BuildValue("(iKK)", error, position, height);
     PyObject_CallObject(py_callback, arglist);
@@ -518,7 +518,7 @@ PyObject* bitprim_native_chain_fetch_transaction_position(PyObject* self, PyObje
     Py_RETURN_NONE;
 }
 
-void chain_organize_handler(chain_t chain, void* ctx, int error) {
+void chain_organize_handler(chain_t chain, void* ctx, error_code_t error) {
     PyObject* py_callback = ctx;
     PyObject* arglist = Py_BuildValue("(i)", error);
     PyObject_CallObject(py_callback, arglist);
@@ -570,7 +570,7 @@ PyObject* bitprim_native_chain_organize_transaction(PyObject* self, PyObject* ar
     Py_RETURN_NONE;
 }
 
-void chain_validate_tx_handler(chain_t chain, void* ctx, int error, char const* msg) {
+void chain_validate_tx_handler(chain_t chain, void* ctx, error_code_t error, char const* msg) {
     PyObject* py_callback = ctx;
     PyObject* arglist = Py_BuildValue("(is)", error, msg);
     PyObject_CallObject(py_callback, arglist);
@@ -611,7 +611,7 @@ PyObject* bitprim_native_chain_validate_tx(PyObject* self, PyObject* args){
 }
 
 
-void chain_fetch_compact_block_handler(chain_t chain, void* ctx, int error , compact_block_t compact, uint64_t /*size_t*/ h) {
+void chain_fetch_compact_block_handler(chain_t chain, void* ctx, error_code_t error , compact_block_t compact, uint64_t /*size_t*/ h) {
     PyObject* py_callback = ctx;
     PyObject* py_compact = to_py_obj(compact);
 
@@ -672,7 +672,7 @@ PyObject* bitprim_native_chain_fetch_compact_block_by_hash(PyObject* self, PyObj
 }
 
 
-void chain_fetch_spend_handler(chain_t chain, void* ctx, int error , point_t point) {
+void chain_fetch_spend_handler(chain_t chain, void* ctx, error_code_t error , point_t point) {
     PyObject* py_callback = ctx;
     PyObject* py_point = to_py_obj(point);
 
@@ -703,7 +703,7 @@ PyObject* bitprim_native_chain_fetch_spend(PyObject* self, PyObject* args){
     Py_RETURN_NONE;
 }
 
-int chain_subscribe_blockchain_handler(executor_t exec, chain_t chain, void* ctx, int error, uint64_t fork_height, block_list_t blocks_incoming, block_list_t blocks_replaced) {
+int chain_subscribe_blockchain_handler(executor_t exec, chain_t chain, void* ctx, error_code_t error, uint64_t fork_height, block_list_t blocks_incoming, block_list_t blocks_replaced) {
     
     //TODO(fernando): hardcoded error code, libbitcoin::error::service_stopped
     // if (exec->actual.stopped() || error == 1) {
@@ -759,7 +759,7 @@ PyObject* bitprim_native_chain_subscribe_blockchain(PyObject* self, PyObject* ar
     Py_RETURN_NONE;
 }
 
-int chain_subscribe_transaction_handler(executor_t exec, chain_t chain, void* ctx, int error, transaction_t tx) {
+int chain_subscribe_transaction_handler(executor_t exec, chain_t chain, void* ctx, error_code_t error, transaction_t tx) {
 
     //TODO(fernando): hardcoded error code, libbitcoin::error::service_stopped
     // if (exec->actual.stopped() || error == 1) {

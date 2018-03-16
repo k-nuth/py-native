@@ -5,6 +5,30 @@
 extern "C" {  
 #endif  
 
+// transaction_t chain_transaction_factory_from_data(uint32_t version, uint8_t* data, uint64_t n) {
+//     libbitcoin::data_chunk data_cpp(data, std::next(data, n));
+//     auto tx = libbitcoin::message::transaction::factory_from_data(version, data_cpp);
+//     return new libbitcoin::message::transaction(std::move(tx));
+// }
+
+PyObject* bitprim_native_chain_transaction_factory_from_data(PyObject* self, PyObject* args){
+    uint32_t py_version;
+    // uint8_t* py_seed;
+    char* py_data;
+    int py_n;
+
+#if PY_MAJOR_VERSION >= 3
+    if ( ! PyArg_ParseTuple(args, "Iy#", &py_version, &py_data, &py_n)) {
+#else
+    if ( ! PyArg_ParseTuple(args, "Is#", &py_version, &py_data, &py_n)) {
+#endif
+        return NULL;
+    }
+
+    transaction_t res = chain_transaction_factory_from_data(py_version, (uint8_t*)py_data, py_n);
+    return to_py_obj(res);
+}
+
 PyObject* bitprim_native_chain_transaction_version(PyObject* self, PyObject* args){
     PyObject* py_transaction;  
     if ( ! PyArg_ParseTuple(args, "O", &py_transaction)) {
