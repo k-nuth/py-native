@@ -54,7 +54,7 @@ cd bitprim-py
 echo "Travis branch: ${TRAVIS_BRANCH}"
 git checkout ${TRAVIS_BRANCH}
 
-replace_versions bitprim-node-cint $BITPRIM_BUILD_NUMBER
+replace_versions bitprim-py-native $BITPRIM_BUILD_NUMBER
 increment_py_version
 
 cat versions.txt

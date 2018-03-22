@@ -1,53 +1,47 @@
 [includedirs]
-/home/fernando/.conan/data/bitprim-node-cint/0.3/bitprim/testing/package/d93c1750aa13f9d0fdc08b0c926f656713566d31/include
-/home/fernando/.conan/data/bitprim-node/0.3/bitprim/testing/package/3b6b283a3a69f254c69f3dce34ce0146f11ca589/include
-/home/fernando/.conan/data/bitprim-blockchain/0.3/bitprim/testing/package/9c491e881a4cf8684ff0c6d666136e3b66a1e726/include
-/home/fernando/.conan/data/bitprim-network/0.3/bitprim/testing/package/53a10a9e8ff36ea266c80883a7a365bdbf0490d5/include
-/home/fernando/.conan/data/bitprim-consensus/0.3/bitprim/testing/package/93476efab998f965a41271d004c2860a738b797e/include
-/home/fernando/.conan/data/bitprim-database/0.3/bitprim/testing/package/53a10a9e8ff36ea266c80883a7a365bdbf0490d5/include
-/home/fernando/.conan/data/bitprim-core/0.3/bitprim/testing/package/d98a4660400e8e0fe8cae591c8fc956b5c0780e9/include
-/home/fernando/.conan/data/bitprim-conan-boost/1.64.0/bitprim/stable/package/f94cdfafbb7491f910f97d3ab2e28a65759f5519/include
-/home/fernando/.conan/data/secp256k1/0.3/bitprim/testing/package/ebd5a2eb1d94dcaf833326869168422b114382fb/include
-/home/fernando/.conan/data/bzip2/1.0.6/bitprim/stable/package/c8d79316b08a50606beaeca2cf60138a867a8b48/include
-/home/fernando/.conan/data/gmp/6.1.2/bitprim/stable/package/649fcfd0c2559d078c5e7b9367ed52fa2ebc81ac/include
-/home/fernando/.conan/data/zlib/1.2.8/bitprim/stable/package/bfe54884bf4e83adb9a2749ddbd047b02be54c43/include
+/root/.conan/data/bitprim-node-cint/0.8/bitprim/testing/package/5b4e5b33a8f8b8fdd0104fc3e69b726b2456f33b/include
+/root/.conan/data/bitprim-node/0.8/bitprim/testing/package/f236cc7e2ee556c2efc5cd0d3d1aa14476748de8/include
+/root/.conan/data/bitprim-blockchain/0.8/bitprim/testing/package/c941f81f854ac649aefa3cd2862359491fc9a364/include
+/root/.conan/data/bitprim-network/0.8/bitprim/testing/package/7d17de936c68d522ab32d88ede8028e88a081f10/include
+/root/.conan/data/bitprim-consensus/0.8/bitprim/testing/package/81115eae9feb0b73b00fcd995f02e86336948c65/include
+/root/.conan/data/bitprim-database/0.8/bitprim/testing/package/0148424a9488b34d4b192bde39180f43e849b950/include
+/root/.conan/data/bitprim-core/0.8/bitprim/testing/package/7104dcfdbc0847969a7625979c5d9dfeb27e215d/include
+/root/.conan/data/boost/1.66.0/bitprim/stable/package/a81fa98b0d5c91b5911ac15b73d8ecc843b057b5/include
+/root/.conan/data/secp256k1/0.3/bitprim/testing/package/2dcaf28d259b53b2668caf9e74dbe7bc8c6eca4a/include
+/root/.conan/data/gmp/6.1.2/bitprim/stable/package/794ecab533aa3003bd5f3e0e7700ecc329c16dad/include
+/root/.conan/data/icu/60.2/bitprim/stable/package/59a99095253c777916c2dcddf8cf32614bcbfb1b/include
 
 [libdirs]
-/home/fernando/.conan/data/bitprim-node-cint/0.3/bitprim/testing/package/d93c1750aa13f9d0fdc08b0c926f656713566d31/lib
-/home/fernando/.conan/data/bitprim-node/0.3/bitprim/testing/package/3b6b283a3a69f254c69f3dce34ce0146f11ca589/lib
-/home/fernando/.conan/data/bitprim-blockchain/0.3/bitprim/testing/package/9c491e881a4cf8684ff0c6d666136e3b66a1e726/lib
-/home/fernando/.conan/data/bitprim-network/0.3/bitprim/testing/package/53a10a9e8ff36ea266c80883a7a365bdbf0490d5/lib
-/home/fernando/.conan/data/bitprim-consensus/0.3/bitprim/testing/package/93476efab998f965a41271d004c2860a738b797e/lib
-/home/fernando/.conan/data/bitprim-database/0.3/bitprim/testing/package/53a10a9e8ff36ea266c80883a7a365bdbf0490d5/lib
-/home/fernando/.conan/data/bitprim-core/0.3/bitprim/testing/package/d98a4660400e8e0fe8cae591c8fc956b5c0780e9/lib
-/home/fernando/.conan/data/bitprim-conan-boost/1.64.0/bitprim/stable/package/f94cdfafbb7491f910f97d3ab2e28a65759f5519/lib
-/home/fernando/.conan/data/secp256k1/0.3/bitprim/testing/package/ebd5a2eb1d94dcaf833326869168422b114382fb/lib
-/home/fernando/.conan/data/bzip2/1.0.6/bitprim/stable/package/c8d79316b08a50606beaeca2cf60138a867a8b48/lib
-/home/fernando/.conan/data/gmp/6.1.2/bitprim/stable/package/649fcfd0c2559d078c5e7b9367ed52fa2ebc81ac/lib
-/home/fernando/.conan/data/zlib/1.2.8/bitprim/stable/package/bfe54884bf4e83adb9a2749ddbd047b02be54c43/lib
+/root/.conan/data/bitprim-node-cint/0.8/bitprim/testing/package/5b4e5b33a8f8b8fdd0104fc3e69b726b2456f33b/lib
+/root/.conan/data/bitprim-node/0.8/bitprim/testing/package/f236cc7e2ee556c2efc5cd0d3d1aa14476748de8/lib
+/root/.conan/data/bitprim-blockchain/0.8/bitprim/testing/package/c941f81f854ac649aefa3cd2862359491fc9a364/lib
+/root/.conan/data/bitprim-network/0.8/bitprim/testing/package/7d17de936c68d522ab32d88ede8028e88a081f10/lib
+/root/.conan/data/bitprim-consensus/0.8/bitprim/testing/package/81115eae9feb0b73b00fcd995f02e86336948c65/lib
+/root/.conan/data/bitprim-database/0.8/bitprim/testing/package/0148424a9488b34d4b192bde39180f43e849b950/lib
+/root/.conan/data/bitprim-core/0.8/bitprim/testing/package/7104dcfdbc0847969a7625979c5d9dfeb27e215d/lib
+/root/.conan/data/boost/1.66.0/bitprim/stable/package/a81fa98b0d5c91b5911ac15b73d8ecc843b057b5/lib
+/root/.conan/data/secp256k1/0.3/bitprim/testing/package/2dcaf28d259b53b2668caf9e74dbe7bc8c6eca4a/lib
+/root/.conan/data/gmp/6.1.2/bitprim/stable/package/794ecab533aa3003bd5f3e0e7700ecc329c16dad/lib
+/root/.conan/data/icu/60.2/bitprim/stable/package/59a99095253c777916c2dcddf8cf32614bcbfb1b/lib
 
 [bindirs]
-/home/fernando/.conan/data/bitprim-node/0.3/bitprim/testing/package/3b6b283a3a69f254c69f3dce34ce0146f11ca589/bin
-/home/fernando/.conan/data/bzip2/1.0.6/bitprim/stable/package/c8d79316b08a50606beaeca2cf60138a867a8b48/bin
-/home/fernando/.conan/data/m4/1.4.18/bitprim/stable/package/bfe54884bf4e83adb9a2749ddbd047b02be54c43/bin
+/root/.conan/data/icu/60.2/bitprim/stable/package/59a99095253c777916c2dcddf8cf32614bcbfb1b/bin
 
 [resdirs]
 
 
 [builddirs]
-/home/fernando/.conan/data/bitprim-node-cint/0.3/bitprim/testing/package/d93c1750aa13f9d0fdc08b0c926f656713566d31/
-/home/fernando/.conan/data/bitprim-node/0.3/bitprim/testing/package/3b6b283a3a69f254c69f3dce34ce0146f11ca589/
-/home/fernando/.conan/data/bitprim-blockchain/0.3/bitprim/testing/package/9c491e881a4cf8684ff0c6d666136e3b66a1e726/
-/home/fernando/.conan/data/bitprim-network/0.3/bitprim/testing/package/53a10a9e8ff36ea266c80883a7a365bdbf0490d5/
-/home/fernando/.conan/data/bitprim-consensus/0.3/bitprim/testing/package/93476efab998f965a41271d004c2860a738b797e/
-/home/fernando/.conan/data/bitprim-database/0.3/bitprim/testing/package/53a10a9e8ff36ea266c80883a7a365bdbf0490d5/
-/home/fernando/.conan/data/bitprim-core/0.3/bitprim/testing/package/d98a4660400e8e0fe8cae591c8fc956b5c0780e9/
-/home/fernando/.conan/data/bitprim-conan-boost/1.64.0/bitprim/stable/package/f94cdfafbb7491f910f97d3ab2e28a65759f5519/
-/home/fernando/.conan/data/secp256k1/0.3/bitprim/testing/package/ebd5a2eb1d94dcaf833326869168422b114382fb/
-/home/fernando/.conan/data/bzip2/1.0.6/bitprim/stable/package/c8d79316b08a50606beaeca2cf60138a867a8b48/
-/home/fernando/.conan/data/gmp/6.1.2/bitprim/stable/package/649fcfd0c2559d078c5e7b9367ed52fa2ebc81ac/
-/home/fernando/.conan/data/zlib/1.2.8/bitprim/stable/package/bfe54884bf4e83adb9a2749ddbd047b02be54c43/
-/home/fernando/.conan/data/m4/1.4.18/bitprim/stable/package/bfe54884bf4e83adb9a2749ddbd047b02be54c43/
+/root/.conan/data/bitprim-node-cint/0.8/bitprim/testing/package/5b4e5b33a8f8b8fdd0104fc3e69b726b2456f33b/
+/root/.conan/data/bitprim-node/0.8/bitprim/testing/package/f236cc7e2ee556c2efc5cd0d3d1aa14476748de8/
+/root/.conan/data/bitprim-blockchain/0.8/bitprim/testing/package/c941f81f854ac649aefa3cd2862359491fc9a364/
+/root/.conan/data/bitprim-network/0.8/bitprim/testing/package/7d17de936c68d522ab32d88ede8028e88a081f10/
+/root/.conan/data/bitprim-consensus/0.8/bitprim/testing/package/81115eae9feb0b73b00fcd995f02e86336948c65/
+/root/.conan/data/bitprim-database/0.8/bitprim/testing/package/0148424a9488b34d4b192bde39180f43e849b950/
+/root/.conan/data/bitprim-core/0.8/bitprim/testing/package/7104dcfdbc0847969a7625979c5d9dfeb27e215d/
+/root/.conan/data/boost/1.66.0/bitprim/stable/package/a81fa98b0d5c91b5911ac15b73d8ecc843b057b5/
+/root/.conan/data/secp256k1/0.3/bitprim/testing/package/2dcaf28d259b53b2668caf9e74dbe7bc8c6eca4a/
+/root/.conan/data/gmp/6.1.2/bitprim/stable/package/794ecab533aa3003bd5f3e0e7700ecc329c16dad/
+/root/.conan/data/icu/60.2/bitprim/stable/package/59a99095253c777916c2dcddf8cf32614bcbfb1b/
 
 [libs]
 bitprim-node-cint
@@ -58,34 +52,39 @@ bitprim-consensus
 bitprim-database
 bitprim-core
 pthread
-boost_atomic
-boost_chrono
-boost_date_time
 boost_exception
-boost_filesystem
 boost_iostreams
 boost_locale
 boost_log
-boost_log_setup
 boost_program_options
 boost_random
 boost_regex
+boost_timer
+boost_thread
+boost_chrono
+boost_date_time
+boost_atomic
+boost_filesystem
 boost_system
 boost_unit_test_framework
-boost_prg_exec_monitor
-boost_test_exec_monitor
-boost_thread
-boost_timer
+boost_log_setup
 secp256k1
-bz2
 gmp
-z
+icuio
+icutu
+icui18n
+icutest
+icuuc
+icudata
+dl
 
 [defines]
+U_STATIC_IMPLEMENTATION
 BOOST_USE_STATIC_LIBS
+BC_STATIC
 
 [cppflags]
-
+-std=c++11
 
 [cflags]
 
@@ -96,12 +95,15 @@ BOOST_USE_STATIC_LIBS
 [exelinkflags]
 
 
+[sysroot]
+
+
 
 [includedirs_bitprim-node-cint]
-/home/fernando/.conan/data/bitprim-node-cint/0.3/bitprim/testing/package/d93c1750aa13f9d0fdc08b0c926f656713566d31/include
+/root/.conan/data/bitprim-node-cint/0.8/bitprim/testing/package/5b4e5b33a8f8b8fdd0104fc3e69b726b2456f33b/include
 
 [libdirs_bitprim-node-cint]
-/home/fernando/.conan/data/bitprim-node-cint/0.3/bitprim/testing/package/d93c1750aa13f9d0fdc08b0c926f656713566d31/lib
+/root/.conan/data/bitprim-node-cint/0.8/bitprim/testing/package/5b4e5b33a8f8b8fdd0104fc3e69b726b2456f33b/lib
 
 [bindirs_bitprim-node-cint]
 
@@ -110,7 +112,7 @@ BOOST_USE_STATIC_LIBS
 
 
 [builddirs_bitprim-node-cint]
-/home/fernando/.conan/data/bitprim-node-cint/0.3/bitprim/testing/package/d93c1750aa13f9d0fdc08b0c926f656713566d31/
+/root/.conan/data/bitprim-node-cint/0.8/bitprim/testing/package/5b4e5b33a8f8b8fdd0104fc3e69b726b2456f33b/
 
 [libs_bitprim-node-cint]
 bitprim-node-cint
@@ -130,24 +132,27 @@ bitprim-node-cint
 [exelinkflags_bitprim-node-cint]
 
 
+[sysroot_bitprim-node-cint]
+
+
 [rootpath_bitprim-node-cint]
-/home/fernando/.conan/data/bitprim-node-cint/0.3/bitprim/testing/package/d93c1750aa13f9d0fdc08b0c926f656713566d31
+/root/.conan/data/bitprim-node-cint/0.8/bitprim/testing/package/5b4e5b33a8f8b8fdd0104fc3e69b726b2456f33b
 
 
 [includedirs_bitprim-node]
-/home/fernando/.conan/data/bitprim-node/0.3/bitprim/testing/package/3b6b283a3a69f254c69f3dce34ce0146f11ca589/include
+/root/.conan/data/bitprim-node/0.8/bitprim/testing/package/f236cc7e2ee556c2efc5cd0d3d1aa14476748de8/include
 
 [libdirs_bitprim-node]
-/home/fernando/.conan/data/bitprim-node/0.3/bitprim/testing/package/3b6b283a3a69f254c69f3dce34ce0146f11ca589/lib
+/root/.conan/data/bitprim-node/0.8/bitprim/testing/package/f236cc7e2ee556c2efc5cd0d3d1aa14476748de8/lib
 
 [bindirs_bitprim-node]
-/home/fernando/.conan/data/bitprim-node/0.3/bitprim/testing/package/3b6b283a3a69f254c69f3dce34ce0146f11ca589/bin
+
 
 [resdirs_bitprim-node]
 
 
 [builddirs_bitprim-node]
-/home/fernando/.conan/data/bitprim-node/0.3/bitprim/testing/package/3b6b283a3a69f254c69f3dce34ce0146f11ca589/
+/root/.conan/data/bitprim-node/0.8/bitprim/testing/package/f236cc7e2ee556c2efc5cd0d3d1aa14476748de8/
 
 [libs_bitprim-node]
 bitprim-node
@@ -167,15 +172,18 @@ bitprim-node
 [exelinkflags_bitprim-node]
 
 
+[sysroot_bitprim-node]
+
+
 [rootpath_bitprim-node]
-/home/fernando/.conan/data/bitprim-node/0.3/bitprim/testing/package/3b6b283a3a69f254c69f3dce34ce0146f11ca589
+/root/.conan/data/bitprim-node/0.8/bitprim/testing/package/f236cc7e2ee556c2efc5cd0d3d1aa14476748de8
 
 
 [includedirs_bitprim-blockchain]
-/home/fernando/.conan/data/bitprim-blockchain/0.3/bitprim/testing/package/9c491e881a4cf8684ff0c6d666136e3b66a1e726/include
+/root/.conan/data/bitprim-blockchain/0.8/bitprim/testing/package/c941f81f854ac649aefa3cd2862359491fc9a364/include
 
 [libdirs_bitprim-blockchain]
-/home/fernando/.conan/data/bitprim-blockchain/0.3/bitprim/testing/package/9c491e881a4cf8684ff0c6d666136e3b66a1e726/lib
+/root/.conan/data/bitprim-blockchain/0.8/bitprim/testing/package/c941f81f854ac649aefa3cd2862359491fc9a364/lib
 
 [bindirs_bitprim-blockchain]
 
@@ -184,7 +192,7 @@ bitprim-node
 
 
 [builddirs_bitprim-blockchain]
-/home/fernando/.conan/data/bitprim-blockchain/0.3/bitprim/testing/package/9c491e881a4cf8684ff0c6d666136e3b66a1e726/
+/root/.conan/data/bitprim-blockchain/0.8/bitprim/testing/package/c941f81f854ac649aefa3cd2862359491fc9a364/
 
 [libs_bitprim-blockchain]
 bitprim-blockchain
@@ -204,15 +212,18 @@ bitprim-blockchain
 [exelinkflags_bitprim-blockchain]
 
 
+[sysroot_bitprim-blockchain]
+
+
 [rootpath_bitprim-blockchain]
-/home/fernando/.conan/data/bitprim-blockchain/0.3/bitprim/testing/package/9c491e881a4cf8684ff0c6d666136e3b66a1e726
+/root/.conan/data/bitprim-blockchain/0.8/bitprim/testing/package/c941f81f854ac649aefa3cd2862359491fc9a364
 
 
 [includedirs_bitprim-network]
-/home/fernando/.conan/data/bitprim-network/0.3/bitprim/testing/package/53a10a9e8ff36ea266c80883a7a365bdbf0490d5/include
+/root/.conan/data/bitprim-network/0.8/bitprim/testing/package/7d17de936c68d522ab32d88ede8028e88a081f10/include
 
 [libdirs_bitprim-network]
-/home/fernando/.conan/data/bitprim-network/0.3/bitprim/testing/package/53a10a9e8ff36ea266c80883a7a365bdbf0490d5/lib
+/root/.conan/data/bitprim-network/0.8/bitprim/testing/package/7d17de936c68d522ab32d88ede8028e88a081f10/lib
 
 [bindirs_bitprim-network]
 
@@ -221,7 +232,7 @@ bitprim-blockchain
 
 
 [builddirs_bitprim-network]
-/home/fernando/.conan/data/bitprim-network/0.3/bitprim/testing/package/53a10a9e8ff36ea266c80883a7a365bdbf0490d5/
+/root/.conan/data/bitprim-network/0.8/bitprim/testing/package/7d17de936c68d522ab32d88ede8028e88a081f10/
 
 [libs_bitprim-network]
 bitprim-network
@@ -241,15 +252,18 @@ bitprim-network
 [exelinkflags_bitprim-network]
 
 
+[sysroot_bitprim-network]
+
+
 [rootpath_bitprim-network]
-/home/fernando/.conan/data/bitprim-network/0.3/bitprim/testing/package/53a10a9e8ff36ea266c80883a7a365bdbf0490d5
+/root/.conan/data/bitprim-network/0.8/bitprim/testing/package/7d17de936c68d522ab32d88ede8028e88a081f10
 
 
 [includedirs_bitprim-consensus]
-/home/fernando/.conan/data/bitprim-consensus/0.3/bitprim/testing/package/93476efab998f965a41271d004c2860a738b797e/include
+/root/.conan/data/bitprim-consensus/0.8/bitprim/testing/package/81115eae9feb0b73b00fcd995f02e86336948c65/include
 
 [libdirs_bitprim-consensus]
-/home/fernando/.conan/data/bitprim-consensus/0.3/bitprim/testing/package/93476efab998f965a41271d004c2860a738b797e/lib
+/root/.conan/data/bitprim-consensus/0.8/bitprim/testing/package/81115eae9feb0b73b00fcd995f02e86336948c65/lib
 
 [bindirs_bitprim-consensus]
 
@@ -258,7 +272,7 @@ bitprim-network
 
 
 [builddirs_bitprim-consensus]
-/home/fernando/.conan/data/bitprim-consensus/0.3/bitprim/testing/package/93476efab998f965a41271d004c2860a738b797e/
+/root/.conan/data/bitprim-consensus/0.8/bitprim/testing/package/81115eae9feb0b73b00fcd995f02e86336948c65/
 
 [libs_bitprim-consensus]
 bitprim-consensus
@@ -278,15 +292,18 @@ bitprim-consensus
 [exelinkflags_bitprim-consensus]
 
 
+[sysroot_bitprim-consensus]
+
+
 [rootpath_bitprim-consensus]
-/home/fernando/.conan/data/bitprim-consensus/0.3/bitprim/testing/package/93476efab998f965a41271d004c2860a738b797e
+/root/.conan/data/bitprim-consensus/0.8/bitprim/testing/package/81115eae9feb0b73b00fcd995f02e86336948c65
 
 
 [includedirs_bitprim-database]
-/home/fernando/.conan/data/bitprim-database/0.3/bitprim/testing/package/53a10a9e8ff36ea266c80883a7a365bdbf0490d5/include
+/root/.conan/data/bitprim-database/0.8/bitprim/testing/package/0148424a9488b34d4b192bde39180f43e849b950/include
 
 [libdirs_bitprim-database]
-/home/fernando/.conan/data/bitprim-database/0.3/bitprim/testing/package/53a10a9e8ff36ea266c80883a7a365bdbf0490d5/lib
+/root/.conan/data/bitprim-database/0.8/bitprim/testing/package/0148424a9488b34d4b192bde39180f43e849b950/lib
 
 [bindirs_bitprim-database]
 
@@ -295,7 +312,7 @@ bitprim-consensus
 
 
 [builddirs_bitprim-database]
-/home/fernando/.conan/data/bitprim-database/0.3/bitprim/testing/package/53a10a9e8ff36ea266c80883a7a365bdbf0490d5/
+/root/.conan/data/bitprim-database/0.8/bitprim/testing/package/0148424a9488b34d4b192bde39180f43e849b950/
 
 [libs_bitprim-database]
 bitprim-database
@@ -315,15 +332,18 @@ bitprim-database
 [exelinkflags_bitprim-database]
 
 
+[sysroot_bitprim-database]
+
+
 [rootpath_bitprim-database]
-/home/fernando/.conan/data/bitprim-database/0.3/bitprim/testing/package/53a10a9e8ff36ea266c80883a7a365bdbf0490d5
+/root/.conan/data/bitprim-database/0.8/bitprim/testing/package/0148424a9488b34d4b192bde39180f43e849b950
 
 
 [includedirs_bitprim-core]
-/home/fernando/.conan/data/bitprim-core/0.3/bitprim/testing/package/d98a4660400e8e0fe8cae591c8fc956b5c0780e9/include
+/root/.conan/data/bitprim-core/0.8/bitprim/testing/package/7104dcfdbc0847969a7625979c5d9dfeb27e215d/include
 
 [libdirs_bitprim-core]
-/home/fernando/.conan/data/bitprim-core/0.3/bitprim/testing/package/d98a4660400e8e0fe8cae591c8fc956b5c0780e9/lib
+/root/.conan/data/bitprim-core/0.8/bitprim/testing/package/7104dcfdbc0847969a7625979c5d9dfeb27e215d/lib
 
 [bindirs_bitprim-core]
 
@@ -332,14 +352,14 @@ bitprim-database
 
 
 [builddirs_bitprim-core]
-/home/fernando/.conan/data/bitprim-core/0.3/bitprim/testing/package/d98a4660400e8e0fe8cae591c8fc956b5c0780e9/
+/root/.conan/data/bitprim-core/0.8/bitprim/testing/package/7104dcfdbc0847969a7625979c5d9dfeb27e215d/
 
 [libs_bitprim-core]
 bitprim-core
 pthread
 
 [defines_bitprim-core]
-
+BC_STATIC
 
 [cppflags_bitprim-core]
 
@@ -353,69 +373,73 @@ pthread
 [exelinkflags_bitprim-core]
 
 
+[sysroot_bitprim-core]
+
+
 [rootpath_bitprim-core]
-/home/fernando/.conan/data/bitprim-core/0.3/bitprim/testing/package/d98a4660400e8e0fe8cae591c8fc956b5c0780e9
+/root/.conan/data/bitprim-core/0.8/bitprim/testing/package/7104dcfdbc0847969a7625979c5d9dfeb27e215d
 
 
-[includedirs_bitprim-conan-boost]
-/home/fernando/.conan/data/bitprim-conan-boost/1.64.0/bitprim/stable/package/f94cdfafbb7491f910f97d3ab2e28a65759f5519/include
+[includedirs_boost]
+/root/.conan/data/boost/1.66.0/bitprim/stable/package/a81fa98b0d5c91b5911ac15b73d8ecc843b057b5/include
 
-[libdirs_bitprim-conan-boost]
-/home/fernando/.conan/data/bitprim-conan-boost/1.64.0/bitprim/stable/package/f94cdfafbb7491f910f97d3ab2e28a65759f5519/lib
+[libdirs_boost]
+/root/.conan/data/boost/1.66.0/bitprim/stable/package/a81fa98b0d5c91b5911ac15b73d8ecc843b057b5/lib
 
-[bindirs_bitprim-conan-boost]
-
-
-[resdirs_bitprim-conan-boost]
+[bindirs_boost]
 
 
-[builddirs_bitprim-conan-boost]
-/home/fernando/.conan/data/bitprim-conan-boost/1.64.0/bitprim/stable/package/f94cdfafbb7491f910f97d3ab2e28a65759f5519/
+[resdirs_boost]
 
-[libs_bitprim-conan-boost]
-boost_atomic
-boost_chrono
-boost_date_time
+
+[builddirs_boost]
+/root/.conan/data/boost/1.66.0/bitprim/stable/package/a81fa98b0d5c91b5911ac15b73d8ecc843b057b5/
+
+[libs_boost]
 boost_exception
-boost_filesystem
 boost_iostreams
 boost_locale
 boost_log
-boost_log_setup
 boost_program_options
 boost_random
 boost_regex
+boost_timer
+boost_thread
+boost_chrono
+boost_date_time
+boost_atomic
+boost_filesystem
 boost_system
 boost_unit_test_framework
-boost_prg_exec_monitor
-boost_test_exec_monitor
-boost_thread
-boost_timer
+boost_log_setup
 
-[defines_bitprim-conan-boost]
+[defines_boost]
 BOOST_USE_STATIC_LIBS
 
-[cppflags_bitprim-conan-boost]
+[cppflags_boost]
 
 
-[cflags_bitprim-conan-boost]
+[cflags_boost]
 
 
-[sharedlinkflags_bitprim-conan-boost]
+[sharedlinkflags_boost]
 
 
-[exelinkflags_bitprim-conan-boost]
+[exelinkflags_boost]
 
 
-[rootpath_bitprim-conan-boost]
-/home/fernando/.conan/data/bitprim-conan-boost/1.64.0/bitprim/stable/package/f94cdfafbb7491f910f97d3ab2e28a65759f5519
+[sysroot_boost]
+
+
+[rootpath_boost]
+/root/.conan/data/boost/1.66.0/bitprim/stable/package/a81fa98b0d5c91b5911ac15b73d8ecc843b057b5
 
 
 [includedirs_secp256k1]
-/home/fernando/.conan/data/secp256k1/0.3/bitprim/testing/package/ebd5a2eb1d94dcaf833326869168422b114382fb/include
+/root/.conan/data/secp256k1/0.3/bitprim/testing/package/2dcaf28d259b53b2668caf9e74dbe7bc8c6eca4a/include
 
 [libdirs_secp256k1]
-/home/fernando/.conan/data/secp256k1/0.3/bitprim/testing/package/ebd5a2eb1d94dcaf833326869168422b114382fb/lib
+/root/.conan/data/secp256k1/0.3/bitprim/testing/package/2dcaf28d259b53b2668caf9e74dbe7bc8c6eca4a/lib
 
 [bindirs_secp256k1]
 
@@ -424,7 +448,7 @@ BOOST_USE_STATIC_LIBS
 
 
 [builddirs_secp256k1]
-/home/fernando/.conan/data/secp256k1/0.3/bitprim/testing/package/ebd5a2eb1d94dcaf833326869168422b114382fb/
+/root/.conan/data/secp256k1/0.3/bitprim/testing/package/2dcaf28d259b53b2668caf9e74dbe7bc8c6eca4a/
 
 [libs_secp256k1]
 secp256k1
@@ -444,52 +468,18 @@ secp256k1
 [exelinkflags_secp256k1]
 
 
+[sysroot_secp256k1]
+
+
 [rootpath_secp256k1]
-/home/fernando/.conan/data/secp256k1/0.3/bitprim/testing/package/ebd5a2eb1d94dcaf833326869168422b114382fb
-
-
-[includedirs_bzip2]
-/home/fernando/.conan/data/bzip2/1.0.6/bitprim/stable/package/c8d79316b08a50606beaeca2cf60138a867a8b48/include
-
-[libdirs_bzip2]
-/home/fernando/.conan/data/bzip2/1.0.6/bitprim/stable/package/c8d79316b08a50606beaeca2cf60138a867a8b48/lib
-
-[bindirs_bzip2]
-/home/fernando/.conan/data/bzip2/1.0.6/bitprim/stable/package/c8d79316b08a50606beaeca2cf60138a867a8b48/bin
-
-[resdirs_bzip2]
-
-
-[builddirs_bzip2]
-/home/fernando/.conan/data/bzip2/1.0.6/bitprim/stable/package/c8d79316b08a50606beaeca2cf60138a867a8b48/
-
-[libs_bzip2]
-bz2
-
-[defines_bzip2]
-
-
-[cppflags_bzip2]
-
-
-[cflags_bzip2]
-
-
-[sharedlinkflags_bzip2]
-
-
-[exelinkflags_bzip2]
-
-
-[rootpath_bzip2]
-/home/fernando/.conan/data/bzip2/1.0.6/bitprim/stable/package/c8d79316b08a50606beaeca2cf60138a867a8b48
+/root/.conan/data/secp256k1/0.3/bitprim/testing/package/2dcaf28d259b53b2668caf9e74dbe7bc8c6eca4a
 
 
 [includedirs_gmp]
-/home/fernando/.conan/data/gmp/6.1.2/bitprim/stable/package/649fcfd0c2559d078c5e7b9367ed52fa2ebc81ac/include
+/root/.conan/data/gmp/6.1.2/bitprim/stable/package/794ecab533aa3003bd5f3e0e7700ecc329c16dad/include
 
 [libdirs_gmp]
-/home/fernando/.conan/data/gmp/6.1.2/bitprim/stable/package/649fcfd0c2559d078c5e7b9367ed52fa2ebc81ac/lib
+/root/.conan/data/gmp/6.1.2/bitprim/stable/package/794ecab533aa3003bd5f3e0e7700ecc329c16dad/lib
 
 [bindirs_gmp]
 
@@ -498,7 +488,7 @@ bz2
 
 
 [builddirs_gmp]
-/home/fernando/.conan/data/gmp/6.1.2/bitprim/stable/package/649fcfd0c2559d078c5e7b9367ed52fa2ebc81ac/
+/root/.conan/data/gmp/6.1.2/bitprim/stable/package/794ecab533aa3003bd5f3e0e7700ecc329c16dad/
 
 [libs_gmp]
 gmp
@@ -518,85 +508,59 @@ gmp
 [exelinkflags_gmp]
 
 
+[sysroot_gmp]
+
+
 [rootpath_gmp]
-/home/fernando/.conan/data/gmp/6.1.2/bitprim/stable/package/649fcfd0c2559d078c5e7b9367ed52fa2ebc81ac
+/root/.conan/data/gmp/6.1.2/bitprim/stable/package/794ecab533aa3003bd5f3e0e7700ecc329c16dad
 
 
-[includedirs_zlib]
-/home/fernando/.conan/data/zlib/1.2.8/bitprim/stable/package/bfe54884bf4e83adb9a2749ddbd047b02be54c43/include
+[includedirs_icu]
+/root/.conan/data/icu/60.2/bitprim/stable/package/59a99095253c777916c2dcddf8cf32614bcbfb1b/include
 
-[libdirs_zlib]
-/home/fernando/.conan/data/zlib/1.2.8/bitprim/stable/package/bfe54884bf4e83adb9a2749ddbd047b02be54c43/lib
+[libdirs_icu]
+/root/.conan/data/icu/60.2/bitprim/stable/package/59a99095253c777916c2dcddf8cf32614bcbfb1b/lib
 
-[bindirs_zlib]
+[bindirs_icu]
+/root/.conan/data/icu/60.2/bitprim/stable/package/59a99095253c777916c2dcddf8cf32614bcbfb1b/bin
 
-
-[resdirs_zlib]
-
-
-[builddirs_zlib]
-/home/fernando/.conan/data/zlib/1.2.8/bitprim/stable/package/bfe54884bf4e83adb9a2749ddbd047b02be54c43/
-
-[libs_zlib]
-z
-
-[defines_zlib]
+[resdirs_icu]
 
 
-[cppflags_zlib]
+[builddirs_icu]
+/root/.conan/data/icu/60.2/bitprim/stable/package/59a99095253c777916c2dcddf8cf32614bcbfb1b/
+
+[libs_icu]
+icuio
+icutu
+icui18n
+icutest
+icuuc
+icudata
+dl
+
+[defines_icu]
+U_STATIC_IMPLEMENTATION
+
+[cppflags_icu]
+-std=c++11
+
+[cflags_icu]
 
 
-[cflags_zlib]
+[sharedlinkflags_icu]
 
 
-[sharedlinkflags_zlib]
+[exelinkflags_icu]
 
 
-[exelinkflags_zlib]
+[sysroot_icu]
 
 
-[rootpath_zlib]
-/home/fernando/.conan/data/zlib/1.2.8/bitprim/stable/package/bfe54884bf4e83adb9a2749ddbd047b02be54c43
+[rootpath_icu]
+/root/.conan/data/icu/60.2/bitprim/stable/package/59a99095253c777916c2dcddf8cf32614bcbfb1b
 
 
-[includedirs_m4]
-
-
-[libdirs_m4]
-
-
-[bindirs_m4]
-/home/fernando/.conan/data/m4/1.4.18/bitprim/stable/package/bfe54884bf4e83adb9a2749ddbd047b02be54c43/bin
-
-[resdirs_m4]
-
-
-[builddirs_m4]
-/home/fernando/.conan/data/m4/1.4.18/bitprim/stable/package/bfe54884bf4e83adb9a2749ddbd047b02be54c43/
-
-[libs_m4]
-
-
-[defines_m4]
-
-
-[cppflags_m4]
-
-
-[cflags_m4]
-
-
-[sharedlinkflags_m4]
-
-
-[exelinkflags_m4]
-
-
-[rootpath_m4]
-/home/fernando/.conan/data/m4/1.4.18/bitprim/stable/package/bfe54884bf4e83adb9a2749ddbd047b02be54c43
-
-
-[USER_bitprim-conan-boost]
 [USER_bitprim-node]
 [USER_gmp]
 [USER_bitprim-consensus]
@@ -604,11 +568,10 @@ z
 [USER_bitprim-core]
 [USER_bitprim-blockchain]
 [USER_bitprim-database]
-[USER_zlib]
 [USER_secp256k1]
-[USER_m4]
 [USER_bitprim-network]
-[USER_bzip2]
+[USER_boost]
+[USER_icu]
 [ENV_bitprim-node-cint]
 [ENV_bitprim-node]
 [ENV_bitprim-blockchain]
@@ -616,12 +579,12 @@ z
 [ENV_bitprim-consensus]
 [ENV_bitprim-database]
 [ENV_bitprim-core]
-[ENV_bitprim-conan-boost]
+[ENV_boost]
 [ENV_secp256k1]
-CPATH=/home/fernando/.conan/data/secp256k1/0.3/bitprim/testing/package/ebd5a2eb1d94dcaf833326869168422b114382fb/include
-CPLUS_INCLUDE_PATH=/home/fernando/.conan/data/secp256k1/0.3/bitprim/testing/package/ebd5a2eb1d94dcaf833326869168422b114382fb/include
-C_INCLUDE_PATH=/home/fernando/.conan/data/secp256k1/0.3/bitprim/testing/package/ebd5a2eb1d94dcaf833326869168422b114382fb/include
-[ENV_bzip2]
+CPATH=/root/.conan/data/secp256k1/0.3/bitprim/testing/package/2dcaf28d259b53b2668caf9e74dbe7bc8c6eca4a/include
+CPLUS_INCLUDE_PATH=/root/.conan/data/secp256k1/0.3/bitprim/testing/package/2dcaf28d259b53b2668caf9e74dbe7bc8c6eca4a/include
+C_INCLUDE_PATH=/root/.conan/data/secp256k1/0.3/bitprim/testing/package/2dcaf28d259b53b2668caf9e74dbe7bc8c6eca4a/include
 [ENV_gmp]
-[ENV_zlib]
-[ENV_m4]
+[ENV_icu]
+ICU_DATA=["/root/.conan/data/icu/60.2/bitprim/stable/package/59a99095253c777916c2dcddf8cf32614bcbfb1b/share/icu/60.2/icudt60l.dat"]
+PATH=["/root/.conan/data/icu/60.2/bitprim/stable/package/59a99095253c777916c2dcddf8cf32614bcbfb1b/bin"]

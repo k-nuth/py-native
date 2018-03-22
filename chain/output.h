@@ -20,6 +20,7 @@ PyObject* bitprim_native_chain_output_script(PyObject* self, PyObject* args);
 //PyObject* bitprim_native_chain_output_get_hash(PyObject* self, PyObject* args);
 //PyObject* bitprim_native_chain_output_get_index(PyObject* self, PyObject* args);
 
+PyObject* bitprim_native_chain_output_to_data(PyObject* self, PyObject* args);
 
 #ifdef __cplusplus
 } //extern "C"

@@ -47,6 +47,8 @@
 
 #include <bitprim/nodecint.h>
 
+#include <iostream>
+
 // ---------------------------------------------------------
 
 #ifdef __cplusplus
@@ -236,12 +238,16 @@ PyObject* bitprim_native_wallet_mnemonics_to_seed(PyObject* self, PyObject* args
     
     long_hash_t res = wallet_mnemonics_to_seed(wl);
 
+#if PY_MAJOR_VERSION >= 3
     return Py_BuildValue("y#", res.hash, 64);    //TODO: warning, hardcoded hash size!
+#else
+    return Py_BuildValue("s#", res.hash, 64);    //TODO: warning, hardcoded hash size!
+#endif
 }
 
 PyObject* bitprim_native_wallet_ec_new(PyObject* self, PyObject* args) {
     uint8_t* py_seed;
-    size_t py_n;
+    int py_n;
 
 #if PY_MAJOR_VERSION >= 3
     if ( ! PyArg_ParseTuple(args, "y#", &py_seed, &py_n)) {
@@ -252,22 +258,32 @@ PyObject* bitprim_native_wallet_ec_new(PyObject* self, PyObject* args) {
     }
     
     ec_secret_t res = wallet_ec_new(py_seed, py_n);
-    return to_py_obj(res);
+    // return to_py_obj(res);
 
-    // return Py_BuildValue("y#", res.hash, 64);    //TODO: warning, hardcoded hash size!
+#if PY_MAJOR_VERSION >= 3
+    return Py_BuildValue("y#", res.data, 32);    //TODO: warning, hardcoded hash size!
+#else
+    return Py_BuildValue("s#", res.data, 32);    //TODO: warning, hardcoded hash size!
+#endif
+
 }
 
-
 PyObject* bitprim_native_wallet_ec_to_public(PyObject* self, PyObject* args) {
-
     PyObject* py_secret;
+    int py_size;
     int py_uncompressed;
-    
-    if ( ! PyArg_ParseTuple(args, "Oi", &py_secret, &py_uncompressed)) {
+
+#if PY_MAJOR_VERSION >= 3
+    if ( ! PyArg_ParseTuple(args, "y#i", &py_secret, &py_size, &py_uncompressed)) {
+#else
+    if ( ! PyArg_ParseTuple(args, "s#i", &py_secret, &py_size, &py_uncompressed)) {
+#endif
         return NULL;
     }
 
-    ec_secret_t secret = (ec_secret_t)get_ptr(py_secret);
+    ec_secret_t secret;
+    memcpy(secret.data, py_secret, 32);
+
     ec_public_t res = wallet_ec_to_public(secret, py_uncompressed);
     return to_py_obj(res);
 }
@@ -284,6 +300,50 @@ PyObject* bitprim_native_wallet_ec_to_address(PyObject* self, PyObject* args) {
     payment_address_t res = wallet_ec_to_address(point, py_version);
     return to_py_obj(res);
 }
+
+
+// BITPRIM_EXPORT
+// hd_private_t wallet_hd_new(uint8_t* seed, uint64_t n, uint32_t version /* = 76066276*/);
+
+PyObject* bitprim_native_wallet_hd_new(PyObject* self, PyObject* args) {
+    // uint8_t* py_seed;
+    char* py_seed;
+    int py_n;
+    uint32_t py_version;
+
+#if PY_MAJOR_VERSION >= 3
+    if ( ! PyArg_ParseTuple(args, "y#I", &py_seed, &py_n, &py_version)) {
+#else
+    if ( ! PyArg_ParseTuple(args, "s#I", &py_seed, &py_n, &py_version)) {
+#endif
+        return NULL;
+    }
+    
+    hd_private_t res = wallet_hd_new((uint8_t*)py_seed, py_n, py_version);
+    return to_py_obj(res);
+}
+
+// BITPRIM_EXPORT
+// ec_secret_t wallet_hd_private_to_ec(hd_private_t key);
+
+PyObject* bitprim_native_wallet_hd_private_to_ec(PyObject* self, PyObject* args) {
+    PyObject* py_key;
+
+    if ( ! PyArg_ParseTuple(args, "O", &py_key)) {
+        return NULL;
+    }
+
+    hd_private_t key = (hd_private_t)get_ptr(py_key);
+
+    ec_secret_t res = wallet_hd_private_to_ec(key);
+
+#if PY_MAJOR_VERSION >= 3
+    return Py_BuildValue("y#", res.data, 32);    //TODO: warning, hardcoded hash size!
+#else
+    return Py_BuildValue("s#", res.data, 32);    //TODO: warning, hardcoded hash size!
+#endif
+}
+
 
 /*
 PyObject* bitprim_native_long_hash_t_to_str(PyObject* self, PyObject* args) {
@@ -357,8 +417,8 @@ PyMethodDef BitprimNativeMethods[] = {
     {"chain_subscribe_transaction",  bitprim_native_chain_subscribe_transaction, METH_VARARGS, "..."},
     {"chain_unsubscribe",  bitprim_native_chain_unsubscribe, METH_VARARGS, "..."},
     
-    
 
+    {"transaction_factory_from_data",  bitprim_native_chain_transaction_factory_from_data, METH_VARARGS, "..."},
     {"transaction_version",  bitprim_native_chain_transaction_version, METH_VARARGS, "..."},
     {"transaction_set_version",  bitprim_native_chain_transaction_set_version, METH_VARARGS, "..."},
     {"transaction_hash",  bitprim_native_chain_transaction_hash, METH_VARARGS, "..."},
@@ -391,6 +451,9 @@ PyMethodDef BitprimNativeMethods[] = {
     {"input_previous_output",  bitprim_native_chain_input_previous_output, METH_VARARGS, "..."},
     //{"input_get_hash",  bitprim_native_chain_input_get_hash, METH_VARARGS, "..."},
     //{"input_get_index",  bitprim_native_chain_input_get_index, METH_VARARGS, "..."},
+    {"input_to_data",  bitprim_native_chain_input_to_data, METH_VARARGS, "..."},
+
+
 
     {"input_list_push_back",  bitprim_native_input_list_push_back, METH_VARARGS, "..."},
     {"input_list_count",  bitprim_native_input_list_count, METH_VARARGS, "..."},
@@ -403,6 +466,7 @@ PyMethodDef BitprimNativeMethods[] = {
     {"output_script",  bitprim_native_chain_output_script, METH_VARARGS, "..."},
     //{"output_get_hash",  bitprim_native_chain_output_get_hash, METH_VARARGS, "..."},
     //{"output_get_index",  bitprim_native_chain_output_get_index, METH_VARARGS, "..."},
+    {"output_to_data",  bitprim_native_chain_output_to_data, METH_VARARGS, "..."},
 
     {"output_list_push_back",  bitprim_native_output_list_push_back, METH_VARARGS, "..."},
     {"output_list_count",  bitprim_native_output_list_count, METH_VARARGS, "..."},
@@ -478,7 +542,8 @@ PyMethodDef BitprimNativeMethods[] = {
     {"wallet_ec_new",  bitprim_native_wallet_ec_new, METH_VARARGS, "..."},
     {"wallet_ec_to_public",  bitprim_native_wallet_ec_to_public, METH_VARARGS, "..."},
     {"wallet_ec_to_address",  bitprim_native_wallet_ec_to_address, METH_VARARGS, "..."},
-
+    {"wallet_hd_new",  bitprim_native_wallet_hd_new, METH_VARARGS, "..."},
+    {"wallet_hd_private_to_ec",  bitprim_native_wallet_hd_private_to_ec, METH_VARARGS, "..."},
 
 
     {"script_destruct",  bitprim_native_chain_script_destruct, METH_VARARGS, "..."},

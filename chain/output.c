@@ -110,6 +110,25 @@ PyObject* bitprim_native_chain_output_get_index(PyObject* self, PyObject* args){
 }
 */
 
+PyObject* bitprim_native_chain_output_to_data(PyObject* self, PyObject* args) {
+    PyObject* py_output;
+    int py_wire;
+    
+    if ( ! PyArg_ParseTuple(args, "Oi", &py_output, &py_wire)) {
+        return NULL;
+    }
+
+    output_t output = (output_t)get_ptr(py_output);
+    uint64_t /*size_t*/ out_n;
+    uint8_t* data = (uint8_t*)chain_output_to_data(output, py_wire, &out_n);
+    
+#if PY_MAJOR_VERSION >= 3
+    return Py_BuildValue("y#", data, out_n);    
+#else
+    return Py_BuildValue("s#", data, out_n);    
+#endif
+    
+}
 
 #ifdef __cplusplus
 } //extern "C"
