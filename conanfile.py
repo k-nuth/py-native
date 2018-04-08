@@ -17,7 +17,7 @@ class BitprimTestForPy(ConanFile):
     # build_policy = "missing"
 
     # TODO(fernando): queda pendiente seleccionar el default Shared=False
-    requires = (("bitprim-node-cint/0.8@bitprim/stable"))
+    requires = (("bitprim-node-cint/0.9@bitprim/stable"))
     # default_options = "bitprim-node-cint:shared=False" #, "OpenSSL:shared=True"
 
 
