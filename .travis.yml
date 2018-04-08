@@ -143,8 +143,10 @@ install:
 
         pyenv rehash
         pyenv activate conan
-      fi
 
+        pip install cryptography --global-option=build_ext --global-option="-L/usr/local/opt/openssl/lib" --global-option="-I/usr/local/opt/openssl/include"
+      fi
+      
       pip install conan_package_tools --upgrade
       pip install conan --upgrade
       pip install wheel --upgrade
