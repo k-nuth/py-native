@@ -220,6 +220,18 @@ PyObject* bitprim_native_executor_get_chain(PyObject* self, PyObject* args) {
     return Py_BuildValue("O", py_chain);
 }
 
+PyObject* bitprim_native_executor_get_p2p(PyObject* self, PyObject* args) {
+    PyObject* py_exec;
+    if ( ! PyArg_ParseTuple(args, "O", &py_exec))
+        return NULL;
+
+    executor_t exec = cast_executor(py_exec);
+    p2p_t p2p = executor_get_p2p(exec);
+
+    PyObject* py_p2p = to_py_obj(p2p);
+    return Py_BuildValue("O", py_p2p);
+}
+
 // -------------------------------------------------------------------
 
 // long_hash_t wallet_mnemonics_to_seed(word_list_t mnemonics){
@@ -389,7 +401,9 @@ PyMethodDef BitprimNativeMethods[] = {
     {"run_wait",  bitprim_native_executor_run_wait, METH_VARARGS, "Node run."},
     {"stop",  bitprim_native_executor_stop, METH_VARARGS, "Node stop."},
     {"stopped",  bitprim_native_executor_stopped, METH_VARARGS, "Know if the Node stopped."},
-    {"get_chain",  bitprim_native_executor_get_chain, METH_VARARGS, "Get Chain."},
+    {"get_chain",  bitprim_native_executor_get_chain, METH_VARARGS, "Get Blockchain API."},
+    {"get_p2p",  bitprim_native_executor_get_p2p, METH_VARARGS, "Get P2P Networking API."},
+    
 
     {"chain_fetch_last_height",  bitprim_native_chain_fetch_last_height, METH_VARARGS, "..."},
     {"chain_fetch_history",  bitprim_native_chain_fetch_history, METH_VARARGS, "..."},
