@@ -45,6 +45,8 @@
 #include "chain/stealth_compact.h"
 #include "chain/stealth_compact_list.h"
 
+#include "p2p/p2p.h"
+
 #include <bitprim/nodecint.h>
 
 #include <iostream>
@@ -404,6 +406,12 @@ PyMethodDef BitprimNativeMethods[] = {
     {"get_chain",  bitprim_native_executor_get_chain, METH_VARARGS, "Get Blockchain API."},
     {"get_p2p",  bitprim_native_executor_get_p2p, METH_VARARGS, "Get P2P Networking API."},
     
+    {"p2p_address_count",  bitprim_native_p2p_address_count, METH_VARARGS, "..."},
+    {"p2p_stop",  bitprim_native_p2p_stop, METH_VARARGS, "..."},
+    {"p2p_close",  bitprim_native_p2p_close, METH_VARARGS, "..."},
+    {"p2p_stopped",  bitprim_native_p2p_stopped, METH_VARARGS, "..."},
+
+
 
     {"chain_fetch_last_height",  bitprim_native_chain_fetch_last_height, METH_VARARGS, "..."},
     {"chain_fetch_history",  bitprim_native_chain_fetch_history, METH_VARARGS, "..."},
