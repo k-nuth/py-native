@@ -34,6 +34,7 @@ PyObject* bitprim_native_executor_run_wait(PyObject* self, PyObject* args);
 PyObject* bitprim_native_executor_stopped(PyObject* self, PyObject* args);
 PyObject* bitprim_native_executor_stop(PyObject* self, PyObject* args);
 PyObject* bitprim_native_executor_get_chain(PyObject* self, PyObject* args);
+PyObject* bitprim_native_executor_get_p2p(PyObject* self, PyObject* args);
 PyObject* bitprim_native_wallet_mnemonics_to_seed(PyObject* self, PyObject* args);
 
 #ifdef __cplusplus

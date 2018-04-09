@@ -37,6 +37,8 @@ PyObject* bitprim_native_chain_transaction_destruct(PyObject* self, PyObject* ar
 PyObject* bitprim_native_chain_transaction_outputs(PyObject* self, PyObject* args);
 PyObject* bitprim_native_chain_transaction_inputs(PyObject* self, PyObject* args);
 
+PyObject* bitprim_native_chain_transaction_to_data(PyObject* self, PyObject* args);
+
 #ifdef __cplusplus
 } //extern "C"
 #endif  

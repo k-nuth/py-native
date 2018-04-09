@@ -266,7 +266,7 @@ extensions = [
         'chain/chain.c', 'binary.c', 'chain/point.c', 'chain/history.c', 'chain/word_list.c', 
         'chain/transaction.c', 'chain/output.c', 'chain/output_list.c',  'chain/input.c', 'chain/input_list.c', 
         'chain/script.c', 'chain/payment_address.c', 'chain/compact_block.c', 'chain/output_point.c',
-        'chain/block_list.c', 'chain/transaction_list.c', 'chain/stealth_compact.c', 'chain/stealth_compact_list.c'],
+        'chain/block_list.c', 'chain/transaction_list.c', 'chain/stealth_compact.c', 'chain/stealth_compact_list.c', 'p2p/p2p.c'],
 
         include_dirs=['bitprim/include'],
         library_dirs=['bitprim/lib'],
