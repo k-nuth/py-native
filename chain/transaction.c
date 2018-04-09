@@ -316,7 +316,25 @@ PyObject* bitprim_native_chain_transaction_inputs(PyObject* self, PyObject* args
     return to_py_obj(res);  
 }
 
+// uint8_t const* chain_transaction_to_data(transaction_t transaction, int /*bool*/ wire, uint64_t* /*size_t*/ out_size) {
+PyObject* bitprim_native_chain_transaction_to_data(PyObject* self, PyObject* args) {
+    PyObject* py_transaction;
+    int py_wire;
+    
+    if ( ! PyArg_ParseTuple(args, "Oi", &py_transaction, &py_wire)) {
+        return NULL;
+    }
 
+    transaction_t transaction = (transaction_t)get_ptr(py_transaction);
+    uint64_t /*size_t*/ out_n;
+    uint8_t* data = (uint8_t*)chain_transaction_to_data(transaction, py_wire, &out_n);
+    
+#if PY_MAJOR_VERSION >= 3
+    return Py_BuildValue("y#", data, out_n);    
+#else
+    return Py_BuildValue("s#", data, out_n);    
+#endif
+}
 
 #ifdef __cplusplus
 } //extern "C"
