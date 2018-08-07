@@ -34,35 +34,44 @@ environment:
         # WINDOWS_SDK_VERSION: "v7.0"
         WINDOWS_SDK_VERSION: "v7.1"
         DISTRIBUTIONS: "sdist bdist_wheel"
-        APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+        APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
   
       # - PYTHON: "C:\\Python33-x64"
       #   PYTHON_VERSION: "3.3.5"
       #   PYTHON_ARCH: "64"
       #   WINDOWS_SDK_VERSION: "v7.1"
       #   DISTRIBUTIONS: "bdist_wheel"
-      #   APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      #   APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
   
       - PYTHON: "C:\\Python34-x64"
         PYTHON_VERSION: "3.4.4"
         PYTHON_ARCH: "64"
         WINDOWS_SDK_VERSION: "v7.1"
         DISTRIBUTIONS: "bdist_wheel"
-        APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+        APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 
       - PYTHON: "C:\\Python35-x64"
         PYTHON_VERSION: "3.5.3"
         PYTHON_ARCH: "64"
         WINDOWS_SDK_VERSION: "v7.1"
         DISTRIBUTIONS: "bdist_wheel"
-        APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+        APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 
       - PYTHON: "C:\\Python36-x64"
         PYTHON_VERSION: "3.6.1"
         PYTHON_ARCH: "64"
         WINDOWS_SDK_VERSION: "v7.1"
         DISTRIBUTIONS: "bdist_wheel"
-        APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+        APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+
+      - PYTHON: "C:\\Python37-x64"
+        PYTHON_VERSION: "3.7.0"
+        PYTHON_ARCH: "64"
+        WINDOWS_SDK_VERSION: "v7.1"
+        DISTRIBUTIONS: "bdist_wheel"
+        APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+
+
 
         # - MINGW_CONFIGURATIONS: "5.4@x86_64@seh@posix" #5.4@x86_64@sjlj@posix
         # - MINGW_CONFIGURATIONS: "7.1@x86_64@seh@posix" #7.1@x86_64@sjlj@posix
