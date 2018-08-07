@@ -169,6 +169,7 @@ install:
         pyenv activate conan
 
         sudo pip install --upgrade pip
+        pip install --upgrade pip --user
         pip install cryptography --global-option=build_ext --global-option="-L/usr/local/opt/openssl/lib" --global-option="-I/usr/local/opt/openssl/include"
       else
         pip install --upgrade pip

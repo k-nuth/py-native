@@ -94,19 +94,23 @@ PyObject* bitprim_native_chain_script_sigops(PyObject* self, PyObject* args){
     return Py_BuildValue("K", res);
 }
 
-PyObject* bitprim_native_chain_script_embedded_sigops(PyObject* self, PyObject* args){
-    PyObject* py_script;
-    PyObject* py_prevout_script; 
+// PyObject* bitprim_native_chain_script_embedded_sigops(PyObject* self, PyObject* args){
+//     PyObject* py_script;
+//     PyObject* py_prevout_script; 
 
-    if ( ! PyArg_ParseTuple(args, "OO", &py_script, &py_prevout_script)) {
-        return NULL;
-    }
+//     if ( ! PyArg_ParseTuple(args, "OO", &py_script, &py_prevout_script)) {
+//         return NULL;
+//     }
 
-    script_t script = (script_t)get_ptr(py_script);
-    script_t prevout_script = (script_t)get_ptr(py_prevout_script);
-    uint64_t res = chain_script_embedded_sigops(script, prevout_script);
-    return Py_BuildValue("K", res);
-}
+//     script_t script = (script_t)get_ptr(py_script);
+//     script_t prevout_script = (script_t)get_ptr(py_prevout_script);
+//     uint64_t res = chain_script_embedded_sigops(script, prevout_script);
+
+//     BITPRIM_EXPORT
+//     uint64_t /*size_t*/ chain_script_sigops(script_t script, bool_t embedded);
+
+//     return Py_BuildValue("K", res);
+// }
 
 
 #ifdef __cplusplus

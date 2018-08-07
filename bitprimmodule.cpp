@@ -576,7 +576,7 @@ PyMethodDef BitprimNativeMethods[] = {
     {"script_serialized_size",  bitprim_native_chain_script_serialized_size, METH_VARARGS, "..."},
     {"script_to_string",  bitprim_native_chain_script_to_string, METH_VARARGS, "..."},
     {"script_sigops",  bitprim_native_chain_script_sigops, METH_VARARGS, "..."},
-    {"script_embedded_sigops",  bitprim_native_chain_script_embedded_sigops, METH_VARARGS, "..."},
+    // {"script_sigops",  bitprim_native_chain_script_sigops, METH_VARARGS, "..."},
 
     {"payment_address_destruct",  bitprim_native_chain_payment_address_destruct, METH_VARARGS, "..."},
     {"payment_address_encoded",  bitprim_native_chain_payment_address_encoded, METH_VARARGS, "..."},
