@@ -148,6 +148,7 @@ install:
 
   - set -e
   # - set -x
+  - pip install --upgrade pip
   - |
     if [[ "${PUSH_TO_REPOS}" != "true" ]]; then
       if [[ "${TRAVIS_OS_NAME}" != "linux" ]]; then
