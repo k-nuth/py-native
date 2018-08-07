@@ -24,7 +24,7 @@
 build: false
 
 environment:
-    # VS150COMNTOOLS: "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\Common7\\Tools\\"
+    VS150COMNTOOLS: "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\Common7\\Tools\\"
 
     matrix:
  
@@ -98,7 +98,8 @@ environment:
 
 install:
   - SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
-  - SET VS90COMNTOOLS=%VS140COMNTOOLS%
+  # - SET VS90COMNTOOLS=%VS140COMNTOOLS%
+  - SET VS90COMNTOOLS=%VS150COMNTOOLS%
   - cd "c:\Users\appveyor\AppData\Local\Programs\Common\Microsoft\"
   - ren "Visual C++ for Python" "Visual C++ for Python Do Not Use"
   - cd "C:\Program Files (x86)\"
