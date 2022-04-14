@@ -1,8 +1,7 @@
 from conans import ConanFile, CMake
 # import os
 
-
-class KnuthPythonNativeConan(ConanFile):
+class KnuthPyNative(ConanFile):
     name = "knuth-py-native"
     version = "0.1"
     license = "http://www.boost.org/users/license.html"
@@ -13,13 +12,13 @@ class KnuthPythonNativeConan(ConanFile):
     default_options = "shared=False"
     generators = "cmake"
 
-    # TODO(fernando): queda pendiente seleccionar el default Shared=False
     requires = (("c-api/0.24.0@kth/stable"))
-    # default_options = "kth-c-api:shared=False" #, "OpenSSL:shared=True"
 
-
-    # conan install kth-c-api/0.3@kth/stable -o shared=True
-    # conan install -o Pkg:shared=True -o OtherPkg:option=value
+    def configure(self):
+        ConanFile.configure(self)
+        self.options["c-api"].db = "full"
+        self.options["c-api"].march_id = "4fZKi37a595hP"
+        self.options["c-api"].shared = False
 
     def imports(self):
         # self.copy("*.h", "./kth/include/kth", "include/kth")

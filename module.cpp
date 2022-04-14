@@ -7,7 +7,7 @@
 
 #include <Python.h>
 #include "module.h"
-#include "binary.h"
+// #include "binary.h"
 #include "utils.h"
 #include "chain/point.h"
 #include "chain/history.h"
