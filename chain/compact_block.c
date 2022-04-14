@@ -1,10 +1,10 @@
 #include "compact_block.h"
 
 #ifdef __cplusplus
-extern "C" {  
-#endif  
+extern "C" {
+#endif
 
-PyObject * bitprim_native_chain_compact_block_header(PyObject* self, PyObject* args){
+PyObject * kth_py_native_chain_compact_block_header(PyObject* self, PyObject* args){
     PyObject* py_compact_block;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_compact_block)) {
@@ -17,7 +17,7 @@ PyObject * bitprim_native_chain_compact_block_header(PyObject* self, PyObject* a
 }
 
 
-PyObject * bitprim_native_chain_compact_block_is_valid(PyObject* self, PyObject* args){
+PyObject * kth_py_native_chain_compact_block_is_valid(PyObject* self, PyObject* args){
     PyObject* py_compact_block;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_compact_block)) {
@@ -26,10 +26,10 @@ PyObject * bitprim_native_chain_compact_block_is_valid(PyObject* self, PyObject*
 
     compact_block_t compact_block = (compact_block_t)get_ptr(py_compact_block);
     int res = compact_block_is_valid(compact_block);
-    return Py_BuildValue("i", res);   
+    return Py_BuildValue("i", res);
 }
 
-PyObject * bitprim_native_chain_compact_block_serialized_size(PyObject* self, PyObject* args){
+PyObject * kth_py_native_chain_compact_block_serialized_size(PyObject* self, PyObject* args){
     PyObject* py_compact_block;
     uint32_t py_version;
 
@@ -39,11 +39,11 @@ PyObject * bitprim_native_chain_compact_block_serialized_size(PyObject* self, Py
 
     compact_block_t compact_block = (compact_block_t)get_ptr(py_compact_block);
     uint64_t res = compact_block_serialized_size(compact_block, py_version);
-    return Py_BuildValue("K", res);   
+    return Py_BuildValue("K", res);
 }
 
 
-PyObject * bitprim_native_chain_compact_block_transaction_count(PyObject* self, PyObject* args){
+PyObject * kth_py_native_chain_compact_block_transaction_count(PyObject* self, PyObject* args){
     PyObject* py_compact_block;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_compact_block)) {
@@ -52,11 +52,11 @@ PyObject * bitprim_native_chain_compact_block_transaction_count(PyObject* self, 
 
     compact_block_t compact_block = (compact_block_t)get_ptr(py_compact_block);
     uint64_t res = compact_block_transaction_count(compact_block);
-    return Py_BuildValue("K", res);  
+    return Py_BuildValue("K", res);
 }
 
 
-PyObject * bitprim_native_chain_compact_block_transaction_nth(PyObject* self, PyObject* args){
+PyObject * kth_py_native_chain_compact_block_transaction_nth(PyObject* self, PyObject* args){
     PyObject* py_compact_block;
     uint64_t py_n;
 
@@ -66,10 +66,10 @@ PyObject * bitprim_native_chain_compact_block_transaction_nth(PyObject* self, Py
 
     compact_block_t compact_block = (compact_block_t)get_ptr(py_compact_block);
     transaction_t res = compact_block_transaction_nth(compact_block, py_n);
-    return to_py_obj(res); 
+    return to_py_obj(res);
 }
 
-PyObject * bitprim_native_chain_compact_block_nonce(PyObject* self, PyObject* args){
+PyObject * kth_py_native_chain_compact_block_nonce(PyObject* self, PyObject* args){
     PyObject* py_compact_block;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_compact_block)) {
@@ -78,11 +78,11 @@ PyObject * bitprim_native_chain_compact_block_nonce(PyObject* self, PyObject* ar
 
     compact_block_t compact_block = (compact_block_t)get_ptr(py_compact_block);
     uint64_t res = compact_block_nonce(compact_block);
-    return Py_BuildValue("K", res);  
+    return Py_BuildValue("K", res);
 }
 
 
-PyObject * bitprim_native_chain_compact_block_destruct(PyObject* self, PyObject* args){
+PyObject * kth_py_native_chain_compact_block_destruct(PyObject* self, PyObject* args){
     PyObject* py_compact_block;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_compact_block)) {
@@ -91,11 +91,11 @@ PyObject * bitprim_native_chain_compact_block_destruct(PyObject* self, PyObject*
 
     compact_block_t compact_block = (compact_block_t)get_ptr(py_compact_block);
     compact_block_destruct(compact_block);
-    Py_RETURN_NONE; 
+    Py_RETURN_NONE;
 }
 
 
-PyObject * bitprim_native_chain_compact_block_reset(PyObject* self, PyObject* args){
+PyObject * kth_py_native_chain_compact_block_reset(PyObject* self, PyObject* args){
     PyObject* py_compact_block;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_compact_block)) {
@@ -104,9 +104,9 @@ PyObject * bitprim_native_chain_compact_block_reset(PyObject* self, PyObject* ar
 
     compact_block_t compact_block = (compact_block_t)get_ptr(py_compact_block);
     compact_block_reset(compact_block);
-    Py_RETURN_NONE; 
+    Py_RETURN_NONE;
 }
 
 #ifdef __cplusplus
 } //extern "C"
-#endif  
+#endif

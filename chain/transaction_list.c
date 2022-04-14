@@ -1,17 +1,17 @@
 #include "transaction_list.h"
-#include <bitprim/nodecint.h>
+#include <kth/capi.h>
 #include "../utils.h"
 
 #ifdef __cplusplus
-extern "C" {  
-#endif  
+extern "C" {
+#endif
 
-PyObject* bitprim_native_chain_transaction_list_construct_default(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_transaction_list_construct_default(PyObject* self, PyObject* args){
     transaction_list_t res = (transaction_list_t)chain_transaction_list_construct_default();
     return to_py_obj(res);
 }
 
-PyObject* bitprim_native_chain_transaction_list_push_back(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_transaction_list_push_back(PyObject* self, PyObject* args){
     PyObject* py_transaction_list;
     PyObject* py_transaction;
 
@@ -25,9 +25,9 @@ PyObject* bitprim_native_chain_transaction_list_push_back(PyObject* self, PyObje
     Py_RETURN_NONE;
 }
 
-PyObject* bitprim_native_chain_transaction_list_destruct(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_transaction_list_destruct(PyObject* self, PyObject* args){
    PyObject* py_transaction_list;
-    
+
     if ( ! PyArg_ParseTuple(args, "O", &py_transaction_list)) {
         return NULL;
     }
@@ -38,9 +38,9 @@ PyObject* bitprim_native_chain_transaction_list_destruct(PyObject* self, PyObjec
 }
 
 
-PyObject* bitprim_native_chain_transaction_list_count(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_transaction_list_count(PyObject* self, PyObject* args){
     PyObject* py_transaction_list;
-    
+
     if ( ! PyArg_ParseTuple(args, "O", &py_transaction_list)) {
         return NULL;
     }
@@ -50,7 +50,7 @@ PyObject* bitprim_native_chain_transaction_list_count(PyObject* self, PyObject* 
     return Py_BuildValue("K", res);
 }
 
-PyObject* bitprim_native_chain_transaction_list_nth(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_transaction_list_nth(PyObject* self, PyObject* args){
     PyObject* py_transaction_list;
     uint64_t py_n;
 
@@ -64,4 +64,4 @@ PyObject* bitprim_native_chain_transaction_list_nth(PyObject* self, PyObject* ar
 
 #ifdef __cplusplus
 } //extern "C"
-#endif  
+#endif

@@ -1,21 +1,6 @@
-#
-# Copyright (c) 2017 Bitprim developers (see AUTHORS)
-#
-# This file is part of Bitprim.
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
+# Copyright (c) 2016-2022 Knuth Project developers.
+# Distributed under the MIT software license, see the accompanying
+# file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 branches:
   only:
@@ -67,7 +52,7 @@ matrix:
    include:
       - <<: *linux
         env: PUSH_TO_REPOS=true
-   
+
       - <<: *linux
         env: C_COMPILER=gcc-6 CXX_COMPILER=g++-6
         compiler: gcc
@@ -80,7 +65,7 @@ matrix:
       #   env: C_COMPILER=gcc-6 CXX_COMPILER=g++-6
       #   compiler: gcc
       #   python: "3.7"
-     
+
       # - <<: *osx
       #   osx_image: xcode7.3
       #   env: CONAN_APPLE_CLANG_VERSIONS=7.3  TRAVIS_PYTHON_VERSION=2.7 PYTHON_FULL_VERSION=2.7.13
@@ -158,7 +143,7 @@ install:
 
         if which pyenv > /dev/null; then
             eval "$(pyenv init -)"
-            eval "$(pyenv virtualenv-init -)" 
+            eval "$(pyenv virtualenv-init -)"
         fi
 
         pyenv install --list
@@ -175,13 +160,13 @@ install:
       else
         pip install --upgrade pip
       fi
-      
+
       pip install conan_package_tools --upgrade
       pip install conan --upgrade
       pip install wheel --upgrade
       pip install twine --upgrade
       conan user
-    fi    
+    fi
 
 
 
@@ -213,7 +198,7 @@ script:
       else
         python --version
         conan user
-        conan remote add bitprim_temp https://api.bintray.com/conan/bitprim/bitprim
+        conan remote add kth_temp https://knuth.jfrog.io/artifactory/api/conan/knuth
         conan install .
         pip install  -e .
         python setup.py sdist
@@ -229,19 +214,10 @@ script:
         # For Testing Release
         # twine upload -r test -u ${PYPI_USER_NAME} -p ${PYPI_PASSWORD} dist/* || true
         twine upload -u ${PYPI_USER_NAME} -p ${PYPI_PASSWORD} --repository-url https://test.pypi.org/legacy/ dist/*  || true
-      fi    
-    fi  
-
-
+      fi
+    fi
 
 
 notifications:
-  email: 
-    - ci@bitprim.org
-    - dev@bitprim.org
-    - fernando@bitprim.org
-  slack: bitprim:CGkcy3Bjx7UUIxu9FSZTpaxE
-  webhooks:
-    urls: https://webhooks.gitter.im/e/a19dd2b03bf676d2b622
-    on_success: change
-    on_failure: always
+  email:
+    - info@kth.cash

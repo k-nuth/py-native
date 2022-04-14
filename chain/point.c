@@ -1,29 +1,14 @@
-/**
- * Copyright (c) 2017 Bitprim developers (see AUTHORS)
- *
- * This file is part of Bitprim.
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+// Copyright (c) 2016-2022 Knuth Project developers.
+// Distributed under the MIT software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "point.h"
-#include <bitprim/nodecint.h>
+#include <kth/capi.h>
 #include "../utils.h" //TODO(fernando): poner bien el dir del header
 
 #ifdef __cplusplus
-extern "C" {  
-#endif  
+extern "C" {
+#endif
 
 // -------------------------------------------------------------------
 // point
@@ -34,7 +19,7 @@ extern "C" {
 // uint32_t point_get_index(point_t point){
 // uint64_t point_get_checksum(point_t point){
 
-PyObject* bitprim_native_point_get_hash(PyObject* self, PyObject* args) {
+PyObject* kth_py_native_point_get_hash(PyObject* self, PyObject* args) {
     PyObject* py_point;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_point)) {
@@ -52,7 +37,7 @@ PyObject* bitprim_native_point_get_hash(PyObject* self, PyObject* args) {
 #endif
 }
 
-PyObject* bitprim_native_point_is_valid(PyObject* self, PyObject* args) {
+PyObject* kth_py_native_point_is_valid(PyObject* self, PyObject* args) {
     PyObject* py_point;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_point)) {
@@ -70,7 +55,7 @@ PyObject* bitprim_native_point_is_valid(PyObject* self, PyObject* args) {
     Py_RETURN_TRUE;
 }
 
-PyObject* bitprim_native_point_get_index(PyObject* self, PyObject* args) {
+PyObject* kth_py_native_point_get_index(PyObject* self, PyObject* args) {
     PyObject* py_point;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_point)) {
@@ -83,7 +68,7 @@ PyObject* bitprim_native_point_get_index(PyObject* self, PyObject* args) {
     return Py_BuildValue("K", res);
 }
 
-PyObject* bitprim_native_point_get_checksum(PyObject* self, PyObject* args) {
+PyObject* kth_py_native_point_get_checksum(PyObject* self, PyObject* args) {
     PyObject* py_point;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_point)) {
@@ -99,4 +84,4 @@ PyObject* bitprim_native_point_get_checksum(PyObject* self, PyObject* args) {
 
 #ifdef __cplusplus
 } //extern "C"
-#endif  
+#endif

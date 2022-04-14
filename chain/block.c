@@ -1,31 +1,16 @@
-/**
- * Copyright (c) 2017 Bitprim developers (see AUTHORS)
- *
- * This file is part of Bitprim.
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+// Copyright (c) 2016-2022 Knuth Project developers.
+// Distributed under the MIT software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "block.h"
-#include <bitprim/nodecint.h>
+#include <kth/capi.h>
 #include "../utils.h" //TODO(fernando): poner bien el dir del header
 
 #ifdef __cplusplus
-extern "C" {  
-#endif  
+extern "C" {
+#endif
 
-PyObject* bitprim_native_chain_block_get_header(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_block_get_header(PyObject* self, PyObject* args){
     PyObject* py_block;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_block)) {
@@ -39,7 +24,7 @@ PyObject* bitprim_native_chain_block_get_header(PyObject* self, PyObject* args){
 }
 
 
-PyObject* bitprim_native_chain_block_transaction_count(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_block_transaction_count(PyObject* self, PyObject* args){
     PyObject* py_block;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_block)) {
@@ -49,10 +34,10 @@ PyObject* bitprim_native_chain_block_transaction_count(PyObject* self, PyObject*
     block_t block = (block_t)get_ptr(py_block);
     uint64_t /*size_t*/ res = chain_block_transaction_count(block);
 
-    return Py_BuildValue("K", res);   
+    return Py_BuildValue("K", res);
 }
 
-PyObject* bitprim_native_chain_block_serialized_size(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_block_serialized_size(PyObject* self, PyObject* args){
     PyObject* py_block;
     uint32_t py_version;
 
@@ -63,10 +48,10 @@ PyObject* bitprim_native_chain_block_serialized_size(PyObject* self, PyObject* a
     block_t block = (block_t)get_ptr(py_block);
     uint64_t /*size_t*/ res = chain_block_serialized_size(block, py_version);
 
-    return Py_BuildValue("K", res);   
+    return Py_BuildValue("K", res);
 }
 
-PyObject* bitprim_native_chain_block_subsidy(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_block_subsidy(PyObject* self, PyObject* args){
     uint64_t /*size_t*/ py_height;
 
     if ( ! PyArg_ParseTuple(args, "K", &py_height)) {
@@ -77,7 +62,7 @@ PyObject* bitprim_native_chain_block_subsidy(PyObject* self, PyObject* args){
     return Py_BuildValue("K", res);
 }
 
-PyObject* bitprim_native_chain_block_fees(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_block_fees(PyObject* self, PyObject* args){
     PyObject* py_block;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_block)) {
@@ -87,10 +72,10 @@ PyObject* bitprim_native_chain_block_fees(PyObject* self, PyObject* args){
     block_t block = (block_t)get_ptr(py_block);
     uint64_t res = chain_block_fees(block);
 
-    return Py_BuildValue("K", res);   
+    return Py_BuildValue("K", res);
 }
 
-PyObject* bitprim_native_chain_block_claim(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_block_claim(PyObject* self, PyObject* args){
     PyObject* py_block;
 
 
@@ -101,10 +86,10 @@ PyObject* bitprim_native_chain_block_claim(PyObject* self, PyObject* args){
     block_t block = (block_t)get_ptr(py_block);
     uint64_t res = chain_block_claim(block);
 
-    return Py_BuildValue("K", res);   
+    return Py_BuildValue("K", res);
 }
 
-PyObject* bitprim_native_chain_block_reward(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_block_reward(PyObject* self, PyObject* args){
     PyObject* py_block;
     uint64_t py_height;
 
@@ -115,10 +100,10 @@ PyObject* bitprim_native_chain_block_reward(PyObject* self, PyObject* args){
     block_t block = (block_t)get_ptr(py_block);
     uint64_t res = chain_block_reward(block, py_height);
 
-    return Py_BuildValue("K", res);   
+    return Py_BuildValue("K", res);
 }
 
-PyObject* bitprim_native_chain_block_generate_merkle_root(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_block_generate_merkle_root(PyObject* self, PyObject* args){
     PyObject* py_block;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_block)) {
@@ -135,7 +120,7 @@ PyObject* bitprim_native_chain_block_generate_merkle_root(PyObject* self, PyObje
 #endif
 }
 
-PyObject* bitprim_native_chain_block_hash(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_block_hash(PyObject* self, PyObject* args){
     PyObject* py_block;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_block)) {
@@ -153,7 +138,7 @@ PyObject* bitprim_native_chain_block_hash(PyObject* self, PyObject* args){
 }
 
 
-PyObject * bitprim_native_chain_block_is_valid(PyObject* self, PyObject* args){
+PyObject * kth_py_native_chain_block_is_valid(PyObject* self, PyObject* args){
     PyObject* py_block;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_block)) {
@@ -163,12 +148,12 @@ PyObject * bitprim_native_chain_block_is_valid(PyObject* self, PyObject* args){
     block_t block = (block_t)get_ptr(py_block);
     int res = chain_block_is_valid(block);
 
-    return Py_BuildValue("i", res);   
+    return Py_BuildValue("i", res);
 }
 
 
 //transaction_t chain_block_transaction_nth(block_t block, uint64_t n);
-PyObject * bitprim_native_chain_block_transaction_nth(PyObject* self, PyObject* args){
+PyObject * kth_py_native_chain_block_transaction_nth(PyObject* self, PyObject* args){
     PyObject* py_block;
     uint64_t py_n;
 
@@ -179,10 +164,10 @@ PyObject * bitprim_native_chain_block_transaction_nth(PyObject* self, PyObject* 
     block_t block = (block_t)get_ptr(py_block);
     transaction_t res = chain_block_transaction_nth(block, py_n);
 
-    return to_py_obj(res);   
+    return to_py_obj(res);
 }
 
-PyObject * bitprim_native_chain_block_signature_operations(PyObject* self, PyObject* args){
+PyObject * kth_py_native_chain_block_signature_operations(PyObject* self, PyObject* args){
     PyObject* py_block;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_block)) {
@@ -192,10 +177,10 @@ PyObject * bitprim_native_chain_block_signature_operations(PyObject* self, PyObj
     block_t block = (block_t)get_ptr(py_block);
     uint64_t res = chain_block_signature_operations(block);
 
-    return Py_BuildValue("K", res);   
+    return Py_BuildValue("K", res);
 }
 
-PyObject * bitprim_native_chain_block_signature_operations_bip16_active(PyObject* self, PyObject* args){
+PyObject * kth_py_native_chain_block_signature_operations_bip16_active(PyObject* self, PyObject* args){
     PyObject* py_block;
     int py_bip16_active;
 
@@ -209,7 +194,7 @@ PyObject * bitprim_native_chain_block_signature_operations_bip16_active(PyObject
     return Py_BuildValue("K", res);
 }
 
-PyObject * bitprim_native_chain_block_total_inputs(PyObject* self, PyObject* args){
+PyObject * kth_py_native_chain_block_total_inputs(PyObject* self, PyObject* args){
     PyObject* py_block;
     int py_with_coinbase;
 
@@ -223,7 +208,7 @@ PyObject * bitprim_native_chain_block_total_inputs(PyObject* self, PyObject* arg
     return Py_BuildValue("K", res);
 }
 
-PyObject * bitprim_native_chain_block_is_extra_coinbases(PyObject* self, PyObject* args){
+PyObject * kth_py_native_chain_block_is_extra_coinbases(PyObject* self, PyObject* args){
     PyObject* py_block;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_block)) {
@@ -233,10 +218,10 @@ PyObject * bitprim_native_chain_block_is_extra_coinbases(PyObject* self, PyObjec
     block_t block = (block_t)get_ptr(py_block);
     int res = chain_block_is_extra_coinbases(block);
 
-    return Py_BuildValue("i", res); 
+    return Py_BuildValue("i", res);
 }
 
-PyObject * bitprim_native_chain_block_is_final(PyObject* self, PyObject* args){
+PyObject * kth_py_native_chain_block_is_final(PyObject* self, PyObject* args){
     PyObject* py_block;
     uint64_t py_height;
     uint32_t py_block_time;
@@ -248,10 +233,10 @@ PyObject * bitprim_native_chain_block_is_final(PyObject* self, PyObject* args){
     block_t block = (block_t)get_ptr(py_block);
     int res = chain_block_is_final(block, py_height, py_block_time);
 
-    return Py_BuildValue("i", res); 
+    return Py_BuildValue("i", res);
 }
 
-PyObject * bitprim_native_chain_block_is_distinct_transaction_set(PyObject* self, PyObject* args){
+PyObject * kth_py_native_chain_block_is_distinct_transaction_set(PyObject* self, PyObject* args){
     PyObject* py_block;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_block)) {
@@ -261,10 +246,10 @@ PyObject * bitprim_native_chain_block_is_distinct_transaction_set(PyObject* self
     block_t block = (block_t)get_ptr(py_block);
     int res = chain_block_is_distinct_transaction_set(block);
 
-    return Py_BuildValue("i", res); 
+    return Py_BuildValue("i", res);
 }
 
-PyObject * bitprim_native_chain_block_is_valid_coinbase_claim(PyObject* self, PyObject* args){
+PyObject * kth_py_native_chain_block_is_valid_coinbase_claim(PyObject* self, PyObject* args){
     PyObject* py_block;
     uint64_t py_height;
 
@@ -275,9 +260,9 @@ PyObject * bitprim_native_chain_block_is_valid_coinbase_claim(PyObject* self, Py
     block_t block = (block_t)get_ptr(py_block);
     int res = chain_block_is_valid_coinbase_claim(block, py_height);
 
-    return Py_BuildValue("i", res); 
+    return Py_BuildValue("i", res);
 }
-PyObject * bitprim_native_chain_block_is_valid_coinbase_script(PyObject* self, PyObject* args){
+PyObject * kth_py_native_chain_block_is_valid_coinbase_script(PyObject* self, PyObject* args){
     PyObject* py_block;
     uint64_t py_height;
 
@@ -288,10 +273,10 @@ PyObject * bitprim_native_chain_block_is_valid_coinbase_script(PyObject* self, P
     block_t block = (block_t)get_ptr(py_block);
     int res = chain_block_is_valid_coinbase_script(block, py_height);
 
-    return Py_BuildValue("i", res); 
+    return Py_BuildValue("i", res);
 }
 
-PyObject * bitprim_native_chain_block_is_internal_double_spend(PyObject* self, PyObject* args){
+PyObject * kth_py_native_chain_block_is_internal_double_spend(PyObject* self, PyObject* args){
     PyObject* py_block;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_block)) {
@@ -301,10 +286,10 @@ PyObject * bitprim_native_chain_block_is_internal_double_spend(PyObject* self, P
     block_t block = (block_t)get_ptr(py_block);
     int res = chain_block_is_internal_double_spend(block);
 
-    return Py_BuildValue("i", res); 
+    return Py_BuildValue("i", res);
 }
 
-PyObject * bitprim_native_chain_block_is_valid_merkle_root(PyObject* self, PyObject* args){
+PyObject * kth_py_native_chain_block_is_valid_merkle_root(PyObject* self, PyObject* args){
     PyObject* py_block;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_block)) {
@@ -318,7 +303,7 @@ PyObject * bitprim_native_chain_block_is_valid_merkle_root(PyObject* self, PyObj
 }
 
 
-PyObject * bitprim_native_chain_block_destruct(PyObject* self, PyObject* args){
+PyObject * kth_py_native_chain_block_destruct(PyObject* self, PyObject* args){
     PyObject* py_block;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_block)) {
@@ -332,5 +317,5 @@ PyObject * bitprim_native_chain_block_destruct(PyObject* self, PyObject* args){
 }
 
 #ifdef __cplusplus
-} //extern "C" 
-#endif  
+} //extern "C"
+#endif

@@ -5,7 +5,7 @@ sudo pip install --upgrade twine
 
 conan user
 
-conan remote add bitprim_temp https://api.bintray.com/conan/bitprim/bitprim
+conan remote add kth_temp https://knuth.jfrog.io/artifactory/api/conan/knuth
 
 cd /home/conan/project
 sudo conan install .

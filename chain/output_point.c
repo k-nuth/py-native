@@ -1,10 +1,10 @@
 #include "output_point.h"
 
 #ifdef __cplusplus
-extern "C" {  
-#endif  
+extern "C" {
+#endif
 
-PyObject * bitprim_native_chain_output_point_get_hash(PyObject* self, PyObject* args){
+PyObject * kth_py_native_chain_output_point_get_hash(PyObject* self, PyObject* args){
     PyObject* py_output_point;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_output_point)) {
@@ -21,7 +21,7 @@ PyObject * bitprim_native_chain_output_point_get_hash(PyObject* self, PyObject* 
 
 }
 
-PyObject * bitprim_native_chain_output_point_get_index(PyObject* self, PyObject* args){
+PyObject * kth_py_native_chain_output_point_get_index(PyObject* self, PyObject* args){
     PyObject* py_output_point;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_output_point)) {
@@ -35,11 +35,11 @@ PyObject * bitprim_native_chain_output_point_get_index(PyObject* self, PyObject*
 
 
 
-PyObject * bitprim_native_chain_output_point_construct(PyObject* self, PyObject* args){
+PyObject * kth_py_native_chain_output_point_construct(PyObject* self, PyObject* args){
     return to_py_obj(output_point_construct());
 }
 
-PyObject * bitprim_native_chain_output_point_construct_from_hash_index(PyObject* self, PyObject* args){
+PyObject * kth_py_native_chain_output_point_construct_from_hash_index(PyObject* self, PyObject* args){
     char* py_hash;
     size_t py_size;
     uint32_t py_index;
@@ -60,21 +60,21 @@ PyObject * bitprim_native_chain_output_point_construct_from_hash_index(PyObject*
 }
 
 
-PyObject * bitprim_native_chain_output_point_destruct(PyObject* self, PyObject* args){
-    PyObject* py_output_point;  
+PyObject * kth_py_native_chain_output_point_destruct(PyObject* self, PyObject* args){
+    PyObject* py_output_point;
     if ( ! PyArg_ParseTuple(args, "O", &py_output_point)) {
         return NULL;
     }
     output_point_t output_point = (output_point_t)get_ptr(py_output_point);
     output_point_destruct(output_point);
-    Py_RETURN_NONE; 
+    Py_RETURN_NONE;
 }
 
 
 /*
 
 
-PyObject* bitprim_native_point_is_valid(PyObject* self, PyObject* args) {
+PyObject* kth_py_native_point_is_valid(PyObject* self, PyObject* args) {
     PyObject* py_point;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_point)) {
@@ -93,7 +93,7 @@ PyObject* bitprim_native_point_is_valid(PyObject* self, PyObject* args) {
 }
 
 
-PyObject* bitprim_native_point_get_checksum(PyObject* self, PyObject* args) {
+PyObject* kth_py_native_point_get_checksum(PyObject* self, PyObject* args) {
     PyObject* py_point;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_point)) {
@@ -113,4 +113,4 @@ PyObject* bitprim_native_point_get_checksum(PyObject* self, PyObject* args) {
 
 #ifdef __cplusplus
 } //extern "C"
-#endif  
+#endif

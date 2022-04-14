@@ -1,21 +1,6 @@
-# 
- # Copyright (c) 2017 Bitprim developers (see AUTHORS)
- # 
- # This file is part of Bitprim.
- # 
- # This program is free software: you can redistribute it and/or modify
- # it under the terms of the GNU Affero General Public License as published by
- # the Free Software Foundation, either version 3 of the License, or
- # (at your option) any later version.
- # 
- # This program is distributed in the hope that it will be useful,
- # but WITHOUT ANY WARRANTY; without even the implied warranty of
- # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- # GNU Affero General Public License for more details.
- # 
- # You should have received a copy of the GNU Affero General Public License
- # along with this program.  If not, see <http://www.gnu.org/licenses/>.
- # 
+# Copyright (c) 2016-2022 Knuth Project developers.
+# Distributed under the MIT software license, see the accompanying
+# file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 import bitprim
 import bitprim_native
@@ -38,7 +23,7 @@ import time
 
 
 # ------------------------------------------------------
-# 
+#
 # ------------------------------------------------------
 def signal_handler(signal, frame):
     # signal.signal(signal.SIGINT, signal_handler)
@@ -46,7 +31,7 @@ def signal_handler(signal, frame):
     print('You pressed Ctrl-C')
     sys.exit(0)
 
-def history_fetch_handler(e, l): 
+def history_fetch_handler(e, l):
     count = l.count()
     print('history_fetch_handler count: {0:d}'.format(count))
 
@@ -63,17 +48,17 @@ def history_fetch_handler(e, l):
         print(h.point.index)
         print(h.point.get_checksum)
 
-def block_header_handler(e, header): 
+def block_header_handler(e, header):
 
     hash = header.previous_block_hash
     hash_hex = ''.join('{:02x}'.format(x) for x in hash[::-1])
     # print(hash)
     print(hash_hex)
 
-def last_height_fetch_handler(e, h): 
+def last_height_fetch_handler(e, h):
     if (e == 0):
         print('Last Height is: {0:d}'.format(h))
-    
+
     hash_str = "00000000839a8e6886ab5951d76f411475428afc90947ee320161bbf18eb6048"
     hash = bytearray.fromhex(hash_str)
     hash = hash[::-1]

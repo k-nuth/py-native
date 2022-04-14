@@ -1,12 +1,12 @@
 #include "script.h"
 
 #ifdef __cplusplus
-extern "C" {  
-#endif  
+extern "C" {
+#endif
 
-PyObject* bitprim_native_chain_script_destruct(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_script_destruct(PyObject* self, PyObject* args){
     PyObject* py_script;
-    
+
     if ( ! PyArg_ParseTuple(args, "O", &py_script)) {
         return NULL;
     }
@@ -16,9 +16,9 @@ PyObject* bitprim_native_chain_script_destruct(PyObject* self, PyObject* args){
     Py_RETURN_NONE;
 }
 
-PyObject* bitprim_native_chain_script_is_valid(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_script_is_valid(PyObject* self, PyObject* args){
     PyObject* py_script;
-    
+
     if ( ! PyArg_ParseTuple(args, "O", &py_script)) {
         return NULL;
     }
@@ -29,9 +29,9 @@ PyObject* bitprim_native_chain_script_is_valid(PyObject* self, PyObject* args){
 }
 
 
-PyObject* bitprim_native_chain_script_is_valid_operations(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_script_is_valid_operations(PyObject* self, PyObject* args){
     PyObject* py_script;
-    
+
     if ( ! PyArg_ParseTuple(args, "O", &py_script)) {
         return NULL;
     }
@@ -42,9 +42,9 @@ PyObject* bitprim_native_chain_script_is_valid_operations(PyObject* self, PyObje
 }
 
 
-PyObject* bitprim_native_chain_script_satoshi_content_size(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_script_satoshi_content_size(PyObject* self, PyObject* args){
     PyObject* py_script;
-    
+
     if ( ! PyArg_ParseTuple(args, "O", &py_script)) {
         return NULL;
     }
@@ -54,7 +54,7 @@ PyObject* bitprim_native_chain_script_satoshi_content_size(PyObject* self, PyObj
     return Py_BuildValue("K", res);
 }
 
-PyObject* bitprim_native_chain_script_serialized_size(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_script_serialized_size(PyObject* self, PyObject* args){
     PyObject* py_script;
     int py_prefix;
 
@@ -68,7 +68,7 @@ PyObject* bitprim_native_chain_script_serialized_size(PyObject* self, PyObject* 
 }
 
 
-PyObject* bitprim_native_chain_script_to_string(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_script_to_string(PyObject* self, PyObject* args){
     PyObject* py_script;
     uint32_t py_active_forks;
 
@@ -81,7 +81,7 @@ PyObject* bitprim_native_chain_script_to_string(PyObject* self, PyObject* args){
     return Py_BuildValue("s", res);
 }
 
-PyObject* bitprim_native_chain_script_sigops(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_script_sigops(PyObject* self, PyObject* args){
     PyObject* py_script;
     int py_embedded;
 
@@ -94,9 +94,9 @@ PyObject* bitprim_native_chain_script_sigops(PyObject* self, PyObject* args){
     return Py_BuildValue("K", res);
 }
 
-// PyObject* bitprim_native_chain_script_embedded_sigops(PyObject* self, PyObject* args){
+// PyObject* kth_py_native_chain_script_embedded_sigops(PyObject* self, PyObject* args){
 //     PyObject* py_script;
-//     PyObject* py_prevout_script; 
+//     PyObject* py_prevout_script;
 
 //     if ( ! PyArg_ParseTuple(args, "OO", &py_script, &py_prevout_script)) {
 //         return NULL;
@@ -115,4 +115,4 @@ PyObject* bitprim_native_chain_script_sigops(PyObject* self, PyObject* args){
 
 #ifdef __cplusplus
 } // extern "C"
-#endif  
+#endif

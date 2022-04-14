@@ -30,4 +30,4 @@ sudo ./reset.sh
 # --------------------------------------------------
 # Luego, para el que instala
 
-# pip install bitprim-native --no-cache-dir
+# pip install kth-native --no-cache-dir

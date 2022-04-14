@@ -1,30 +1,15 @@
-/**
- * Copyright (c) 2017 Bitprim developers (see AUTHORS)
- *
- * This file is part of Bitprim.
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+// Copyright (c) 2016-2022 Knuth Project developers.
+// Distributed under the MIT software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "chain.h"
-#include <bitprim/nodecint.h>
+#include <kth/capi.h>
 #include "../utils.h" //TODO(fernando): poner bien el dir del header
 
 
 #ifdef __cplusplus
-extern "C" {  
-#endif  
+extern "C" {
+#endif
 
 // -------------------------------------------------------------------
 // fetch_block
@@ -40,13 +25,13 @@ void chain_fetch_block_handler(chain_t chain, void* ctx, error_code_t error , bl
 
     PyObject* arglist = Py_BuildValue("(iOK)", error, py_block, h);
     PyObject_CallObject(py_callback, arglist);
-    Py_DECREF(arglist);    
+    Py_DECREF(arglist);
     Py_XDECREF(py_callback);  // Dispose of the call
 
     PyGILState_Release(gstate);
 }
 
-PyObject* bitprim_native_chain_fetch_block_by_height(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_fetch_block_by_height(PyObject* self, PyObject* args){
     PyObject* py_chain;
     uint64_t py_height;
     PyObject* py_callback;
@@ -58,7 +43,7 @@ PyObject* bitprim_native_chain_fetch_block_by_height(PyObject* self, PyObject* a
     if (!PyCallable_Check(py_callback)) {
         PyErr_SetString(PyExc_TypeError, "parameter must be callable");
         return NULL;
-    }    
+    }
 
     chain_t chain = (chain_t)get_ptr(py_chain);
     Py_XINCREF(py_callback);         /* Add a reference to new callback */
@@ -66,7 +51,7 @@ PyObject* bitprim_native_chain_fetch_block_by_height(PyObject* self, PyObject* a
     Py_RETURN_NONE;
 }
 
-PyObject* bitprim_native_chain_fetch_block_by_hash(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_fetch_block_by_hash(PyObject* self, PyObject* args){
     PyObject* py_chain;
     char* py_hash;
     size_t py_hash_size;
@@ -106,15 +91,15 @@ void chain_fetch_merkle_block_handler(chain_t chain, void* ctx, error_code_t err
 
     PyObject* arglist = Py_BuildValue("(iOK)", error, py_merkle, h);
     PyObject_CallObject(py_callback, arglist);
-    Py_DECREF(arglist);    
+    Py_DECREF(arglist);
     Py_XDECREF(py_callback);  // Dispose of the call
 }
 
-PyObject* bitprim_native_chain_fetch_merkle_block_by_height(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_fetch_merkle_block_by_height(PyObject* self, PyObject* args){
     PyObject* py_chain;
     uint64_t py_height;
     PyObject* py_callback;
-   
+
  if ( ! PyArg_ParseTuple(args, "OKO", &py_chain, &py_height, &py_callback)) {
          return NULL;
     }
@@ -122,7 +107,7 @@ PyObject* bitprim_native_chain_fetch_merkle_block_by_height(PyObject* self, PyOb
     if (!PyCallable_Check(py_callback)) {
         PyErr_SetString(PyExc_TypeError, "parameter must be callable");
         return NULL;
-    }    
+    }
 
     chain_t chain = (chain_t)get_ptr(py_chain);
     Py_XINCREF(py_callback);         /* Add a reference to new callback */
@@ -131,7 +116,7 @@ PyObject* bitprim_native_chain_fetch_merkle_block_by_height(PyObject* self, PyOb
 }
 
 
-PyObject* bitprim_native_chain_fetch_merkle_block_by_hash(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_fetch_merkle_block_by_hash(PyObject* self, PyObject* args){
     PyObject* py_chain;
     char* py_hash;
     size_t py_hash_size;
@@ -171,11 +156,11 @@ void chain_fetch_block_header_handler(chain_t chain, void* ctx, error_code_t err
 
     PyObject* arglist = Py_BuildValue("(iOK)", error, py_header, h);
     PyObject_CallObject(py_callback, arglist);
-    Py_DECREF(arglist);    
+    Py_DECREF(arglist);
     Py_XDECREF(py_callback);  // Dispose of the call
 }
 
-PyObject* bitprim_native_chain_fetch_block_header_by_height(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_fetch_block_header_by_height(PyObject* self, PyObject* args){
     PyObject* py_chain;
     uint64_t py_height;
     PyObject* py_callback;
@@ -187,7 +172,7 @@ PyObject* bitprim_native_chain_fetch_block_header_by_height(PyObject* self, PyOb
     if (!PyCallable_Check(py_callback)) {
         PyErr_SetString(PyExc_TypeError, "parameter must be callable");
         return NULL;
-    }    
+    }
 
     chain_t chain = (chain_t)get_ptr(py_chain);
     Py_XINCREF(py_callback);         /* Add a reference to new callback */
@@ -196,7 +181,7 @@ PyObject* bitprim_native_chain_fetch_block_header_by_height(PyObject* self, PyOb
     Py_RETURN_NONE;
 }
 
-PyObject* bitprim_native_chain_fetch_block_header_by_hash(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_fetch_block_header_by_hash(PyObject* self, PyObject* args){
     PyObject* py_chain;
     char* py_hash;
     size_t py_hash_size;
@@ -237,13 +222,13 @@ void chain_fetch_last_height_handler(chain_t chain, void* ctx, error_code_t erro
 
     PyObject* arglist = Py_BuildValue("(iK)", error, h);
     PyObject_CallObject(py_callback, arglist);
-    Py_DECREF(arglist);    
+    Py_DECREF(arglist);
     Py_XDECREF(py_callback);  // Dispose of the call
 
     PyGILState_Release(gstate);
 }
 
-PyObject* bitprim_native_chain_fetch_last_height(PyObject* self, PyObject* args) {
+PyObject* kth_py_native_chain_fetch_last_height(PyObject* self, PyObject* args) {
     PyObject* py_chain;
     PyObject* py_callback;
 
@@ -254,7 +239,7 @@ PyObject* bitprim_native_chain_fetch_last_height(PyObject* self, PyObject* args)
     if (!PyCallable_Check(py_callback)) {
         PyErr_SetString(PyExc_TypeError, "parameter must be callable");
         return NULL;
-    }    
+    }
 
     chain_t chain = (chain_t)get_ptr(py_chain);
     Py_XINCREF(py_callback);         /* Add a reference to new callback */
@@ -282,7 +267,7 @@ void chain_fetch_history_handler(chain_t chain, void* ctx, error_code_t error, h
     Py_XDECREF(py_callback);  // Dispose of the call
 }
 
-PyObject* bitprim_native_chain_fetch_history(PyObject* self, PyObject* args) {
+PyObject* kth_py_native_chain_fetch_history(PyObject* self, PyObject* args) {
     PyObject* py_chain;
     char* address_str;
     uint64_t py_limit;
@@ -296,7 +281,7 @@ PyObject* bitprim_native_chain_fetch_history(PyObject* self, PyObject* args) {
     if (!PyCallable_Check(py_callback)) {
         PyErr_SetString(PyExc_TypeError, "parameter must be callable");
         return NULL;
-    }    
+    }
 
     chain_t chain = (chain_t)get_ptr(py_chain);
 
@@ -319,11 +304,11 @@ void chain_block_height_fetch_handler(chain_t chain, void* ctx, error_code_t err
 
     PyObject* arglist = Py_BuildValue("(iK)", error, h);
     PyObject_CallObject(py_callback, arglist);
-    Py_DECREF(arglist);    
+    Py_DECREF(arglist);
     Py_XDECREF(py_callback);  // Dispose of the call
 }
 
-PyObject* bitprim_native_chain_fetch_block_height(PyObject* self, PyObject* args) {
+PyObject* kth_py_native_chain_fetch_block_height(PyObject* self, PyObject* args) {
     PyObject* py_chain;
     char* py_hash;
     size_t py_hash_size;
@@ -340,10 +325,10 @@ PyObject* bitprim_native_chain_fetch_block_height(PyObject* self, PyObject* args
     if ( ! PyCallable_Check(py_callback)) {
         PyErr_SetString(PyExc_TypeError, "parameter must be callable");
         return NULL;
-    }    
+    }
 
     chain_t chain = (chain_t)get_ptr(py_chain);
-    
+
     hash_t hash;
     memcpy(hash.hash, py_hash, 32);
 
@@ -366,11 +351,11 @@ void chain_stealth_fetch_handler(chain_t chain, void* ctx, error_code_t error, s
 
     PyObject* arglist = Py_BuildValue("(iO)", error, py_stealth_list);
     PyObject_CallObject(py_callback, arglist);
-    Py_DECREF(arglist);    
+    Py_DECREF(arglist);
     Py_XDECREF(py_callback);  // Dispose of the call
 }
 
-PyObject* bitprim_native_chain_fetch_stealth(PyObject* self, PyObject* args) {
+PyObject* kth_py_native_chain_fetch_stealth(PyObject* self, PyObject* args) {
     PyObject* py_chain;
     PyObject* py_filter;
     uint64_t py_from_height;
@@ -383,7 +368,7 @@ PyObject* bitprim_native_chain_fetch_stealth(PyObject* self, PyObject* args) {
     if (!PyCallable_Check(py_callback)) {
         PyErr_SetString(PyExc_TypeError, "parameter must be callable");
         return NULL;
-    }    
+    }
 
     chain_t chain = (chain_t)get_ptr(py_chain);
     Py_XINCREF(py_callback);         /* Add a reference to new callback */
@@ -401,13 +386,13 @@ void chain_fetch_transaction_handler(chain_t chain, void* ctx, error_code_t erro
 
     PyObject* arglist = Py_BuildValue("(iOKK)", error, py_transaction, index, height);
     PyObject_CallObject(py_callback, arglist);
-    Py_DECREF(arglist);    
+    Py_DECREF(arglist);
     Py_XDECREF(py_callback);  // Dispose of the call
 
     PyGILState_Release(gstate);
 }
 
-PyObject* bitprim_native_chain_fetch_transaction(PyObject* self, PyObject* args) {
+PyObject* kth_py_native_chain_fetch_transaction(PyObject* self, PyObject* args) {
     PyObject* py_chain;
     char* py_hash;
     size_t py_hash_size;
@@ -445,12 +430,12 @@ PyObject* bitprim_native_chain_fetch_transaction(PyObject* self, PyObject* args)
 
 //     PyObject* arglist = Py_BuildValue("(iO)", error, py_output);
 //     PyObject_CallObject(py_callback, arglist);
-//     Py_DECREF(arglist);    
+//     Py_DECREF(arglist);
 //     Py_XDECREF(py_callback);  // Dispose of the call
 // }
 
 
-// PyObject* bitprim_native_chain_fetch_output(PyObject* self, PyObject* args){
+// PyObject* kth_py_native_chain_fetch_output(PyObject* self, PyObject* args){
 //     PyObject* py_chain;
 //     char* py_hash;
 //     size_t py_hash_size;
@@ -485,12 +470,12 @@ void chain_fetch_transaction_position_handler(chain_t chain, void* ctx, error_co
     PyObject* py_callback = ctx;
     PyObject* arglist = Py_BuildValue("(iKK)", error, position, height);
     PyObject_CallObject(py_callback, arglist);
-    Py_DECREF(arglist);    
+    Py_DECREF(arglist);
     Py_XDECREF(py_callback);  // Dispose of the call
 }
 
 
-PyObject* bitprim_native_chain_fetch_transaction_position(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_fetch_transaction_position(PyObject* self, PyObject* args){
     PyObject* py_chain;
     char* py_hash;
     size_t py_hash_size;
@@ -522,11 +507,11 @@ void chain_organize_handler(chain_t chain, void* ctx, error_code_t error) {
     PyObject* py_callback = ctx;
     PyObject* arglist = Py_BuildValue("(i)", error);
     PyObject_CallObject(py_callback, arglist);
-    Py_DECREF(arglist);    
+    Py_DECREF(arglist);
     Py_XDECREF(py_callback);  // Dispose of the call
 }
 
-PyObject* bitprim_native_chain_organize_block(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_organize_block(PyObject* self, PyObject* args){
     PyObject* py_chain;
     PyObject* py_block;
     PyObject* py_callback;
@@ -548,7 +533,7 @@ PyObject* bitprim_native_chain_organize_block(PyObject* self, PyObject* args){
     Py_RETURN_NONE;
 }
 
-PyObject* bitprim_native_chain_organize_transaction(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_organize_transaction(PyObject* self, PyObject* args){
     PyObject* py_chain;
     PyObject* py_transaction;
     PyObject* py_callback;
@@ -574,11 +559,11 @@ void chain_validate_tx_handler(chain_t chain, void* ctx, error_code_t error, cha
     PyObject* py_callback = ctx;
     PyObject* arglist = Py_BuildValue("(is)", error, msg);
     PyObject_CallObject(py_callback, arglist);
-    Py_DECREF(arglist);    
+    Py_DECREF(arglist);
     Py_XDECREF(py_callback);  // Dispose of the call
 }
 
-PyObject* bitprim_native_chain_validate_tx(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_validate_tx(PyObject* self, PyObject* args){
     PyObject* py_chain;
     PyObject* py_transaction;
     PyObject* py_callback;
@@ -598,15 +583,6 @@ PyObject* bitprim_native_chain_validate_tx(PyObject* self, PyObject* args){
     Py_XINCREF(py_callback);
     chain_validate_tx(chain, py_callback, transaction, chain_validate_tx_handler);
 
-
-// chain/chain.c:587:56: warning: incompatible pointer types passing 
-// 'void (chain_t, void *, int, char *)' 
-// (aka 'void (void *, void *, int, char *)') 
-// to parameter of type 'validate_tx_handler_t' (aka 'void (*)(void *, void *, int, const char *)') [-Wincompatible-pointer-types]
-// chain_validate_tx(chain, py_callback, transaction, chain_validate_tx_handler);
-//                                                     ^~~~~~~~~~~~~~~~~~~~~~~~~
-// bitprim/include/bitprim/nodecint/chain/chain.h:213:90: note: passing argument to parameter 'handler' here    
-
     Py_RETURN_NONE;
 }
 
@@ -617,11 +593,11 @@ void chain_fetch_compact_block_handler(chain_t chain, void* ctx, error_code_t er
 
     PyObject* arglist = Py_BuildValue("(iOK)", error, py_compact, h);
     PyObject_CallObject(py_callback, arglist);
-    Py_DECREF(arglist);    
+    Py_DECREF(arglist);
     Py_XDECREF(py_callback);  // Dispose of the call
 }
 
-PyObject* bitprim_native_chain_fetch_compact_block_by_height(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_fetch_compact_block_by_height(PyObject* self, PyObject* args){
     PyObject* py_chain;
     uint64_t py_height;
     PyObject* py_callback;
@@ -632,7 +608,7 @@ PyObject* bitprim_native_chain_fetch_compact_block_by_height(PyObject* self, PyO
     if (!PyCallable_Check(py_callback)) {
         PyErr_SetString(PyExc_TypeError, "parameter must be callable");
         return NULL;
-    }    
+    }
 
     chain_t chain = (chain_t)get_ptr(py_chain);
     Py_XINCREF(py_callback);         /* Add a reference to new callback */
@@ -642,7 +618,7 @@ PyObject* bitprim_native_chain_fetch_compact_block_by_height(PyObject* self, PyO
 
 
 
-PyObject* bitprim_native_chain_fetch_compact_block_by_hash(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_fetch_compact_block_by_hash(PyObject* self, PyObject* args){
     PyObject* py_chain;
     char* py_hash;
     size_t py_hash_size;
@@ -678,11 +654,11 @@ void chain_fetch_spend_handler(chain_t chain, void* ctx, error_code_t error , po
 
     PyObject* arglist = Py_BuildValue("(iO)", error, py_point);
     PyObject_CallObject(py_callback, arglist);
-    Py_DECREF(arglist);    
+    Py_DECREF(arglist);
     Py_XDECREF(py_callback);  // Dispose of the call
 }
 
-PyObject* bitprim_native_chain_fetch_spend(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_fetch_spend(PyObject* self, PyObject* args){
     PyObject* py_chain;
     PyObject* py_output_point;
     PyObject* py_callback;
@@ -704,7 +680,7 @@ PyObject* bitprim_native_chain_fetch_spend(PyObject* self, PyObject* args){
 }
 
 int chain_subscribe_blockchain_handler(executor_t exec, chain_t chain, void* ctx, error_code_t error, uint64_t fork_height, block_list_t blocks_incoming, block_list_t blocks_replaced) {
-    
+
     //TODO(fernando): hardcoded error code, libbitcoin::error::service_stopped
     // if (exec->actual.stopped() || error == 1) {
     if (executor_stopped(exec) != 0 || error == 1) {
@@ -715,20 +691,20 @@ int chain_subscribe_blockchain_handler(executor_t exec, chain_t chain, void* ctx
     gstate = PyGILState_Ensure();
 
     PyObject* py_callback = ctx;
-    
+
     PyObject* py_blocks_incoming = blocks_incoming != NULL ? to_py_obj(blocks_incoming) : Py_None;
     PyObject* py_blocks_replaced = blocks_replaced != NULL ? to_py_obj(blocks_replaced) : Py_None;
     PyObject* arglist = Py_BuildValue("(iKOO)", error, fork_height, py_blocks_incoming, py_blocks_replaced);
 
     PyObject* ret = PyObject_CallObject(py_callback, arglist);
-    Py_DECREF(arglist);    
-    
+    Py_DECREF(arglist);
+
     if (ret != NULL) {
         int truthy = PyObject_IsTrue(ret);
         Py_DECREF(ret);
-        
+
         PyGILState_Release(gstate);
-            
+
         return truthy == 1 ? 1 : 0;
 
     }
@@ -737,7 +713,7 @@ int chain_subscribe_blockchain_handler(executor_t exec, chain_t chain, void* ctx
     return 0;
 }
 
-PyObject* bitprim_native_chain_subscribe_blockchain(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_subscribe_blockchain(PyObject* self, PyObject* args){
     PyObject* py_exec;
     PyObject* py_chain;
     PyObject* py_callback;
@@ -754,7 +730,7 @@ PyObject* bitprim_native_chain_subscribe_blockchain(PyObject* self, PyObject* ar
     executor_t exec = cast_executor(py_exec);
     chain_t chain = (chain_t)get_ptr(py_chain);
     Py_XINCREF(py_callback);         /* Add a reference to new callback */
-    
+
     chain_subscribe_blockchain(exec, chain, py_callback, chain_subscribe_blockchain_handler);
     Py_RETURN_NONE;
 }
@@ -766,7 +742,7 @@ int chain_subscribe_transaction_handler(executor_t exec, chain_t chain, void* ct
     if (executor_stopped(exec) != 0 || error == 1) {
         return 0;
     }
-    
+
     PyGILState_STATE gstate;
     gstate = PyGILState_Ensure();
 
@@ -775,7 +751,7 @@ int chain_subscribe_transaction_handler(executor_t exec, chain_t chain, void* ct
 
     PyObject* arglist = Py_BuildValue("(iO)", error, py_transaction);
     PyObject* ret = PyObject_CallObject(py_callback, arglist);
-    Py_DECREF(arglist);    
+    Py_DECREF(arglist);
     //Py_XDECREF(py_callback);  // Dispose of the call
 
 
@@ -790,7 +766,7 @@ int chain_subscribe_transaction_handler(executor_t exec, chain_t chain, void* ct
         Py_DECREF(ret);
 
         PyGILState_Release(gstate);
-        
+
         return py_ret;
     }
 
@@ -798,7 +774,7 @@ int chain_subscribe_transaction_handler(executor_t exec, chain_t chain, void* ct
     return 0;
 }
 
-PyObject* bitprim_native_chain_subscribe_transaction(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_subscribe_transaction(PyObject* self, PyObject* args){
     PyObject* py_exec;
     PyObject* py_chain;
     PyObject* py_callback;
@@ -819,7 +795,7 @@ PyObject* bitprim_native_chain_subscribe_transaction(PyObject* self, PyObject* a
     Py_RETURN_NONE;
 }
 
-PyObject* bitprim_native_chain_unsubscribe(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_unsubscribe(PyObject* self, PyObject* args){
     PyObject* py_chain;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_chain)) {
@@ -827,12 +803,12 @@ PyObject* bitprim_native_chain_unsubscribe(PyObject* self, PyObject* args){
     }
 
     chain_t chain = (chain_t)get_ptr(py_chain);
-    
+
     chain_unsubscribe(chain);
     Py_RETURN_NONE;
 }
 
 #ifdef __cplusplus
 } //extern "C"
-#endif  
+#endif
 

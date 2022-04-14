@@ -1,10 +1,10 @@
 #include "output_list.h"
 
 #ifdef __cplusplus
-extern "C" {  
-#endif  
+extern "C" {
+#endif
 
-PyObject* bitprim_native_output_list_push_back(PyObject* self, PyObject* args){
+PyObject* kth_py_native_output_list_push_back(PyObject* self, PyObject* args){
     PyObject* py_output_list;
     PyObject* py_output;
 
@@ -19,9 +19,9 @@ PyObject* bitprim_native_output_list_push_back(PyObject* self, PyObject* args){
     Py_RETURN_NONE;
 }
 
-PyObject* bitprim_native_output_list_count(PyObject* self, PyObject* args){
+PyObject* kth_py_native_output_list_count(PyObject* self, PyObject* args){
     PyObject* py_output_list;
-    
+
     if ( ! PyArg_ParseTuple(args, "O", &py_output_list)) {
         return NULL;
     }
@@ -31,7 +31,7 @@ PyObject* bitprim_native_output_list_count(PyObject* self, PyObject* args){
     return Py_BuildValue("K", res);
 }
 
-PyObject* bitprim_native_output_list_nth(PyObject* self, PyObject* args){
+PyObject* kth_py_native_output_list_nth(PyObject* self, PyObject* args){
     PyObject* py_output_list;
     uint64_t py_n;
 
@@ -45,4 +45,4 @@ PyObject* bitprim_native_output_list_nth(PyObject* self, PyObject* args){
 
 #ifdef __cplusplus
 } //extern "C"
-#endif  
+#endif

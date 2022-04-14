@@ -1,20 +1,20 @@
 #include "stealth_compact_list.h"
-#include <bitprim/nodecint.h>
+#include <kth/capi.h>
 #include "../utils.h"
 
 #ifdef __cplusplus
-extern "C" {  
-#endif  
+extern "C" {
+#endif
 
 
 /*
-PyObject* bitprim_native_chain_stealth_compact_list_construct_default(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_stealth_compact_list_construct_default(PyObject* self, PyObject* args){
     stealth_compact_list_t res = (stealth_compact_list_t)chain_stealth_compact_list_construct_default();
     return to_py_obj(res);
 }
 
 
-PyObject* bitprim_native_chain_stealth_compact_list_push_back(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_stealth_compact_list_push_back(PyObject* self, PyObject* args){
     PyObject* py_stealth_compact_list;
     PyObject* py_stealth_compact;
 
@@ -29,9 +29,9 @@ PyObject* bitprim_native_chain_stealth_compact_list_push_back(PyObject* self, Py
 }
 */
 
-PyObject* bitprim_native_chain_stealth_compact_list_destruct(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_stealth_compact_list_destruct(PyObject* self, PyObject* args){
    PyObject* py_stealth_compact_list;
-    
+
     if ( ! PyArg_ParseTuple(args, "O", &py_stealth_compact_list)) {
         return NULL;
     }
@@ -42,9 +42,9 @@ PyObject* bitprim_native_chain_stealth_compact_list_destruct(PyObject* self, PyO
 }
 
 
-PyObject* bitprim_native_chain_stealth_compact_list_count(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_stealth_compact_list_count(PyObject* self, PyObject* args){
     PyObject* py_stealth_compact_list;
-    
+
     if ( ! PyArg_ParseTuple(args, "O", &py_stealth_compact_list)) {
         return NULL;
     }
@@ -55,7 +55,7 @@ PyObject* bitprim_native_chain_stealth_compact_list_count(PyObject* self, PyObje
 }
 
 
-PyObject* bitprim_native_chain_stealth_compact_list_nth(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_stealth_compact_list_nth(PyObject* self, PyObject* args){
     PyObject* py_stealth_compact_list;
     uint64_t py_n;
 
@@ -69,4 +69,4 @@ PyObject* bitprim_native_chain_stealth_compact_list_nth(PyObject* self, PyObject
 
 #ifdef __cplusplus
 } //extern "C"
-#endif  
+#endif

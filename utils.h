@@ -1,13 +1,13 @@
-#ifndef BITPRIM_PY_UTILS_H_
-#define BITPRIM_PY_UTILS_H_
+#ifndef KTH_PY_NATIVE_UTILS_H_
+#define KTH_PY_NATIVE_UTILS_H_
 
 
 #include <Python.h>
-#include <bitprim/nodecint.h>
+#include <kth/capi.h>
 
 #ifdef __cplusplus
-extern "C" {  
-#endif  
+extern "C" {
+#endif
 
 void* get_ptr(PyObject* obj);
 executor_t cast_executor(PyObject* obj);
@@ -17,6 +17,6 @@ PyObject* to_py_obj(void*);
 
 #ifdef __cplusplus
 } //extern "C"
-#endif  
+#endif
 
 #endif

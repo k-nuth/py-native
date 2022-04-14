@@ -1,12 +1,12 @@
 #include "stealth_compact.h"
-#include <bitprim/nodecint.h>
+#include <kth/capi.h>
 #include "../utils.h" //TODO(fernando): poner bien el dir del header
 
 #ifdef __cplusplus
-extern "C" {  
-#endif  
+extern "C" {
+#endif
 
-PyObject* bitprim_native_stealth_compact_get_ephemeral_public_key_hash(PyObject* self, PyObject* args){
+PyObject* kth_py_native_stealth_compact_get_ephemeral_public_key_hash(PyObject* self, PyObject* args){
     PyObject* py_stealth;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_stealth)) {
@@ -17,13 +17,13 @@ PyObject* bitprim_native_stealth_compact_get_ephemeral_public_key_hash(PyObject*
     hash_t res = stealth_compact_get_ephemeral_public_key_hash(stealth);
 
 #if PY_MAJOR_VERSION >= 3
-    return Py_BuildValue("y#", res.hash, 32); //TODO: warning, hardcoded hash size!   
+    return Py_BuildValue("y#", res.hash, 32); //TODO: warning, hardcoded hash size!
 #else
-    return Py_BuildValue("s#", res.hash, 32);    
+    return Py_BuildValue("s#", res.hash, 32);
 #endif
 }
 
-PyObject* bitprim_native_stealth_compact_get_transaction_hash(PyObject* self, PyObject* args){
+PyObject* kth_py_native_stealth_compact_get_transaction_hash(PyObject* self, PyObject* args){
     PyObject* py_stealth;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_stealth)) {
@@ -40,7 +40,7 @@ PyObject* bitprim_native_stealth_compact_get_transaction_hash(PyObject* self, Py
 #endif
 }
 
-PyObject* bitprim_native_stealth_compact_get_public_key_hash(PyObject* self, PyObject* args){
+PyObject* kth_py_native_stealth_compact_get_public_key_hash(PyObject* self, PyObject* args){
     PyObject* py_stealth;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_stealth)) {
@@ -59,4 +59,4 @@ PyObject* bitprim_native_stealth_compact_get_public_key_hash(PyObject* self, PyO
 
 #ifdef __cplusplus
 } //extern "C"
-#endif  
+#endif

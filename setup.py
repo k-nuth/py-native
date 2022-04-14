@@ -1,23 +1,8 @@
 #!/usr/bin/env python
 
-# 
-# Copyright (c) 2017 Bitprim developers (see AUTHORS)
-# 
-# This file is part of Bitprim.
-# 
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-# 
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-# 
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-# 
+# Copyright (c) 2016-2022 Knuth Project developers.
+# Distributed under the MIT software license, see the accompanying
+# file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 import glob
 import os
@@ -45,10 +30,9 @@ import fnmatch
 
 from sys import platform
 
-PKG_NAME = 'bitprim_native'
+PKG_NAME = 'kth-py-native'
 # VERSION = '1.1.9'
 SYSTEM = sys.platform
-
 
 
 def get_similar_lib(path, pattern):
@@ -69,8 +53,8 @@ def get_similar_lib(path, pattern):
 #     # Windows...
 
 def get_libraries():
-    # libraries = ['bitprim-node-cint', 'bitprim-node', 'bitprim-blockchain', 'bitprim-network', 'bitprim-consensus', 'bitprim-database', 'bitprim-core', 'boost_atomic', 'boost_chrono', 'boost_date_time', 'boost_filesystem', 'boost_iostreams', 'boost_locale', 'boost_log', 'boost_log_setup', 'boost_program_options', 'boost_random', 'boost_regex', 'boost_system', 'boost_unit_test_framework', 'boost_prg_exec_monitor', 'boost_test_exec_monitor', 'boost_thread', 'boost_timer', 'secp256k1', 'bz2', 'gmp', 'z',]
-    fixed = ['bitprim-node-cint', 'bitprim-node', 'bitprim-blockchain', 'bitprim-network', 'bitprim-consensus', 'bitprim-database', 'bitprim-core']
+    # libraries = ['kth-c-api', 'kth-node', 'kth-blockchain', 'kth-network', 'kth-consensus', 'kth-database', 'kth-core', 'boost_atomic', 'boost_chrono', 'boost_date_time', 'boost_filesystem', 'boost_iostreams', 'boost_locale', 'boost_log', 'boost_log_setup', 'boost_program_options', 'boost_random', 'boost_regex', 'boost_system', 'boost_unit_test_framework', 'boost_prg_exec_monitor', 'boost_test_exec_monitor', 'boost_thread', 'boost_timer', 'secp256k1', 'bz2', 'gmp', 'z',]
+    fixed = ['kth-c-api', 'kth-node', 'kth-blockchain', 'kth-network', 'kth-consensus', 'kth-database', 'kth-domain', 'kth-infrastructure']
 
     if platform == "win32":
         # libraries = ['boost_atomic', 'boost_chrono', 'boost_date_time', 'boost_filesystem', 'boost_iostreams', 'boost_locale', 'boost_log', 'boost_log_setup', 'boost_program_options', 'boost_random', 'boost_regex', 'boost_system', 'boost_unit_test_framework', 'boost_prg_exec_monitor', 'boost_test_exec_monitor', 'boost_thread', 'boost_timer', 'secp256k1', 'bz2', 'mpir', 'z',]
@@ -79,12 +63,12 @@ def get_libraries():
         winlibs = fixed
         for lib in libraries:
             # print(lib)
-            xxx = get_similar_lib('bitprim/lib', "*" + lib + "*")
+            xxx = get_similar_lib('kth/lib', "*" + lib + "*")
             if xxx != '':
                 xxx = xxx.replace('.lib', '')
                 # print(xxx)
                 winlibs.append(xxx)
-    
+
         # print(winlibs)
         return winlibs
     else:
@@ -106,7 +90,7 @@ def do_conan_stuff(microarch=None, currency=None):
 
     try:
         # c.remote_add(remote, url, verify_ssl, args.insert)
-        c.remote_add('bitprim', 'https://api.bintray.com/conan/bitprim/bitprim')
+        c.remote_add('kth', 'https://knuth.jfrog.io/artifactory/api/conan/knuth')
     except:
         print ("Conan Remote exists, ignoring exception")
 
@@ -126,13 +110,13 @@ def do_conan_stuff(microarch=None, currency=None):
 
     if currency:
         if opts:
-            opts.append('*:currency=%s' % (currency,))    
+            opts.append('*:currency=%s' % (currency,))
         else:
             opts = ['*:currency=%s' % (currency,)]
 
     c.install(refe, verify=None, manifests_interactive=None, manifests=None, options=opts)
 
-    
+
 
 def do_build_stuff(microarch=None, currency=None):
 
@@ -150,18 +134,15 @@ def do_build_stuff(microarch=None, currency=None):
     print(os.getcwd())
     print('*********************************************************************************************************')
 
-    os.chdir(prev_dir) 
+    os.chdir(prev_dir)
 
     print('*********************************************************************************************************')
     print(os.path.dirname(os.path.abspath(__file__)))
     print(os.getcwd())
     print('*********************************************************************************************************')
 
-
-    # libraries = ['bitprim-node-cint', 'bitprim-node', 'bitprim-blockchain', 'bitprim-network', 'bitprim-consensus', 'bitprim-database', 'bitprim-core', 'boost_atomic', 'boost_chrono', 'boost_date_time', 'boost_filesystem', 'boost_iostreams', 'boost_locale', 'boost_log', 'boost_log_setup', 'boost_program_options', 'boost_random', 'boost_regex', 'boost_system', 'boost_unit_test_framework', 'boost_prg_exec_monitor', 'boost_test_exec_monitor', 'boost_thread', 'boost_timer', 'secp256k1', 'bz2', 'gmp', 'z',],
-    # libraries = get_libraries()
     extensions[0].libraries = get_libraries()
-    
+
 
 class DevelopCommand(develop):
     user_options = develop.user_options + [
@@ -260,42 +241,36 @@ microarch = ''
 
 
 extensions = [
-	Extension('bitprim_native',
+	Extension('kth_py_native',
 
         define_macros = [('BITPRIM_LIB_STATIC', None),],
 
-    	sources = ['utils.c',  'chain/header.c', 'chain/block.c', 'chain/merkle_block.c', 'bitprimmodule.cpp',
-        'chain/chain.c', 'binary.c', 'chain/point.c', 'chain/history.c', 'chain/word_list.c', 
-        'chain/transaction.c', 'chain/output.c', 'chain/output_list.c',  'chain/input.c', 'chain/input_list.c', 
+    	sources = ['utils.c',  'chain/header.c', 'chain/block.c', 'chain/merkle_block.c', 'module.cpp',
+        'chain/chain.c', 'binary.c', 'chain/point.c', 'chain/history.c', 'chain/word_list.c',
+        'chain/transaction.c', 'chain/output.c', 'chain/output_list.c',  'chain/input.c', 'chain/input_list.c',
         'chain/script.c', 'chain/payment_address.c', 'chain/compact_block.c', 'chain/output_point.c',
         'chain/block_list.c', 'chain/transaction_list.c', 'chain/stealth_compact.c', 'chain/stealth_compact_list.c', 'p2p/p2p.c'],
 
-        include_dirs=['bitprim/include'],
-        library_dirs=['bitprim/lib'],
-        # libraries = ['bitprim-node-cint', 'bitprim-node', 'bitprim-blockchain', 'bitprim-network', 'bitprim-consensus', 'bitprim-database', 'bitprim-core', 'boost_atomic', 'boost_chrono', 'boost_date_time', 'boost_filesystem', 'boost_iostreams', 'boost_locale', 'boost_log', 'boost_log_setup', 'boost_program_options', 'boost_random', 'boost_regex', 'boost_system', 'boost_unit_test_framework', 'boost_prg_exec_monitor', 'boost_test_exec_monitor', 'boost_thread', 'boost_timer', 'secp256k1', 'bz2', 'gmp', 'z',],
-        # libraries = get_libraries()
+        include_dirs=['kth/include'],
+        library_dirs=['kth/lib'],
     ),
 ]
-
-
 
 exec(open('./version.py').read())
 setup(
     name=PKG_NAME,
     # version=VERSION,
     version=__version__,
-    
 
-    description='Bitprim Platform',
-    long_description='Bitprim Platform',
-    url='https://github.com/bitprim/bitprim-py',
+
+    description='Knuth Project',
+    long_description='Knuth Project',
+    url='https://github.com/k-nuth/py-native',
 
     # Author details
-    author='Bitprim Inc',				#TODO!
-    author_email='dev@bitprim.org',		#TODO!
-
-    # Choose your license
-    license='MIT',    					#TODO!
+    author='Knuth Project',
+    author_email='info@kth.cash',
+    license='MIT',
 
     # See https://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
@@ -319,160 +294,28 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
     ],
 
     # What does your project relate to?
-    keywords='bitcoin litecoin cash money bitprim',
+    keywords='bitcoin cash bch money knuth kth',
 
-    # # You can just specify the packages manually here if your project is
-    # # simple. Or you can use find_packages().
-    # packages=find_packages(exclude=['contrib', 'docs', 'tests']),
-    # packages=['bitprim-node-cint'],
-    # # package_dir={'bitprim-node-cint': 'src/mypkg'},
-    # package_dir={'bitprim-node-cint': './'},
-    # package_data={'bitprim-node-cint': ['bitprim/lib/*bitprim-node-cint.*']},
-    # packages=('bitprim', ),
-    # package_data={ 'bitprim': ['bitprim/lib/*bitprim-node-cint*'] },
-
-    # packages=['bitprim-node-cint'],
-    # package_data={ 'bitprim-node-cint': ['libbitprim-node-cint.so'] },
-
-    # distclass = MyDist,
-
-    # eager_resources=['bitprim/lib/libbitprim-node-cint.so'],
-
-    # Alternatively, if you want to distribute just a my_module.py, uncomment
-    # this:
-    #   py_modules=["my_module"],
-
-    # # List run-time dependencies here.  These will be installed by pip when
-    # # your project is installed. For an analysis of "install_requires" vs pip's
-    # # requirements files see:
-    # # https://packaging.python.org/en/latest/requirements.html
-    # install_requires=['peppercorn'],
-
-    # List additional groups of dependencies here (e.g. development
-    # dependencies). You can install these using the following syntax,
-    # for example:
-    # $ pip install -e .[dev,test]
     extras_require={
         'dev': ['check-manifest'],
         'test': ['coverage'],
     },
 
-#   data_files = [('lib\\site-packages',['C:\\development\\bitprim\\build\\bitprim-node-cint\\bitprim-node-cint.dll'])],
-
-	# data_files = [('lib\\site-packages', ['bitprim-node-cint\\lib\\bitprim-node-cint.dll'])],
-    # data_files = [
-    #     ('lib/site-packages', ['bitprim-node-cint/lib/bitprim-node-cint.*'])
-    # ],
-
-    # data_files = [
-    #     ('lib/site-packages', glob.glob('bitprim-node-cint/lib/*bitprim-node-cint.*'))
-    # ],
-
-
-    # data_files = [
-    #     ('/usr/local/lib', glob.glob('bitprim/lib/*bitprim-node-cint.*'))
-    # ],
-
-
-# tion="-I/home/fernando/dev/bitprim/bitprim-node-cint/include" --global-option="-L/home/fernando/dev/bitprim/build/bitprim-node-cint" -e .
-
     ext_modules = extensions,
-
-
-    # cmdclass=dict(
-    #     install_lib=CustomInstall,
-    #     # install=CustomInstallCommand,
-    # ),
-
-    # cmdclass = {'build_ext': build_ext_subclass },
-
 
     cmdclass={
         'build': BuildCommand,
         'install': InstallCommand,
         'develop': DevelopCommand,
         # 'egg_info': EggInfoCommand,
-        
+
     },
 
 )
-
-
-
-
-
-# class CustomInstallCommand(install):
-#     """Customized setuptools install command - prints a friendly greeting."""
-#     def run(self):
-#         print "Hello, developer, how are you? :)"
-#         install.run(self)
-
-# class CustomInstall(install_lib):
-#     def install(self):
-#         print('CustomInstall.install')
-#         install_lib.install(self)
-
-#         build_ext = self.get_finalized_command('build_ext')
-        
-
-#         for key in build_ext.compiler.executables.keys():
-#             # self.set_executable(key, build_ext.compiler.executables[key])
-#             print("executables - key: %s, value: %s" % (key, build_ext.compiler.executables[key]))
-
-# class build_ext_subclass( build_ext ):
-#     def build_extensions(self):
-
-#         print("build_ext_subclass.build_extensions")
-#         print("self.compiler.compiler_type")
-#         print(self.compiler.compiler_type)
-
-#         for key in self.compiler.executables.keys():
-#             print("executables - key: %s, value: %s" % (key, self.compiler.executables[key]))
-
-#         # c = self.compiler.compiler_type
-#         # if copt.has_key(c):
-#         #    for e in self.extensions:
-#         #        e.extra_compile_args = copt[ c ]
-#         # if lopt.has_key(c):
-#         #     for e in self.extensions:
-#         #         e.extra_link_args = lopt[ c ]
-#         build_ext.build_extensions(self)
-
-# class CustomInstall(install_lib):
-#     def install(self):
-#         print('CustomInstall.install')
-#         install_lib.install(self)
-#         bitprim_install_dir = os.path.join(self.install_dir, 'bitprim/')
-        
-#         if not os.path.exists(bitprim_install_dir):
-#             os.makedirs(bitprim_install_dir)
-
-#         log.info("bitprim_install_dir: %s" % (bitprim_install_dir, ))
-#         log.debug("bitprim_install_dir: %s" % (bitprim_install_dir, ))
-#         print("bitprim_install_dir: %s" % (bitprim_install_dir, ))
-
-#         for lib_file in SETUP_DATA_FILES:
-#             log.info("lib_file: %s" % (lib_file, ))
-#             log.debug("lib_file: %s" % (lib_file, ))
-#             print("lib_file: %s" % (lib_file, ))
-
-#             filename = os.path.basename(lib_file)
-#             log.info("filename: %s" % (filename, ))
-#             log.debug("filename: %s" % (filename, ))
-#             print("filename: %s" % (filename, ))
-
-#             dest_file = os.path.join(self.install_dir, 'bitprim', filename)
-
-#             log.info("dest_file: %s" % (dest_file, ))
-#             log.debug("dest_file: %s" % (dest_file, ))
-#             print("dest_file: %s" % (dest_file, ))
-
-#             # file_util.copy_file(lib_file, bitprim_install_dir)
-#             file_util.copy_file(lib_file, dest_file)
-
-# class MyDist(Distribution):
-#      def has_ext_modules(self):
-#          return True

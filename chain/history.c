@@ -1,35 +1,20 @@
-/**
- * Copyright (c) 2017 Bitprim developers (see AUTHORS)
- *
- * This file is part of Bitprim.
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+// Copyright (c) 2016-2022 Knuth Project developers.
+// Distributed under the MIT software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "history.h"
-#include <bitprim/nodecint.h>
+#include <kth/capi.h>
 #include "../utils.h" //TODO(fernando): poner bien el dir del header
 
 #ifdef __cplusplus
-extern "C" {  
-#endif  
+extern "C" {
+#endif
 
 // -------------------------------------------------------------------
 // history_compact_list
 // -------------------------------------------------------------------
 
-PyObject* bitprim_native_history_compact_list_destruct(PyObject* self, PyObject* args) {
+PyObject* kth_py_native_history_compact_list_destruct(PyObject* self, PyObject* args) {
     PyObject* py_history_compact_list;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_history_compact_list)) {
@@ -43,7 +28,7 @@ PyObject* bitprim_native_history_compact_list_destruct(PyObject* self, PyObject*
     Py_RETURN_NONE;
 }
 
-PyObject* bitprim_native_history_compact_list_count(PyObject* self, PyObject* args) {
+PyObject* kth_py_native_history_compact_list_count(PyObject* self, PyObject* args) {
     PyObject* py_history_compact_list;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_history_compact_list)) {
@@ -57,7 +42,7 @@ PyObject* bitprim_native_history_compact_list_count(PyObject* self, PyObject* ar
     return Py_BuildValue("K", res);
 }
 
-PyObject* bitprim_native_history_compact_list_nth(PyObject* self, PyObject* args) {
+PyObject* kth_py_native_history_compact_list_nth(PyObject* self, PyObject* args) {
     PyObject* py_history_compact_list;
     uint64_t py_n;
 
@@ -80,7 +65,7 @@ PyObject* bitprim_native_history_compact_list_nth(PyObject* self, PyObject* args
 // history_compact
 // -------------------------------------------------------------------
 
-PyObject* bitprim_native_history_compact_get_point_kind(PyObject* self, PyObject* args) {
+PyObject* kth_py_native_history_compact_get_point_kind(PyObject* self, PyObject* args) {
     PyObject* py_history_compact;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_history_compact)) {
@@ -94,7 +79,7 @@ PyObject* bitprim_native_history_compact_get_point_kind(PyObject* self, PyObject
     return Py_BuildValue("K", res);
 }
 
-PyObject* bitprim_native_history_compact_get_point(PyObject* self, PyObject* args) {
+PyObject* kth_py_native_history_compact_get_point(PyObject* self, PyObject* args) {
     PyObject* py_history_compact;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_history_compact)) {
@@ -109,7 +94,7 @@ PyObject* bitprim_native_history_compact_get_point(PyObject* self, PyObject* arg
     return Py_BuildValue("O", py_p);
 }
 
-PyObject* bitprim_native_history_compact_get_height(PyObject* self, PyObject* args) {
+PyObject* kth_py_native_history_compact_get_height(PyObject* self, PyObject* args) {
     PyObject* py_history_compact;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_history_compact)) {
@@ -123,7 +108,7 @@ PyObject* bitprim_native_history_compact_get_height(PyObject* self, PyObject* ar
     return Py_BuildValue("K", res);
 }
 
-PyObject* bitprim_native_history_compact_get_value_or_previous_checksum(PyObject* self, PyObject* args) {
+PyObject* kth_py_native_history_compact_get_value_or_previous_checksum(PyObject* self, PyObject* args) {
     PyObject* py_history_compact;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_history_compact)) {
@@ -140,4 +125,4 @@ PyObject* bitprim_native_history_compact_get_value_or_previous_checksum(PyObject
 
 #ifdef __cplusplus
 } //extern "C"
-#endif  
+#endif

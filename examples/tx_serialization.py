@@ -1,21 +1,6 @@
- # 
- # Copyright (c) 2017 Bitprim developers (see AUTHORS)
- # 
- # This file is part of Bitprim.
- # 
- # This program is free software: you can redistribute it and/or modify
- # it under the terms of the GNU Affero General Public License as published by
- # the Free Software Foundation, either version 3 of the License, or
- # (at your option) any later version.
- # 
- # This program is distributed in the hope that it will be useful,
- # but WITHOUT ANY WARRANTY; without even the implied warranty of
- # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- # GNU Affero General Public License for more details.
- # 
- # You should have received a copy of the GNU Affero General Public License
- # along with this program.  If not, see <http://www.gnu.org/licenses/>.
- # 
+# Copyright (c) 2016-2022 Knuth Project developers.
+# Distributed under the MIT software license, see the accompanying
+# file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 # pip install --upgrade --index-url https://test.pypi.org/pypi/ --install-option="--currency=BCH" bitprim-native
 # pip install --upgrade --index-url https://test.pypi.org/pypi/ bitprim-native
@@ -40,9 +25,9 @@ def tx_inputs_outputs_size(tx_hex_str):
     outputs_count = bn.output_list_count(outputs)
     # print(outputs_count)
 
-        # {"input_list_push_back",  bitprim_native_input_list_push_back, METH_VARARGS, "..."},
-        # {"input_list_count",  bitprim_native_input_list_count, METH_VARARGS, "..."},
-        # {"input_list_nth",  bitprim_native_input_list_nth, METH_VARARGS, "..."},
+        # {"input_list_push_back",  kth_py_native_input_list_push_back, METH_VARARGS, "..."},
+        # {"input_list_count",  kth_py_native_input_list_count, METH_VARARGS, "..."},
+        # {"input_list_nth",  kth_py_native_input_list_nth, METH_VARARGS, "..."},
 
 
     inputs_bytes_size = 0
@@ -79,7 +64,7 @@ def tx_inputs_outputs_size(tx_hex_str):
         outputs_bytes_size = outputs_bytes_size + len(output_data)
 
 
-    bn.transaction_destruct(tx)    
+    bn.transaction_destruct(tx)
 
     return (inputs_bytes_size, outputs_bytes_size)
 

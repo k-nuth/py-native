@@ -1,17 +1,17 @@
 #include "block_list.h"
-#include <bitprim/nodecint.h>
+#include <kth/capi.h>
 #include "../utils.h" //TODO(fernando): poner bien el dir del header
 
 #ifdef __cplusplus
-extern "C" {  
-#endif  
+extern "C" {
+#endif
 
-PyObject* bitprim_native_chain_block_list_construct_default(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_block_list_construct_default(PyObject* self, PyObject* args){
     block_list_t res = (block_list_t)chain_block_list_construct_default();
     return to_py_obj(res);
 }
 
-PyObject* bitprim_native_chain_block_list_push_back(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_block_list_push_back(PyObject* self, PyObject* args){
     PyObject* py_block_list;
     PyObject* py_block;
 
@@ -25,9 +25,9 @@ PyObject* bitprim_native_chain_block_list_push_back(PyObject* self, PyObject* ar
     Py_RETURN_NONE;
 }
 
-PyObject* bitprim_native_chain_block_list_destruct(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_block_list_destruct(PyObject* self, PyObject* args){
    PyObject* py_block_list;
-    
+
     if ( ! PyArg_ParseTuple(args, "O", &py_block_list)) {
         return NULL;
     }
@@ -37,9 +37,9 @@ PyObject* bitprim_native_chain_block_list_destruct(PyObject* self, PyObject* arg
     Py_RETURN_NONE;
 }
 
-PyObject* bitprim_native_chain_block_list_count(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_block_list_count(PyObject* self, PyObject* args){
     PyObject* py_block_list;
-    
+
     if ( ! PyArg_ParseTuple(args, "O", &py_block_list)) {
         return NULL;
     }
@@ -49,7 +49,7 @@ PyObject* bitprim_native_chain_block_list_count(PyObject* self, PyObject* args){
     return Py_BuildValue("K", res);
 }
 
-PyObject* bitprim_native_chain_block_list_nth(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_block_list_nth(PyObject* self, PyObject* args){
     PyObject* py_block_list;
     uint64_t py_n;
 
@@ -63,4 +63,4 @@ PyObject* bitprim_native_chain_block_list_nth(PyObject* self, PyObject* args){
 
 #ifdef __cplusplus
 } //extern "C"
-#endif  
+#endif

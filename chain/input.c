@@ -1,12 +1,12 @@
 #include "input.h"
 
 #ifdef __cplusplus
-extern "C" {  
-#endif  
+extern "C" {
+#endif
 
-PyObject* bitprim_native_chain_input_is_valid(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_input_is_valid(PyObject* self, PyObject* args){
     PyObject* py_input;
-    
+
     if ( ! PyArg_ParseTuple(args, "O", &py_input)) {
         return NULL;
     }
@@ -16,9 +16,9 @@ PyObject* bitprim_native_chain_input_is_valid(PyObject* self, PyObject* args){
     return Py_BuildValue("i", res);
 }
 
-PyObject* bitprim_native_chain_input_is_final(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_input_is_final(PyObject* self, PyObject* args){
     PyObject* py_input;
-    
+
     if ( ! PyArg_ParseTuple(args, "O", &py_input)) {
         return NULL;
     }
@@ -28,10 +28,10 @@ PyObject* bitprim_native_chain_input_is_final(PyObject* self, PyObject* args){
     return Py_BuildValue("i", res);
 }
 
-PyObject* bitprim_native_chain_input_serialized_size(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_input_serialized_size(PyObject* self, PyObject* args){
     PyObject* py_input;
     int py_wire;
-    
+
     if ( ! PyArg_ParseTuple(args, "Oi", &py_input, &py_wire)) {
         return NULL;
     }
@@ -41,9 +41,9 @@ PyObject* bitprim_native_chain_input_serialized_size(PyObject* self, PyObject* a
     return Py_BuildValue("K", res);
 }
 
-PyObject* bitprim_native_chain_input_sequence(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_input_sequence(PyObject* self, PyObject* args){
     PyObject* py_input;
-    
+
     if ( ! PyArg_ParseTuple(args, "O", &py_input)) {
         return NULL;
     }
@@ -53,10 +53,10 @@ PyObject* bitprim_native_chain_input_sequence(PyObject* self, PyObject* args){
     return Py_BuildValue("I", res);
 }
 
-PyObject* bitprim_native_chain_input_signature_operations(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_input_signature_operations(PyObject* self, PyObject* args){
     PyObject* py_input;
     int py_bip16_active;
-    
+
     if ( ! PyArg_ParseTuple(args, "Oi", &py_input, &py_bip16_active)) {
         return NULL;
     }
@@ -66,9 +66,9 @@ PyObject* bitprim_native_chain_input_signature_operations(PyObject* self, PyObje
     return Py_BuildValue("K", res);
 }
 
-PyObject* bitprim_native_chain_input_destruct(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_input_destruct(PyObject* self, PyObject* args){
     PyObject* py_input;
-    
+
     if ( ! PyArg_ParseTuple(args, "O", &py_input)) {
         return NULL;
     }
@@ -79,9 +79,9 @@ PyObject* bitprim_native_chain_input_destruct(PyObject* self, PyObject* args){
 }
 
 
-PyObject* bitprim_native_chain_input_script(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_input_script(PyObject* self, PyObject* args){
     PyObject* py_input;
-    
+
     if ( ! PyArg_ParseTuple(args, "O", &py_input)) {
         return NULL;
     }
@@ -91,9 +91,9 @@ PyObject* bitprim_native_chain_input_script(PyObject* self, PyObject* args){
     return to_py_obj(script);
 }
 
-PyObject* bitprim_native_chain_input_previous_output(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_input_previous_output(PyObject* self, PyObject* args){
     PyObject* py_input;
-    
+
     if ( ! PyArg_ParseTuple(args, "O", &py_input)) {
         return NULL;
     }
@@ -104,9 +104,9 @@ PyObject* bitprim_native_chain_input_previous_output(PyObject* self, PyObject* a
 }
 
 /*
-PyObject* bitprim_native_chain_input_get_hash(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_input_get_hash(PyObject* self, PyObject* args){
     PyObject* py_input;
-    
+
     if ( ! PyArg_ParseTuple(args, "O", &py_input)) {
         return NULL;
     }
@@ -119,9 +119,9 @@ PyObject* bitprim_native_chain_input_get_hash(PyObject* self, PyObject* args){
 */
 
 /*
-PyObject* bitprim_native_chain_input_get_index(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_input_get_index(PyObject* self, PyObject* args){
     PyObject* py_input;
-    
+
     if ( ! PyArg_ParseTuple(args, "O", &py_input)) {
         return NULL;
     }
@@ -143,10 +143,10 @@ PyObject* bitprim_native_chain_input_get_index(PyObject* self, PyObject* args){
 //     return ret;
 // }
 
-PyObject* bitprim_native_chain_input_to_data(PyObject* self, PyObject* args) {
+PyObject* kth_py_native_chain_input_to_data(PyObject* self, PyObject* args) {
     PyObject* py_input;
     int py_wire;
-    
+
     if ( ! PyArg_ParseTuple(args, "Oi", &py_input, &py_wire)) {
         return NULL;
     }
@@ -154,16 +154,16 @@ PyObject* bitprim_native_chain_input_to_data(PyObject* self, PyObject* args) {
     input_t input = (input_t)get_ptr(py_input);
     uint64_t /*size_t*/ out_n;
     uint8_t* data = (uint8_t*)chain_input_to_data(input, py_wire, &out_n);
-    
+
 #if PY_MAJOR_VERSION >= 3
-    return Py_BuildValue("y#", data, out_n);    
+    return Py_BuildValue("y#", data, out_n);
 #else
-    return Py_BuildValue("s#", data, out_n);    
+    return Py_BuildValue("s#", data, out_n);
 #endif
-    
+
 }
 
 
 #ifdef __cplusplus
 } //extern "C"
-#endif  
+#endif
