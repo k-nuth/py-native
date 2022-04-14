@@ -14,10 +14,10 @@ extern "C" {
 // point
 // -------------------------------------------------------------------
 
-// hash_t point_get_hash(point_t point){
-// int /*bool*/ point_is_valid(point_t point){
-// uint32_t point_get_index(point_t point){
-// uint64_t point_get_checksum(point_t point){
+//  kth_hash_t point_get_hash(kth_point_t point){
+// kth_bool_t point_is_valid(kth_point_t point){
+// uint32_t point_get_index(kth_point_t point){
+// uint64_t point_get_checksum(kth_point_t point){
 
 PyObject* kth_py_native_point_get_hash(PyObject* self, PyObject* args) {
     PyObject* py_point;
@@ -26,9 +26,9 @@ PyObject* kth_py_native_point_get_hash(PyObject* self, PyObject* args) {
         return NULL;
     }
 
-    point_t p = (point_t)get_ptr(py_point);
+    kth_point_t p = (kth_point_t)get_ptr(py_point);
 
-    hash_t res = chain_point_get_hash(p);
+     kth_hash_t res = kth_chain_point_get_hash(p);
 
 #if PY_MAJOR_VERSION >= 3
     return Py_BuildValue("y#", res.hash, 32);    //TODO: warning, hardcoded hash size!
@@ -44,9 +44,9 @@ PyObject* kth_py_native_point_is_valid(PyObject* self, PyObject* args) {
         return NULL;
     }
 
-    point_t p = (point_t)get_ptr(py_point);
+    kth_point_t p = (kth_point_t)get_ptr(py_point);
 
-    int res = chain_point_is_valid(p);
+    int res = kth_chain_point_is_valid(p);
 
     if (res == 0) {
         Py_RETURN_FALSE;
@@ -62,9 +62,9 @@ PyObject* kth_py_native_point_get_index(PyObject* self, PyObject* args) {
         return NULL;
     }
 
-    point_t p = (point_t)get_ptr(py_point);
+    kth_point_t p = (kth_point_t)get_ptr(py_point);
 
-    uint32_t res = chain_point_get_index(p);
+    uint32_t res = kth_chain_point_get_index(p);
     return Py_BuildValue("K", res);
 }
 
@@ -75,9 +75,9 @@ PyObject* kth_py_native_point_get_checksum(PyObject* self, PyObject* args) {
         return NULL;
     }
 
-    point_t p = (point_t)get_ptr(py_point);
+    kth_point_t p = (kth_point_t)get_ptr(py_point);
 
-    uint64_t res = chain_point_get_checksum(p);
+    uint64_t res = kth_chain_point_get_checksum(p);
 
     return Py_BuildValue("K", res);
 }

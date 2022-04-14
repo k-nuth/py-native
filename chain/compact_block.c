@@ -11,8 +11,8 @@ PyObject * kth_py_native_chain_compact_block_header(PyObject* self, PyObject* ar
         return NULL;
     }
 
-    compact_block_t compact_block = (compact_block_t)get_ptr(py_compact_block);
-    header_t header = (header_t)compact_block_header(compact_block);
+    kth_compact_block_t compact_block = (kth_compact_block_t)get_ptr(py_compact_block);
+    kth_header_t header = (kth_header_t)kth_chain_compact_block_header(compact_block);
     return to_py_obj(header);
 }
 
@@ -24,8 +24,8 @@ PyObject * kth_py_native_chain_compact_block_is_valid(PyObject* self, PyObject* 
         return NULL;
     }
 
-    compact_block_t compact_block = (compact_block_t)get_ptr(py_compact_block);
-    int res = compact_block_is_valid(compact_block);
+    kth_compact_block_t compact_block = (kth_compact_block_t)get_ptr(py_compact_block);
+    int res = kth_chain_compact_block_is_valid(compact_block);
     return Py_BuildValue("i", res);
 }
 
@@ -37,8 +37,8 @@ PyObject * kth_py_native_chain_compact_block_serialized_size(PyObject* self, PyO
         return NULL;
     }
 
-    compact_block_t compact_block = (compact_block_t)get_ptr(py_compact_block);
-    uint64_t res = compact_block_serialized_size(compact_block, py_version);
+    kth_compact_block_t compact_block = (kth_compact_block_t)get_ptr(py_compact_block);
+    uint64_t res = kth_chain_compact_block_serialized_size(compact_block, py_version);
     return Py_BuildValue("K", res);
 }
 
@@ -50,8 +50,8 @@ PyObject * kth_py_native_chain_compact_block_transaction_count(PyObject* self, P
         return NULL;
     }
 
-    compact_block_t compact_block = (compact_block_t)get_ptr(py_compact_block);
-    uint64_t res = compact_block_transaction_count(compact_block);
+    kth_compact_block_t compact_block = (kth_compact_block_t)get_ptr(py_compact_block);
+    uint64_t res = kth_chain_compactblock_transaction_count(compact_block);
     return Py_BuildValue("K", res);
 }
 
@@ -64,8 +64,8 @@ PyObject * kth_py_native_chain_compact_block_transaction_nth(PyObject* self, PyO
         return NULL;
     }
 
-    compact_block_t compact_block = (compact_block_t)get_ptr(py_compact_block);
-    transaction_t res = compact_block_transaction_nth(compact_block, py_n);
+    kth_compact_block_t compact_block = (kth_compact_block_t)get_ptr(py_compact_block);
+    kth_transaction_t res = kth_chain_compactblock_transaction_nth(compact_block, py_n);
     return to_py_obj(res);
 }
 
@@ -76,8 +76,8 @@ PyObject * kth_py_native_chain_compact_block_nonce(PyObject* self, PyObject* arg
         return NULL;
     }
 
-    compact_block_t compact_block = (compact_block_t)get_ptr(py_compact_block);
-    uint64_t res = compact_block_nonce(compact_block);
+    kth_compact_block_t compact_block = (kth_compact_block_t)get_ptr(py_compact_block);
+    uint64_t res = kth_chain_compact_block_nonce(compact_block);
     return Py_BuildValue("K", res);
 }
 
@@ -89,8 +89,8 @@ PyObject * kth_py_native_chain_compact_block_destruct(PyObject* self, PyObject* 
         return NULL;
     }
 
-    compact_block_t compact_block = (compact_block_t)get_ptr(py_compact_block);
-    compact_block_destruct(compact_block);
+    kth_compact_block_t compact_block = (kth_compact_block_t)get_ptr(py_compact_block);
+    kth_chain_compact_block_destruct(compact_block);
     Py_RETURN_NONE;
 }
 
@@ -102,8 +102,8 @@ PyObject * kth_py_native_chain_compact_block_reset(PyObject* self, PyObject* arg
         return NULL;
     }
 
-    compact_block_t compact_block = (compact_block_t)get_ptr(py_compact_block);
-    compact_block_reset(compact_block);
+    kth_compact_block_t compact_block = (kth_compact_block_t)get_ptr(py_compact_block);
+    kth_chain_compact_block_reset(compact_block);
     Py_RETURN_NONE;
 }
 

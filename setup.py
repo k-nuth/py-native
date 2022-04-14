@@ -242,12 +242,18 @@ microarch = ''
 
 extensions = [
 	Extension('kth_py_native',
-
-        define_macros = [('BITPRIM_LIB_STATIC', None),],
+        define_macros = [
+            ('KTH_LIB_STATIC', None),
+            ('KTH_DB_NEW_FULL', None),
+            ('KTH_LOG_LIBRARY_SPDLOG', None),
+            ('KTH_CURRENCY_BCH', None),
+        ],
 
         # 'binary.c'
-    	sources = ['utils.c',  'chain/header.c', 'chain/block.c', 'chain/merkle_block.c', 'module.cpp',
-        'chain/chain.c', 'chain/point.c', 'chain/history.c', 'chain/word_list.c',
+        # 'chain/word_list.c',
+
+    	sources = ['utils.c',  'chain/header.c', 'chain/block.c', 'chain/merkle_block.c', 'module.cpp', 'node.cpp',
+        'chain/chain.c', 'chain/point.c', 'chain/history.c',
         'chain/transaction.c', 'chain/output.c', 'chain/output_list.c',  'chain/input.c', 'chain/input_list.c',
         'chain/script.c', 'chain/payment_address.c', 'chain/compact_block.c', 'chain/output_point.c',
         'chain/block_list.c', 'chain/transaction_list.c', 'chain/stealth_compact.c', 'chain/stealth_compact_list.c', 'p2p/p2p.c'],

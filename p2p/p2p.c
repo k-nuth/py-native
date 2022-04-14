@@ -11,10 +11,10 @@
 extern "C" {
 #endif
 
-// uint64_t /*size_t*/ p2p_address_count(p2p_t p2p);
-// void p2p_stop(p2p_t p2p);
-// void p2p_close(p2p_t p2p);
-// int /*bool*/ p2p_stopped(p2p_t p2p);
+// kth_size_t p2p_address_count(kth_p2p_t p2p);
+// void p2p_stop(kth_p2p_t p2p);
+// void p2p_close(kth_p2p_t p2p);
+// kth_bool_t p2p_stopped(kth_p2p_t p2p);
 
 
 PyObject* kth_py_native_p2p_address_count(PyObject* self, PyObject* args) {
@@ -24,7 +24,7 @@ PyObject* kth_py_native_p2p_address_count(PyObject* self, PyObject* args) {
         return NULL;
     }
 
-    p2p_t p2p = (p2p_t)get_ptr(py_p2p);
+    kth_p2p_t p2p = (kth_p2p_t)get_ptr(py_p2p);
     uint64_t res = p2p_address_count(p2p);
     return Py_BuildValue("K", res);
 }
@@ -36,7 +36,7 @@ PyObject* kth_py_native_p2p_stop(PyObject* self, PyObject* args) {
         return NULL;
     }
 
-    p2p_t p2p = (p2p_t)get_ptr(py_p2p);
+    kth_p2p_t p2p = (kth_p2p_t)get_ptr(py_p2p);
     p2p_stop(p2p);
     Py_RETURN_NONE;
 }
@@ -48,7 +48,7 @@ PyObject* kth_py_native_p2p_close(PyObject* self, PyObject* args) {
         return NULL;
     }
 
-    p2p_t p2p = (p2p_t)get_ptr(py_p2p);
+    kth_p2p_t p2p = (kth_p2p_t)get_ptr(py_p2p);
     p2p_close(p2p);
     Py_RETURN_NONE;
 }
@@ -60,7 +60,7 @@ PyObject* kth_py_native_p2p_stopped(PyObject* self, PyObject* args) {
         return NULL;
     }
 
-    p2p_t p2p = (p2p_t)get_ptr(py_p2p);
+    kth_p2p_t p2p = (kth_p2p_t)get_ptr(py_p2p);
     int res = p2p_stopped(p2p);
     return Py_BuildValue("i", res);
 }

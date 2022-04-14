@@ -1,10 +1,10 @@
 #include "utils.h"
 
 #ifdef __cplusplus
-extern "C" {  
-#endif  
+extern "C" {
+#endif
 
-// inline 
+// inline
 void* get_ptr(PyObject* obj) {
 #if PY_MAJOR_VERSION >= 3
     return PyCapsule_GetPointer(obj, NULL);
@@ -14,8 +14,8 @@ void* get_ptr(PyObject* obj) {
 }
 
 // inline
-executor_t cast_executor(PyObject* obj) {
-    return (executor_t)get_ptr(obj);
+kth_node_t cast_node(PyObject* obj) {
+    return (kth_node_t)get_ptr(obj);
 }
 
 int char2int(char input) {
@@ -52,4 +52,4 @@ PyObject* to_py_obj(void* obj) {
 
 #ifdef __cplusplus
 } //extern "C"
-#endif  
+#endif

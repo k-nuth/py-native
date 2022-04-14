@@ -10,7 +10,7 @@ extern "C" {
 #endif
 
 void* get_ptr(PyObject* obj);
-executor_t cast_executor(PyObject* obj);
+kth_node_t cast_node(PyObject* obj);
 int char2int(char input);
 void hex2bin(const char* src, uint8_t* target);
 PyObject* to_py_obj(void*);

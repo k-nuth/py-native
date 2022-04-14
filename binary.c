@@ -15,7 +15,7 @@ extern "C" {
 // -------------------------------------------------------------------
 
 PyObject* kth_py_native_binary_construct(PyObject* self, PyObject* args){
-    binary_t binary = binary_construct();
+    kth_binary_t binary = binary_construct();
     return to_py_obj(binary);
 }
 
@@ -27,7 +27,7 @@ PyObject* kth_py_native_binary_construct_string(PyObject* self, PyObject* args){
         return NULL;
     }
 
-    binary_t binary = binary_construct_string(filter);
+    kth_binary_t binary = binary_construct_string(filter);
     return to_py_obj(binary);
 }
 
@@ -62,7 +62,7 @@ PyObject* kth_py_native_binary_construct_blocks(PyObject* self, PyObject* args){
             }
         }
 
-        binary_t binary = binary_construct_blocks(bits_size, result, size);
+        kth_binary_t binary = binary_construct_blocks(bits_size, result, size);
         return to_py_obj(binary);
     }
 
@@ -76,8 +76,8 @@ PyObject* kth_py_native_binary_blocks(PyObject* self, PyObject* args){
         return NULL;
     }
 
-    binary_t binary_pointer = (binary_t)get_ptr(binary);
-    uint64_t /*size_t*/ out_n;
+    kth_binary_t binary_pointer = (kth_binary_t)get_ptr(binary);
+    kth_size_t out_n;
     uint8_t* blocks = (uint8_t*)binary_blocks(binary_pointer, &out_n);
 
 #if PY_MAJOR_VERSION >= 3
@@ -97,7 +97,7 @@ PyObject* kth_py_native_binary_encoded(PyObject* self, PyObject* args){
          return NULL;
     }
 
-    binary_t binary_pointer = (binary_t)get_ptr(binary);
+    kth_binary_t binary_pointer = (kth_binary_t)get_ptr(binary);
     char* str = (char*)binary_encoded(binary_pointer);
 
 

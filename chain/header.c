@@ -17,15 +17,15 @@ extern "C" {
 
 PyObject* kth_py_native_chain_header_get_version(PyObject* self, PyObject* args){
     PyObject* py_header;
-    header_t header;
+    kth_header_t header;
     uint32_t res;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_header)) {
         return NULL;
     }
 
-    header = (header_t)get_ptr(py_header);
-    res = chain_header_version(header);
+    header = (kth_header_t)get_ptr(py_header);
+    res = kth_chain_header_version(header);
 
     return Py_BuildValue("I", res);
 }
@@ -33,14 +33,14 @@ PyObject* kth_py_native_chain_header_get_version(PyObject* self, PyObject* args)
 PyObject* kth_py_native_chain_header_set_version(PyObject* self, PyObject* args){
     PyObject* py_header;
     uint32_t py_version;
-    header_t header;
+    kth_header_t header;
 
     if ( ! PyArg_ParseTuple(args, "OI", &py_header, &py_version)) {
         return NULL;
     }
 
-    header = (header_t)get_ptr(py_header);
-    chain_header_set_version(header, py_version);
+    header = (kth_header_t)get_ptr(py_header);
+    kth_chain_header_set_version(header, py_version);
 
     Py_RETURN_NONE;
 }
@@ -52,8 +52,8 @@ PyObject* kth_py_native_chain_header_get_previous_block_hash(PyObject* self, PyO
         return NULL;
     }
 
-    header_t header = (header_t)get_ptr(py_header);
-    hash_t res = chain_header_previous_block_hash(header);
+    kth_header_t header = (kth_header_t)get_ptr(py_header);
+     kth_hash_t res = kth_chain_header_previous_block_hash(header);
 
 #if PY_MAJOR_VERSION >= 3
     return Py_BuildValue("y#", res.hash, 32);    //TODO: warning, hardcoded hash size!
@@ -78,7 +78,7 @@ PyObject* kth_py_native_chain_header_set_previous_block_hash(PyObject* self, PyO
     uint8_t * hash = (uint8_t*) malloc (sizeof(uint8_t[32]));
     hex2bin(s,&hash[31]);
 
-    header_t header = (header_t)get_ptr(py_header);
+    kth_header_t header = (kth_header_t)get_ptr(py_header);
     header_set_previous_block_hash(header, hash);
 
     Py_RETURN_NONE;
@@ -96,7 +96,7 @@ PyObject* kth_py_native_chain_header_set_merkle(PyObject* self, PyObject* args){
     uint8_t * hash = (uint8_t*) malloc (sizeof(uint8_t[32]));
     hex2bin(s,&hash[31]);
 
-    header_t header = (header_t)get_ptr(py_header);
+    kth_header_t header = (kth_header_t)get_ptr(py_header);
     header_set_merkle(header, hash);
 
     Py_RETURN_NONE;
@@ -110,8 +110,8 @@ PyObject* kth_py_native_chain_header_get_merkle(PyObject* self, PyObject* args){
         return NULL;
     }
 
-    header_t header = (header_t)get_ptr(py_header);
-    hash_t res = chain_header_merkle(header);
+    kth_header_t header = (kth_header_t)get_ptr(py_header);
+     kth_hash_t res = kth_chain_header_merkle(header);
 
 #if PY_MAJOR_VERSION >= 3
     return Py_BuildValue("y#", res.hash, 32);    //TODO: warning, hardcoded hash size!
@@ -127,8 +127,8 @@ PyObject* kth_py_native_chain_header_get_hash(PyObject* self, PyObject* args){
         return NULL;
     }
 
-    header_t header = (header_t)get_ptr(py_header);
-    hash_t res = chain_header_hash(header);
+    kth_header_t header = (kth_header_t)get_ptr(py_header);
+     kth_hash_t res = kth_chain_header_hash(header);
 
 #if PY_MAJOR_VERSION >= 3
     return Py_BuildValue("y#", res.hash, 32);    //TODO: warning, hardcoded hash size!
@@ -144,8 +144,8 @@ PyObject* kth_py_native_chain_header_get_timestamp(PyObject* self, PyObject* arg
         return NULL;
     }
 
-    header_t header = (header_t)get_ptr(py_header);
-    uint32_t res = chain_header_timestamp(header);
+    kth_header_t header = (kth_header_t)get_ptr(py_header);
+    uint32_t res = kth_chain_header_timestamp(header);
 
     return Py_BuildValue("I", res);
 }
@@ -158,8 +158,8 @@ PyObject* kth_py_native_chain_header_set_timestamp(PyObject* self, PyObject* arg
         return NULL;
     }
 
-    header_t header = (header_t)get_ptr(py_header);
-    chain_header_set_timestamp(header, py_timestamp);
+    kth_header_t header = (kth_header_t)get_ptr(py_header);
+    kth_chain_header_set_timestamp(header, py_timestamp);
 
     Py_RETURN_NONE;
 }
@@ -172,8 +172,8 @@ PyObject* kth_py_native_chain_header_get_bits(PyObject* self, PyObject* args){
         return NULL;
     }
 
-    header_t header = (header_t)get_ptr(py_header);
-    uint32_t res = chain_header_bits(header);
+    kth_header_t header = (kth_header_t)get_ptr(py_header);
+    uint32_t res = kth_chain_header_bits(header);
 
     return Py_BuildValue("I", res);
 }
@@ -186,8 +186,8 @@ PyObject* kth_py_native_chain_header_set_bits(PyObject* self, PyObject* args){
         return NULL;
     }
 
-    header_t header = (header_t)get_ptr(py_header);
-    chain_header_set_bits(header, py_bits);
+    kth_header_t header = (kth_header_t)get_ptr(py_header);
+    kth_chain_header_set_bits(header, py_bits);
 
     Py_RETURN_NONE;
 }
@@ -199,8 +199,8 @@ PyObject* kth_py_native_chain_header_get_nonce(PyObject* self, PyObject* args){
         return NULL;
     }
 
-    header_t header = (header_t)get_ptr(py_header);
-    uint32_t res = chain_header_nonce(header);
+    kth_header_t header = (kth_header_t)get_ptr(py_header);
+    uint32_t res = kth_chain_header_nonce(header);
 
     return Py_BuildValue("I", res);
 }
@@ -213,8 +213,8 @@ PyObject* kth_py_native_chain_header_set_nonce(PyObject* self, PyObject* args){
         return NULL;
     }
 
-    header_t header = (header_t)get_ptr(py_header);
-    chain_header_set_nonce(header, py_nonce);
+    kth_header_t header = (kth_header_t)get_ptr(py_header);
+    kth_chain_header_set_nonce(header, py_nonce);
 
     Py_RETURN_NONE;
 }
@@ -227,8 +227,8 @@ PyObject * kth_py_native_chain_header_destruct(PyObject* self, PyObject* args){
         return NULL;
     }
 
-    header_t header = (header_t)get_ptr(py_header);
-    chain_header_destruct(header);
+    kth_header_t header = (kth_header_t)get_ptr(py_header);
+    kth_chain_header_destruct(header);
 
     Py_RETURN_NONE;
 }

@@ -11,8 +11,8 @@ PyObject * kth_py_native_chain_output_point_get_hash(PyObject* self, PyObject* a
         return NULL;
     }
 
-    output_point_t p = (output_point_t)get_ptr(py_output_point);
-    hash_t res = output_point_get_hash(p);
+    kth_outputpoint_t p = (kth_outputpoint_t)get_ptr(py_output_point);
+     kth_hash_t res = kth_chain_output_point_get_hash(p);
 #if PY_MAJOR_VERSION >= 3
     return Py_BuildValue("y#", res.hash, 32);    //TODO: warning, hardcoded hash size!
 #else
@@ -28,15 +28,15 @@ PyObject * kth_py_native_chain_output_point_get_index(PyObject* self, PyObject* 
         return NULL;
     }
 
-    output_point_t p = (output_point_t)get_ptr(py_output_point);
-    uint32_t res = output_point_get_index(p);
+    kth_outputpoint_t p = (kth_outputpoint_t)get_ptr(py_output_point);
+    uint32_t res = kth_chain_output_point_get_index(p);
     return Py_BuildValue("K", res);
 }
 
 
 
 PyObject * kth_py_native_chain_output_point_construct(PyObject* self, PyObject* args){
-    return to_py_obj(output_point_construct());
+    return to_py_obj(kth_chain_output_point_construct());
 }
 
 PyObject * kth_py_native_chain_output_point_construct_from_hash_index(PyObject* self, PyObject* args){
@@ -53,9 +53,9 @@ PyObject * kth_py_native_chain_output_point_construct_from_hash_index(PyObject* 
     }
 #endif
 
-    hash_t hash;
+     kth_hash_t hash;
     memcpy(hash.hash, py_hash, 32);
-    output_point_t res = output_point_construct_from_hash_index(hash, py_index);
+    kth_outputpoint_t res = kth_chain_output_point_construct_from_hash_index(hash, py_index);
     return to_py_obj(res);
 }
 
@@ -65,8 +65,8 @@ PyObject * kth_py_native_chain_output_point_destruct(PyObject* self, PyObject* a
     if ( ! PyArg_ParseTuple(args, "O", &py_output_point)) {
         return NULL;
     }
-    output_point_t output_point = (output_point_t)get_ptr(py_output_point);
-    output_point_destruct(output_point);
+    kth_outputpoint_t output_point = (kth_outputpoint_t)get_ptr(py_output_point);
+    kth_chain_output_point_destruct(output_point);
     Py_RETURN_NONE;
 }
 
@@ -81,8 +81,8 @@ PyObject* kth_py_native_point_is_valid(PyObject* self, PyObject* args) {
         return NULL;
     }
 
-    // point_t p = (point_t)PyCObject_AsVoidPtr(py_point);
-    point_t p = (point_t)PyCapsule_GetPointer(py_point, NULL);
+    // kth_point_t p = (kth_point_t)PyCObject_AsVoidPtr(py_point);
+    kth_point_t p = (kth_point_t)PyCapsule_GetPointer(py_point, NULL);
     int res = point_is_valid(p);
 
     if (res == 0) {
@@ -100,8 +100,8 @@ PyObject* kth_py_native_point_get_checksum(PyObject* self, PyObject* args) {
         return NULL;
     }
 
-    // point_t p = (point_t)PyCObject_AsVoidPtr(py_point);
-    point_t p = (point_t)PyCapsule_GetPointer(py_point, NULL);
+    // kth_point_t p = (kth_point_t)PyCObject_AsVoidPtr(py_point);
+    kth_point_t p = (kth_point_t)PyCapsule_GetPointer(py_point, NULL);
     uint64_t res = point_get_checksum(p);
 
     return Py_BuildValue("K", res);

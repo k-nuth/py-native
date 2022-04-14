@@ -11,8 +11,8 @@ PyObject* kth_py_native_chain_script_destruct(PyObject* self, PyObject* args){
         return NULL;
     }
 
-    script_t script = (script_t)get_ptr(py_script);
-    chain_script_destruct(script);
+    kth_script_t script = (kth_script_t)get_ptr(py_script);
+    kth_chain_script_destruct(script);
     Py_RETURN_NONE;
 }
 
@@ -23,8 +23,8 @@ PyObject* kth_py_native_chain_script_is_valid(PyObject* self, PyObject* args){
         return NULL;
     }
 
-    script_t script = (script_t)get_ptr(py_script);
-    int res = chain_script_is_valid(script);
+    kth_script_t script = (kth_script_t)get_ptr(py_script);
+    int res = kth_chain_script_is_valid(script);
     return Py_BuildValue("i", res);
 }
 
@@ -36,8 +36,8 @@ PyObject* kth_py_native_chain_script_is_valid_operations(PyObject* self, PyObjec
         return NULL;
     }
 
-    script_t script = (script_t)get_ptr(py_script);
-    int res = chain_script_is_valid_operations(script);
+    kth_script_t script = (kth_script_t)get_ptr(py_script);
+    int res = kth_chain_script_is_valid_operations(script);
     return Py_BuildValue("i", res);
 }
 
@@ -49,8 +49,8 @@ PyObject* kth_py_native_chain_script_satoshi_content_size(PyObject* self, PyObje
         return NULL;
     }
 
-    script_t script = (script_t)get_ptr(py_script);
-    uint64_t res = chain_script_satoshi_content_size(script);
+    kth_script_t script = (kth_script_t)get_ptr(py_script);
+    uint64_t res = kth_chain_script_satoshi_content_size(script);
     return Py_BuildValue("K", res);
 }
 
@@ -62,8 +62,8 @@ PyObject* kth_py_native_chain_script_serialized_size(PyObject* self, PyObject* a
         return NULL;
     }
 
-    script_t script = (script_t)get_ptr(py_script);
-    uint64_t res = chain_script_serialized_size(script, py_prefix);
+    kth_script_t script = (kth_script_t)get_ptr(py_script);
+    uint64_t res = kth_chain_script_serialized_size(script, py_prefix);
     return Py_BuildValue("K", res);
 }
 
@@ -76,8 +76,8 @@ PyObject* kth_py_native_chain_script_to_string(PyObject* self, PyObject* args){
         return NULL;
     }
 
-    script_t script = (script_t)get_ptr(py_script);
-    char const* res = chain_script_to_string(script, py_active_forks);
+    kth_script_t script = (kth_script_t)get_ptr(py_script);
+    char const* res = kth_chain_script_to_string(script, py_active_forks);
     return Py_BuildValue("s", res);
 }
 
@@ -89,8 +89,8 @@ PyObject* kth_py_native_chain_script_sigops(PyObject* self, PyObject* args){
         return NULL;
     }
 
-    script_t script = (script_t)get_ptr(py_script);
-    uint64_t res = chain_script_sigops(script, py_embedded);
+    kth_script_t script = (kth_script_t)get_ptr(py_script);
+    uint64_t res = kth_chain_script_sigops(script, py_embedded);
     return Py_BuildValue("K", res);
 }
 
@@ -102,12 +102,12 @@ PyObject* kth_py_native_chain_script_sigops(PyObject* self, PyObject* args){
 //         return NULL;
 //     }
 
-//     script_t script = (script_t)get_ptr(py_script);
-//     script_t prevout_script = (script_t)get_ptr(py_prevout_script);
-//     uint64_t res = chain_script_embedded_sigops(script, prevout_script);
+//     kth_script_t script = (kth_script_t)get_ptr(py_script);
+//     kth_script_t prevout_script = (kth_script_t)get_ptr(py_prevout_script);
+//     uint64_t res = kth_chain_script_embedded_sigops(script, prevout_script);
 
 //     BITPRIM_EXPORT
-//     uint64_t /*size_t*/ chain_script_sigops(script_t script, bool_t embedded);
+//     kth_size_t kth_chain_script_sigops(kth_script_t script, bool_t embedded);
 
 //     return Py_BuildValue("K", res);
 // }

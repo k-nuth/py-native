@@ -7,7 +7,7 @@ extern "C" {
 #endif
 
 PyObject* kth_py_native_chain_transaction_list_construct_default(PyObject* self, PyObject* args){
-    transaction_list_t res = (transaction_list_t)chain_transaction_list_construct_default();
+    kth_transaction_list_t res = (kth_transaction_list_t)kth_chain_transaction_list_construct_default();
     return to_py_obj(res);
 }
 
@@ -19,9 +19,9 @@ PyObject* kth_py_native_chain_transaction_list_push_back(PyObject* self, PyObjec
         return NULL;
     }
 
-    transaction_list_t transaction_list = (transaction_list_t)get_ptr(py_transaction_list);
-    transaction_t transaction = (transaction_t)get_ptr(py_transaction);
-    chain_transaction_list_push_back(transaction_list, transaction);
+    kth_transaction_list_t transaction_list = (kth_transaction_list_t)get_ptr(py_transaction_list);
+    kth_transaction_t transaction = (kth_transaction_t)get_ptr(py_transaction);
+    kth_chain_transaction_list_push_back(transaction_list, transaction);
     Py_RETURN_NONE;
 }
 
@@ -32,8 +32,8 @@ PyObject* kth_py_native_chain_transaction_list_destruct(PyObject* self, PyObject
         return NULL;
     }
 
-    transaction_list_t transaction_list = (transaction_list_t)get_ptr(py_transaction_list);
-    chain_transaction_list_destruct(transaction_list);
+    kth_transaction_list_t transaction_list = (kth_transaction_list_t)get_ptr(py_transaction_list);
+    kth_chain_transaction_list_destruct(transaction_list);
     Py_RETURN_NONE;
 }
 
@@ -45,8 +45,8 @@ PyObject* kth_py_native_chain_transaction_list_count(PyObject* self, PyObject* a
         return NULL;
     }
 
-    transaction_list_t transaction_list = (transaction_list_t)get_ptr(py_transaction_list);
-    uint64_t res = chain_transaction_list_count(transaction_list);
+    kth_transaction_list_t transaction_list = (kth_transaction_list_t)get_ptr(py_transaction_list);
+    uint64_t res = kth_chain_transaction_list_count(transaction_list);
     return Py_BuildValue("K", res);
 }
 
@@ -57,8 +57,8 @@ PyObject* kth_py_native_chain_transaction_list_nth(PyObject* self, PyObject* arg
     if ( ! PyArg_ParseTuple(args, "OK", &py_transaction_list, &py_n)) {
         return NULL;
     }
-    transaction_list_t transaction_list = (transaction_list_t)get_ptr(py_transaction_list);
-    transaction_t res = chain_transaction_list_nth(transaction_list, py_n);
+    kth_transaction_list_t transaction_list = (kth_transaction_list_t)get_ptr(py_transaction_list);
+    kth_transaction_t res = kth_chain_transaction_list_nth(transaction_list, py_n);
     return to_py_obj(res);
 }
 

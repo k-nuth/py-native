@@ -21,9 +21,9 @@ PyObject* kth_py_native_history_compact_list_destruct(PyObject* self, PyObject* 
         return NULL;
     }
 
-    history_compact_list_t list = (history_compact_list_t)get_ptr(py_history_compact_list);
+    kth_history_compact_list_t list = (kth_history_compact_list_t)get_ptr(py_history_compact_list);
 
-    chain_history_compact_list_destruct(list);
+    kth_chain_history_compact_list_destruct(list);
 
     Py_RETURN_NONE;
 }
@@ -35,9 +35,9 @@ PyObject* kth_py_native_history_compact_list_count(PyObject* self, PyObject* arg
         return NULL;
     }
 
-    history_compact_list_t list = (history_compact_list_t)get_ptr(py_history_compact_list);
+    kth_history_compact_list_t list = (kth_history_compact_list_t)get_ptr(py_history_compact_list);
 
-    uint64_t /*size_t*/ res = chain_history_compact_list_count(list);
+    kth_size_t res = kth_chain_history_compact_list_count(list);
 
     return Py_BuildValue("K", res);
 }
@@ -50,9 +50,9 @@ PyObject* kth_py_native_history_compact_list_nth(PyObject* self, PyObject* args)
         return NULL;
     }
 
-    history_compact_list_t list = (history_compact_list_t)get_ptr(py_history_compact_list);
+    kth_history_compact_list_t list = (kth_history_compact_list_t)get_ptr(py_history_compact_list);
 
-    history_compact_t hc = chain_history_compact_list_nth(list, py_n);
+    kth_history_compact_t hc = kth_chain_history_compact_list_nth(list, py_n);
 
     PyObject* py_hc = to_py_obj(hc);
     return Py_BuildValue("O", py_hc);
@@ -72,9 +72,9 @@ PyObject* kth_py_native_history_compact_get_point_kind(PyObject* self, PyObject*
         return NULL;
     }
 
-    history_compact_t hist = (history_compact_t)get_ptr(py_history_compact);
+    kth_history_compact_t hist = (kth_history_compact_t)get_ptr(py_history_compact);
 
-    uint64_t res = chain_history_compact_get_point_kind(hist);
+    uint64_t res = kth_chain_history_compact_get_point_kind(hist);
 
     return Py_BuildValue("K", res);
 }
@@ -86,9 +86,9 @@ PyObject* kth_py_native_history_compact_get_point(PyObject* self, PyObject* args
         return NULL;
     }
 
-    history_compact_t hist = (history_compact_t)get_ptr(py_history_compact);
+    kth_history_compact_t hist = (kth_history_compact_t)get_ptr(py_history_compact);
 
-    point_t p = chain_history_compact_get_point(hist);
+    kth_point_t p = kth_chain_history_compact_get_point(hist);
 
     PyObject* py_p = to_py_obj(p);
     return Py_BuildValue("O", py_p);
@@ -101,9 +101,9 @@ PyObject* kth_py_native_history_compact_get_height(PyObject* self, PyObject* arg
         return NULL;
     }
 
-    history_compact_t hist = (history_compact_t)get_ptr(py_history_compact);
+    kth_history_compact_t hist = (kth_history_compact_t)get_ptr(py_history_compact);
 
-    uint64_t res = chain_history_compact_get_height(hist);
+    uint64_t res = kth_chain_history_compact_get_height(hist);
 
     return Py_BuildValue("K", res);
 }
@@ -115,9 +115,9 @@ PyObject* kth_py_native_history_compact_get_value_or_previous_checksum(PyObject*
         return NULL;
     }
 
-    history_compact_t hist = (history_compact_t)get_ptr(py_history_compact);
+    kth_history_compact_t hist = (kth_history_compact_t)get_ptr(py_history_compact);
 
-    uint64_t res = chain_history_compact_get_value_or_previous_checksum(hist);
+    uint64_t res = kth_chain_history_compact_get_value_or_previous_checksum(hist);
 
     return Py_BuildValue("K", res);
 }

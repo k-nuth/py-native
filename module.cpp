@@ -6,7 +6,7 @@
 //          https://docs.python.org/3/howto/cporting.html
 
 #include <Python.h>
-#include "module.h"
+#include "node.h"
 // #include "binary.h"
 #include "utils.h"
 #include "chain/point.h"
@@ -43,182 +43,6 @@ extern "C" {
 #endif
 
 
-PyObject* kth_py_native_executor_construct(PyObject* self, PyObject* args) {
-    char const* path;
-    PyObject* py_out;
-    PyObject* py_err;
-
-
-    if ( ! PyArg_ParseTuple(args, "sOO", &path, &py_out, &py_err))
-        return NULL;
-
-#if PY_MAJOR_VERSION >= 3
-    int sout_fd = py_out == Py_None ? -1 : PyObject_AsFileDescriptor(py_out);
-    int serr_fd = py_err == Py_None ? -1 : PyObject_AsFileDescriptor(py_err);
-
-    executor_t exec = executor_construct_fd(path, sout_fd, serr_fd);
-    return PyCapsule_New(exec, NULL, NULL);
-
-#else /* PY_MAJOR_VERSION >= 3 */
-    FILE* sout = py_out == Py_None ? NULL : PyFile_AsFile(py_out);
-    FILE* serr = py_err == Py_None ? NULL : PyFile_AsFile(py_err);
-//    PyFile_IncUseCount(p);
-///* ... */
-//    Py_BEGIN_ALLOW_THREADS
-//        do_something(fp);
-//    Py_END_ALLOW_THREADS
-///* ... */
-//        PyFile_DecUseCount(p);
-
-    executor_t exec = executor_construct(path, sout, serr);
-    return PyCObject_FromVoidPtr(exec, NULL);
-
-#endif /* PY_MAJOR_VERSION >= 3 */
-
-}
-
-
-// ---------------------------------------------------------
-
-PyObject* kth_py_native_executor_destruct(PyObject* self, PyObject* args) {
-    PyObject* py_exec;
-
-    // PyGILState_STATE gstate;
-    // gstate = PyGILState_Ensure();
-
-    if ( ! PyArg_ParseTuple(args, "O", &py_exec))
-        return NULL;
-
-    executor_t exec = cast_executor(py_exec);
-
-    executor_destruct(exec);
-    // PyGILState_Release(gstate);
-    Py_RETURN_NONE;
-}
-
-// ---------------------------------------------------------
-
-PyObject* kth_py_native_executor_initchain(PyObject* self, PyObject* args) {
-
-    PyObject* py_exec;
-
-    if ( ! PyArg_ParseTuple(args, "O", &py_exec)) {
-        return NULL;
-    }
-
-    executor_t exec = cast_executor(py_exec);
-
-    int res = executor_initchain(exec);
-
-    return Py_BuildValue("i", res);
-}
-
-// ---------------------------------------------------------
-
-void executor_run_handler(executor_t exec, void* ctx, int error) {
-
-    PyObject* py_callback = (PyObject*)ctx;
-
-    PyObject* arglist = Py_BuildValue("(i)", error);
-    PyObject_CallObject(py_callback, arglist);
-    Py_DECREF(arglist);
-    Py_XDECREF(py_callback);  // Dispose of the call
-}
-
-
-PyObject* kth_py_native_executor_run(PyObject* self, PyObject* args) {
-    PyObject* py_exec;
-    PyObject* py_callback;
-
-    if ( ! PyArg_ParseTuple(args, "OO:set_callback", &py_exec, &py_callback)) {
-        return NULL;
-    }
-
-    if ( ! PyCallable_Check(py_callback)) {
-        PyErr_SetString(PyExc_TypeError, "parameter must be callable");
-        return NULL;
-    }
-
-    executor_t exec = cast_executor(py_exec);
-    Py_XINCREF(py_callback);         // Add a reference to new callback
-    executor_run(exec, py_callback, executor_run_handler);
-    Py_RETURN_NONE;
-}
-
-
-// ---------------------------------------------------------
-
-PyObject* kth_py_native_executor_run_wait(PyObject* self, PyObject* args) {
-    PyObject* py_exec;
-
-    if ( ! PyArg_ParseTuple(args, "O", &py_exec))
-        return NULL;
-
-    executor_t exec = cast_executor(py_exec);
-
-    int res = executor_run_wait(exec);
-    return Py_BuildValue("i", res);
-}
-
-// ---------------------------------------------------------
-
-PyObject* kth_py_native_executor_stopped(PyObject* self, PyObject* args) {
-    PyObject* py_exec;
-
-    if ( ! PyArg_ParseTuple(args, "O", &py_exec))
-        return NULL;
-
-    executor_t exec = cast_executor(py_exec);
-
-    int res = executor_stopped(exec);
-    return Py_BuildValue("i", res);
-}
-
-
-// ---------------------------------------------------------
-
-PyObject* kth_py_native_executor_stop(PyObject* self, PyObject* args) {
-    PyObject* py_exec;
-
-    // PyGILState_STATE gstate;
-    // gstate = PyGILState_Ensure();
-
-    if ( ! PyArg_ParseTuple(args, "O", &py_exec))
-        return NULL;
-
-    executor_t exec = cast_executor(py_exec);
-
-    executor_stop(exec);
-
-    // PyGILState_Release(gstate);
-    Py_RETURN_NONE;
-}
-
-
-PyObject* kth_py_native_executor_get_chain(PyObject* self, PyObject* args) {
-    PyObject* py_exec;
-    if ( ! PyArg_ParseTuple(args, "O", &py_exec))
-        return NULL;
-
-    executor_t exec = cast_executor(py_exec);
-    chain_t chain = executor_get_chain(exec);
-
-    PyObject* py_chain = to_py_obj(chain);
-    return Py_BuildValue("O", py_chain);
-}
-
-PyObject* kth_py_native_executor_get_p2p(PyObject* self, PyObject* args) {
-    PyObject* py_exec;
-    if ( ! PyArg_ParseTuple(args, "O", &py_exec))
-        return NULL;
-
-    executor_t exec = cast_executor(py_exec);
-    p2p_t p2p = executor_get_p2p(exec);
-
-    PyObject* py_p2p = to_py_obj(p2p);
-    return Py_BuildValue("O", py_p2p);
-}
-
 // -------------------------------------------------------------------
 
 // long_hash_t wallet_mnemonics_to_seed(word_list_t mnemonics){
@@ -226,115 +50,115 @@ PyObject* kth_py_native_executor_get_p2p(PyObject* self, PyObject* args) {
 //     return hash_cpp.data();
 // }
 
-PyObject* kth_py_native_wallet_mnemonics_to_seed(PyObject* self, PyObject* args) {
-    PyObject* py_wl;
+// PyObject* kth_py_native_wallet_mnemonics_to_seed(PyObject* self, PyObject* args) {
+//     PyObject* py_wl;
 
-    if ( ! PyArg_ParseTuple(args, "O", &py_wl)) {
-        return NULL;
-    }
+//     if ( ! PyArg_ParseTuple(args, "O", &py_wl)) {
+//         return NULL;
+//     }
 
-    word_list_t wl = (word_list_t)get_ptr(py_wl);
+//     word_list_t wl = (word_list_t)get_ptr(py_wl);
 
-    long_hash_t res = wallet_mnemonics_to_seed(wl);
+//     long_hash_t res = wallet_mnemonics_to_seed(wl);
 
-#if PY_MAJOR_VERSION >= 3
-    return Py_BuildValue("y#", res.hash, 64);    //TODO: warning, hardcoded hash size!
-#else
-    return Py_BuildValue("s#", res.hash, 64);    //TODO: warning, hardcoded hash size!
-#endif
-}
+// #if PY_MAJOR_VERSION >= 3
+//     return Py_BuildValue("y#", res.hash, 64);    //TODO: warning, hardcoded hash size!
+// #else
+//     return Py_BuildValue("s#", res.hash, 64);    //TODO: warning, hardcoded hash size!
+// #endif
+// }
 
-PyObject* kth_py_native_wallet_ec_new(PyObject* self, PyObject* args) {
-    uint8_t* py_seed;
-    int py_n;
+// PyObject* kth_py_native_wallet_ec_new(PyObject* self, PyObject* args) {
+//     uint8_t* py_seed;
+//     int py_n;
 
-#if PY_MAJOR_VERSION >= 3
-    if ( ! PyArg_ParseTuple(args, "y#", &py_seed, &py_n)) {
-#else
-    if ( ! PyArg_ParseTuple(args, "s#", &py_seed, &py_n)) {
-#endif
-        return NULL;
-    }
+// #if PY_MAJOR_VERSION >= 3
+//     if ( ! PyArg_ParseTuple(args, "y#", &py_seed, &py_n)) {
+// #else
+//     if ( ! PyArg_ParseTuple(args, "s#", &py_seed, &py_n)) {
+// #endif
+//         return NULL;
+//     }
 
-    ec_secret_t res = wallet_ec_new(py_seed, py_n);
-    // return to_py_obj(res);
+//     ec_secret_t res = wallet_ec_new(py_seed, py_n);
+//     // return to_py_obj(res);
 
-#if PY_MAJOR_VERSION >= 3
-    return Py_BuildValue("y#", res.data, 32);    //TODO: warning, hardcoded hash size!
-#else
-    return Py_BuildValue("s#", res.data, 32);    //TODO: warning, hardcoded hash size!
-#endif
+// #if PY_MAJOR_VERSION >= 3
+//     return Py_BuildValue("y#", res.data, 32);    //TODO: warning, hardcoded hash size!
+// #else
+//     return Py_BuildValue("s#", res.data, 32);    //TODO: warning, hardcoded hash size!
+// #endif
 
-}
+// }
 
-PyObject* kth_py_native_wallet_ec_to_public(PyObject* self, PyObject* args) {
-    PyObject* py_secret;
-    int py_size;
-    int py_uncompressed;
+// PyObject* kth_py_native_wallet_ec_to_public(PyObject* self, PyObject* args) {
+//     PyObject* py_secret;
+//     int py_size;
+//     int py_uncompressed;
 
-#if PY_MAJOR_VERSION >= 3
-    if ( ! PyArg_ParseTuple(args, "y#i", &py_secret, &py_size, &py_uncompressed)) {
-#else
-    if ( ! PyArg_ParseTuple(args, "s#i", &py_secret, &py_size, &py_uncompressed)) {
-#endif
-        return NULL;
-    }
+// #if PY_MAJOR_VERSION >= 3
+//     if ( ! PyArg_ParseTuple(args, "y#i", &py_secret, &py_size, &py_uncompressed)) {
+// #else
+//     if ( ! PyArg_ParseTuple(args, "s#i", &py_secret, &py_size, &py_uncompressed)) {
+// #endif
+//         return NULL;
+//     }
 
-    ec_secret_t secret;
-    memcpy(secret.data, py_secret, 32);
+//     ec_secret_t secret;
+//     memcpy(secret.data, py_secret, 32);
 
-    ec_public_t res = wallet_ec_to_public(secret, py_uncompressed);
-    return to_py_obj(res);
-}
+//     ec_public_t res = wallet_ec_to_public(secret, py_uncompressed);
+//     return to_py_obj(res);
+// }
 
-PyObject* kth_py_native_wallet_ec_to_address(PyObject* self, PyObject* args) {
-    PyObject* py_point;
-    uint32_t py_version;
+// PyObject* kth_py_native_wallet_ec_to_address(PyObject* self, PyObject* args) {
+//     PyObject* py_point;
+//     uint32_t py_version;
 
-    if ( ! PyArg_ParseTuple(args, "OI", &py_point, &py_version)) {
-        return NULL;
-    }
+//     if ( ! PyArg_ParseTuple(args, "OI", &py_point, &py_version)) {
+//         return NULL;
+//     }
 
-    ec_public_t point = (ec_public_t)get_ptr(py_point);
-    payment_address_t res = wallet_ec_to_address(point, py_version);
-    return to_py_obj(res);
-}
+//     ec_public_t point = (ec_public_t)get_ptr(py_point);
+//     kth_payment_address_t res = wallet_ec_to_address(point, py_version);
+//     return to_py_obj(res);
+// }
 
-PyObject* kth_py_native_wallet_hd_new(PyObject* self, PyObject* args) {
-    // uint8_t* py_seed;
-    char* py_seed;
-    int py_n;
-    uint32_t py_version;
+// PyObject* kth_py_native_wallet_hd_new(PyObject* self, PyObject* args) {
+//     // uint8_t* py_seed;
+//     char* py_seed;
+//     int py_n;
+//     uint32_t py_version;
 
-#if PY_MAJOR_VERSION >= 3
-    if ( ! PyArg_ParseTuple(args, "y#I", &py_seed, &py_n, &py_version)) {
-#else
-    if ( ! PyArg_ParseTuple(args, "s#I", &py_seed, &py_n, &py_version)) {
-#endif
-        return NULL;
-    }
+// #if PY_MAJOR_VERSION >= 3
+//     if ( ! PyArg_ParseTuple(args, "y#I", &py_seed, &py_n, &py_version)) {
+// #else
+//     if ( ! PyArg_ParseTuple(args, "s#I", &py_seed, &py_n, &py_version)) {
+// #endif
+//         return NULL;
+//     }
 
-    hd_private_t res = wallet_hd_new((uint8_t*)py_seed, py_n, py_version);
-    return to_py_obj(res);
-}
+//     hd_private_t res = wallet_hd_new((uint8_t*)py_seed, py_n, py_version);
+//     return to_py_obj(res);
+// }
 
-PyObject* kth_py_native_wallet_hd_private_to_ec(PyObject* self, PyObject* args) {
-    PyObject* py_key;
+// PyObject* kth_py_native_wallet_hd_private_to_ec(PyObject* self, PyObject* args) {
+//     PyObject* py_key;
 
-    if ( ! PyArg_ParseTuple(args, "O", &py_key)) {
-        return NULL;
-    }
+//     if ( ! PyArg_ParseTuple(args, "O", &py_key)) {
+//         return NULL;
+//     }
 
-    hd_private_t key = (hd_private_t)get_ptr(py_key);
+//     hd_private_t key = (hd_private_t)get_ptr(py_key);
 
-    ec_secret_t res = wallet_hd_private_to_ec(key);
+//     ec_secret_t res = wallet_hd_private_to_ec(key);
 
-#if PY_MAJOR_VERSION >= 3
-    return Py_BuildValue("y#", res.data, 32);    //TODO: warning, hardcoded hash size!
-#else
-    return Py_BuildValue("s#", res.data, 32);    //TODO: warning, hardcoded hash size!
-#endif
-}
+// #if PY_MAJOR_VERSION >= 3
+//     return Py_BuildValue("y#", res.data, 32);    //TODO: warning, hardcoded hash size!
+// #else
+//     return Py_BuildValue("s#", res.data, 32);    //TODO: warning, hardcoded hash size!
+// #endif
+// }
 
 
 /*
@@ -373,23 +197,21 @@ PyObject* kth_py_native_long_hash_t_free(PyObject* self, PyObject* args) {
 static
 PyMethodDef KnuthNativeMethods[] = {
 
-    {"construct",  kth_py_native_executor_construct, METH_VARARGS, "Construct the executor object."},
-    // {"construct_devnull",  kth_py_native_executor_construct_devnull, METH_VARARGS, "Construct the executor object."},
-    {"destruct",  kth_py_native_executor_destruct, METH_VARARGS, "Destruct the executor object."},
-    {"initchain",  kth_py_native_executor_initchain, METH_VARARGS, "Directory Initialization."},
-    {"run",  kth_py_native_executor_run, METH_VARARGS, "Node run."},
-    {"run_wait",  kth_py_native_executor_run_wait, METH_VARARGS, "Node run."},
-    {"stop",  kth_py_native_executor_stop, METH_VARARGS, "Node stop."},
-    {"stopped",  kth_py_native_executor_stopped, METH_VARARGS, "Know if the Node stopped."},
-    {"get_chain",  kth_py_native_executor_get_chain, METH_VARARGS, "Get Blockchain API."},
-    {"get_p2p",  kth_py_native_executor_get_p2p, METH_VARARGS, "Get P2P Networking API."},
+    {"construct",  kth_py_native_node_construct, METH_VARARGS, "Construct the executor object."},
+    // {"construct_devnull",  kth_py_native_node_construct_devnull, METH_VARARGS, "Construct the executor object."},
+    {"destruct",  kth_py_native_node_destruct, METH_VARARGS, "Destruct the executor object."},
+    {"initchain",  kth_py_native_node_initchain, METH_VARARGS, "Directory Initialization."},
+    {"run",  kth_py_native_node_run, METH_VARARGS, "Node run."},
+    {"run_wait",  kth_py_native_node_run_wait, METH_VARARGS, "Node run."},
+    {"stop",  kth_py_native_node_stop, METH_VARARGS, "Node stop."},
+    {"stopped",  kth_py_native_node_stopped, METH_VARARGS, "Know if the Node stopped."},
+    {"get_chain",  kth_py_native_node_get_chain, METH_VARARGS, "Get Blockchain API."},
+    {"get_p2p",  kth_py_native_node_get_p2p, METH_VARARGS, "Get P2P Networking API."},
 
     {"p2p_address_count",  kth_py_native_p2p_address_count, METH_VARARGS, "..."},
     {"p2p_stop",  kth_py_native_p2p_stop, METH_VARARGS, "..."},
     {"p2p_close",  kth_py_native_p2p_close, METH_VARARGS, "..."},
     {"p2p_stopped",  kth_py_native_p2p_stopped, METH_VARARGS, "..."},
-
-
 
     {"chain_fetch_last_height",  kth_py_native_chain_fetch_last_height, METH_VARARGS, "..."},
     {"chain_fetch_history",  kth_py_native_chain_fetch_history, METH_VARARGS, "..."},
@@ -443,16 +265,16 @@ PyMethodDef KnuthNativeMethods[] = {
     {"transaction_inputs",  kth_py_native_chain_transaction_inputs, METH_VARARGS, "..."},
     {"transaction_to_data",  kth_py_native_chain_transaction_to_data, METH_VARARGS, "..."},
 
-    {"input_is_valid",  kth_py_native_chain_input_is_valid, METH_VARARGS, "..."},
-    {"input_is_final",  kth_py_native_chain_input_is_final, METH_VARARGS, "..."},
-    {"input_serialized_size",  kth_py_native_chain_input_serialized_size, METH_VARARGS, "..."},
-    {"input_sequence",  kth_py_native_chain_input_sequence, METH_VARARGS, "..."},
-    {"input_signature_operations",  kth_py_native_chain_input_signature_operations, METH_VARARGS, "..."},
-    {"input_script",  kth_py_native_chain_input_script, METH_VARARGS, "..."},
-    {"input_previous_output",  kth_py_native_chain_input_previous_output, METH_VARARGS, "..."},
-    //{"input_get_hash",  kth_py_native_chain_input_get_hash, METH_VARARGS, "..."},
-    //{"input_get_index",  kth_py_native_chain_input_get_index, METH_VARARGS, "..."},
-    {"input_to_data",  kth_py_native_chain_input_to_data, METH_VARARGS, "..."},
+    {"input_is_valid",  kth_py_native_kth_chain_input_is_valid, METH_VARARGS, "..."},
+    {"input_is_final",  kth_py_native_kth_chain_input_is_final, METH_VARARGS, "..."},
+    {"input_serialized_size",  kth_py_native_kth_chain_input_serialized_size, METH_VARARGS, "..."},
+    {"input_sequence",  kth_py_native_kth_chain_input_sequence, METH_VARARGS, "..."},
+    {"input_signature_operations",  kth_py_native_kth_chain_input_signature_operations, METH_VARARGS, "..."},
+    {"input_script",  kth_py_native_kth_chain_input_script, METH_VARARGS, "..."},
+    {"input_previous_output",  kth_py_native_kth_chain_input_previous_output, METH_VARARGS, "..."},
+    //{"input_get_hash",  kth_py_native_kth_chain_input_get_hash, METH_VARARGS, "..."},
+    //{"input_get_index",  kth_py_native_kth_chain_input_get_index, METH_VARARGS, "..."},
+    {"input_to_data",  kth_py_native_kth_chain_input_to_data, METH_VARARGS, "..."},
 
 
 
@@ -473,11 +295,11 @@ PyMethodDef KnuthNativeMethods[] = {
     {"output_list_count",  kth_py_native_output_list_count, METH_VARARGS, "..."},
     {"output_list_nth",  kth_py_native_output_list_nth, METH_VARARGS, "..."},
 
-    {"binary_construct",  kth_py_native_binary_construct, METH_VARARGS, "..."},
-    {"binary_construct_string",  kth_py_native_binary_construct_string, METH_VARARGS, "..."},
-    {"binary_construct_blocks",  kth_py_native_binary_construct_blocks, METH_VARARGS, "..."},
-    {"binary_blocks",  kth_py_native_binary_blocks, METH_VARARGS, "..."},
-    {"binary_encoded",  kth_py_native_binary_encoded, METH_VARARGS, "..."},
+    // {"binary_construct",  kth_py_native_binary_construct, METH_VARARGS, "..."},
+    // {"binary_construct_string",  kth_py_native_binary_construct_string, METH_VARARGS, "..."},
+    // {"binary_construct_blocks",  kth_py_native_binary_construct_blocks, METH_VARARGS, "..."},
+    // {"binary_blocks",  kth_py_native_binary_blocks, METH_VARARGS, "..."},
+    // {"binary_encoded",  kth_py_native_binary_encoded, METH_VARARGS, "..."},
 
     {"merkle_block_get_header",  kth_py_native_chain_merkle_block_get_header, METH_VARARGS, "..."},
     {"merkle_block_is_valid",  kth_py_native_chain_merkle_block_is_valid, METH_VARARGS, "..."},
@@ -488,7 +310,11 @@ PyMethodDef KnuthNativeMethods[] = {
 
     {"block_get_header",  kth_py_native_chain_block_get_header, METH_VARARGS, "..."},
     {"block_hash",  kth_py_native_chain_block_hash, METH_VARARGS, "..."},
-    {"block_transaction_count",  kth_py_native_chain_block_transaction_count, METH_VARARGS, "..."},
+
+    //TODO(KNUTH-NEW): implement
+    // {"block_transaction_count",  kth_py_native_chain_block_transaction_count, METH_VARARGS, "..."},
+    // {"block_transaction_nth",  kth_py_native_chain_block_transaction_nth, METH_VARARGS, "..."},
+
     {"block_serialized_size",  kth_py_native_chain_block_serialized_size, METH_VARARGS, "..."},
     {"block_fees",  kth_py_native_chain_block_fees, METH_VARARGS, "..."},
     {"block_claim",  kth_py_native_chain_block_claim, METH_VARARGS, "..."},
@@ -496,7 +322,6 @@ PyMethodDef KnuthNativeMethods[] = {
     {"block_generate_merkle_root",  kth_py_native_chain_block_generate_merkle_root, METH_VARARGS, "..."},
 
     {"block_is_valid",  kth_py_native_chain_block_is_valid, METH_VARARGS, "..."},
-    {"block_transaction_nth",  kth_py_native_chain_block_transaction_nth, METH_VARARGS, "..."},
     {"block_signature_operations",  kth_py_native_chain_block_signature_operations, METH_VARARGS, "..."},
     {"block_signature_operations_bip16_active",  kth_py_native_chain_block_signature_operations_bip16_active, METH_VARARGS, "..."},
     {"block_total_inputs",  kth_py_native_chain_block_total_inputs, METH_VARARGS, "..."},
@@ -535,16 +360,16 @@ PyMethodDef KnuthNativeMethods[] = {
     {"point_get_index",  kth_py_native_point_get_index, METH_VARARGS, "..."},
     {"point_get_checksum",  kth_py_native_point_get_checksum, METH_VARARGS, "..."},
 
-    {"word_list_construct",  kth_py_native_word_list_construct, METH_VARARGS, "..."},
-    {"word_list_destruct",  kth_py_native_word_list_destruct, METH_VARARGS, "..."},
-    {"word_list_add_word",  kth_py_native_word_list_add_word, METH_VARARGS, "..."},
+    // {"word_list_construct",  kth_py_native_word_list_construct, METH_VARARGS, "..."},
+    // {"word_list_destruct",  kth_py_native_word_list_destruct, METH_VARARGS, "..."},
+    // {"word_list_add_word",  kth_py_native_word_list_add_word, METH_VARARGS, "..."},
 
-    {"wallet_mnemonics_to_seed",  kth_py_native_wallet_mnemonics_to_seed, METH_VARARGS, "..."},
-    {"wallet_ec_new",  kth_py_native_wallet_ec_new, METH_VARARGS, "..."},
-    {"wallet_ec_to_public",  kth_py_native_wallet_ec_to_public, METH_VARARGS, "..."},
-    {"wallet_ec_to_address",  kth_py_native_wallet_ec_to_address, METH_VARARGS, "..."},
-    {"wallet_hd_new",  kth_py_native_wallet_hd_new, METH_VARARGS, "..."},
-    {"wallet_hd_private_to_ec",  kth_py_native_wallet_hd_private_to_ec, METH_VARARGS, "..."},
+    // {"wallet_mnemonics_to_seed",  kth_py_native_wallet_mnemonics_to_seed, METH_VARARGS, "..."},
+    // {"wallet_ec_new",  kth_py_native_wallet_ec_new, METH_VARARGS, "..."},
+    // {"wallet_ec_to_public",  kth_py_native_wallet_ec_to_public, METH_VARARGS, "..."},
+    // {"wallet_ec_to_address",  kth_py_native_wallet_ec_to_address, METH_VARARGS, "..."},
+    // {"wallet_hd_new",  kth_py_native_wallet_hd_new, METH_VARARGS, "..."},
+    // {"wallet_hd_private_to_ec",  kth_py_native_wallet_hd_private_to_ec, METH_VARARGS, "..."},
 
 
     {"script_destruct",  kth_py_native_chain_script_destruct, METH_VARARGS, "..."},
@@ -556,10 +381,10 @@ PyMethodDef KnuthNativeMethods[] = {
     {"script_sigops",  kth_py_native_chain_script_sigops, METH_VARARGS, "..."},
     // {"script_sigops",  kth_py_native_chain_script_sigops, METH_VARARGS, "..."},
 
-    {"payment_address_destruct",  kth_py_native_chain_payment_address_destruct, METH_VARARGS, "..."},
-    {"payment_address_encoded",  kth_py_native_chain_payment_address_encoded, METH_VARARGS, "..."},
-    {"payment_address_version",  kth_py_native_chain_payment_address_version, METH_VARARGS, "..."},
-    {"payment_address_construct_from_string",  kth_py_native_chain_payment_address_construct_from_string, METH_VARARGS, "..."},
+    {"payment_address_destruct",  kth_py_native_wallet_payment_address_destruct, METH_VARARGS, "..."},
+    {"payment_address_encoded",  kth_py_native_wallet_payment_address_encoded, METH_VARARGS, "..."},
+    {"payment_address_version",  kth_py_native_wallet_payment_address_version, METH_VARARGS, "..."},
+    {"payment_address_construct_from_string",  kth_py_native_wallet_payment_address_construct_from_string, METH_VARARGS, "..."},
 
     {"output_point_get_hash",  kth_py_native_chain_output_point_get_hash, METH_VARARGS, "..."},
     //{"point_is_valid",  kth_py_native_point_is_valid, METH_VARARGS, "..."},
@@ -583,7 +408,7 @@ PyMethodDef KnuthNativeMethods[] = {
     {"merkle_block_destruct",  kth_py_native_chain_merkle_block_destruct, METH_VARARGS, "..."},
     {"transaction_destruct",  kth_py_native_chain_transaction_destruct, METH_VARARGS, "..."},
     {"output_destruct",  kth_py_native_chain_output_destruct, METH_VARARGS, "..."},
-    {"input_destruct",  kth_py_native_chain_input_destruct, METH_VARARGS, "..."},
+    {"input_destruct",  kth_py_native_kth_chain_input_destruct, METH_VARARGS, "..."},
 
     {"block_list_construct_default",  kth_py_native_chain_block_list_construct_default, METH_VARARGS, "..."},
     {"block_list_push_back",  kth_py_native_chain_block_list_push_back, METH_VARARGS, "..."},

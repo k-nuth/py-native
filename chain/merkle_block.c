@@ -18,8 +18,8 @@ PyObject* kth_py_native_chain_merkle_block_get_header(PyObject* self, PyObject* 
         return NULL;
     }
 
-    merkle_block_t merkle_block = (merkle_block_t)get_ptr(py_merkle);
-    header_t header = chain_merkle_block_header(merkle_block);
+    kth_merkleblock_t merkle_block = (kth_merkleblock_t)get_ptr(py_merkle);
+    kth_header_t header = kth_chain_merkle_block_header(merkle_block);
 
     return to_py_obj(header);//TODO: Está bien esto? O tiene que ser un BuildValue????
 
@@ -32,8 +32,8 @@ PyObject* kth_py_native_chain_merkle_block_is_valid(PyObject* self, PyObject* ar
         return NULL;
     }
 
-    merkle_block_t block = (merkle_block_t)get_ptr(py_merkle_block);
-    int res = chain_merkle_block_is_valid(block);
+    kth_merkleblock_t block = (kth_merkleblock_t)get_ptr(py_merkle_block);
+    int res = kth_chain_merkle_block_is_valid(block);
 
     return Py_BuildValue("i", res);
 }
@@ -45,8 +45,8 @@ PyObject* kth_py_native_chain_merkle_block_hash_count(PyObject* self, PyObject* 
         return NULL;
     }
 
-    merkle_block_t block = (merkle_block_t)get_ptr(py_merkle_block);
-    uint64_t /*size_t*/ res = chain_merkle_block_hash_count(block);
+    kth_merkleblock_t block = (kth_merkleblock_t)get_ptr(py_merkle_block);
+    kth_size_t res = kth_chain_merkle_block_hash_count(block);
 
     return Py_BuildValue("K", res);
 }
@@ -59,8 +59,8 @@ PyObject* kth_py_native_chain_merkle_block_total_transaction_count(PyObject* sel
         return NULL;
     }
 
-    merkle_block_t block = (merkle_block_t)get_ptr(py_merkle_block);
-    uint64_t /*size_t*/ res = chain_merkle_block_total_transaction_count(block);
+    kth_merkleblock_t block = (kth_merkleblock_t)get_ptr(py_merkle_block);
+    kth_size_t res = kth_chain_merkle_block_total_transaction_count(block);
 
     return Py_BuildValue("K", res);
 }
@@ -73,8 +73,8 @@ PyObject* kth_py_native_chain_merkle_block_serialized_size(PyObject* self, PyObj
         return NULL;
     }
 
-    merkle_block_t block = (merkle_block_t)get_ptr(py_merkle_block);
-    uint64_t /*size_t*/ res = chain_merkle_block_serialized_size(block, py_version);
+    kth_merkleblock_t block = (kth_merkleblock_t)get_ptr(py_merkle_block);
+    kth_size_t res = kth_chain_merkle_block_serialized_size(block, py_version);
 
     return Py_BuildValue("K", res);
 }
@@ -86,8 +86,8 @@ PyObject* kth_py_native_chain_merkle_block_reset(PyObject* self, PyObject* args)
         return NULL;
     }
 
-    merkle_block_t block = (merkle_block_t)get_ptr(py_merkle_block);
-    chain_merkle_block_reset(block);
+    kth_merkleblock_t block = (kth_merkleblock_t)get_ptr(py_merkle_block);
+    kth_chain_merkle_block_reset(block);
 
     Py_RETURN_NONE;
 }
@@ -99,8 +99,8 @@ PyObject * kth_py_native_chain_merkle_block_destruct(PyObject* self, PyObject* a
         return NULL;
     }
 
-    merkle_block_t block = (merkle_block_t)get_ptr(py_merkle_block);
-    chain_merkle_block_destruct(block);
+    kth_merkleblock_t block = (kth_merkleblock_t)get_ptr(py_merkle_block);
+    kth_chain_merkle_block_destruct(block);
 
     Py_RETURN_NONE;
 }
