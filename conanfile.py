@@ -12,7 +12,7 @@ class KnuthPyNative(ConanFile):
     default_options = "shared=False"
     generators = "cmake"
 
-    requires = (("c-api/0.24.0@kth/stable"))
+    requires = (("c-api/0.25.0@kth/stable"))
 
     def configure(self):
         ConanFile.configure(self)
