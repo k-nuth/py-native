@@ -19,3 +19,5 @@ debug.log
 error.log
 
 .vscode/
+kth/
+kth_py_native.cpython-39-darwin.so

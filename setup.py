@@ -251,11 +251,35 @@ extensions = [
         # 'binary.c'
         # 'chain/word_list.c',
 
-    	sources = ['src/utils.c', 'src/chain/header.c', 'src/chain/block.c', 'src/chain/merkle_block.c', 'src/module.cpp', 'src/node.cpp',
-        'src/chain/chain.c', 'src/chain/point.c', 'src/chain/history.c',
-        'src/chain/transaction.c', 'src/chain/output.c', 'src/chain/output_list.c', 'src/chain/input.c', 'src/chain/input_list.c',
-        'src/chain/script.c', 'src/chain/payment_address.c', 'src/chain/compact_block.c', 'src/chain/output_point.c',
-        'src/chain/block_list.c', 'src/chain/transaction_list.c', 'src/chain/stealth_compact.c', 'src/chain/stealth_compact_list.c', 'src/p2p/p2p.c'],
+    	sources = [
+            'src/utils.c',
+            'src/chain/header.c',
+            'src/chain/block.c',
+            'src/chain/merkle_block.c',
+            'src/module.cpp',
+            'src/node.cpp',
+            'src/chain/chain.c',
+            'src/chain/point.c',
+            'src/chain/history.c',
+            'src/chain/transaction.c',
+            'src/chain/output.c',
+            'src/chain/output_list.c',
+            'src/chain/input.c',
+            'src/chain/input_list.c',
+            'src/chain/script.c',
+            'src/chain/payment_address.c',
+            'src/chain/compact_block.c',
+            'src/chain/output_point.c',
+            'src/chain/block_list.c',
+            'src/chain/transaction_list.c',
+            'src/chain/stealth_compact.c',
+            'src/chain/stealth_compact_list.c',
+            'src/p2p/p2p.c',
+
+            'src/config/node_settings.c'
+        ],
+
+
 
         include_dirs=['kth/include', 'include'],
         library_dirs=['kth/lib'],
