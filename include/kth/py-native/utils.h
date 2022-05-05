@@ -15,6 +15,11 @@ int char2int(char input);
 void hex2bin(const char* src, uint8_t* target);
 PyObject* to_py_obj(void*);
 
+// PyObject* to_py_str(char const* str, size_t n);
+PyObject* to_py_str(char const* str);
+
+// return Py_BuildValue("s#", blocks, out_n);
+
 #ifdef __cplusplus
 } //extern "C"
 #endif

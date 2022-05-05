@@ -54,12 +54,13 @@ def get_similar_lib(path, pattern):
 
 def get_libraries():
     # libraries = ['kth-c-api', 'kth-node', 'kth-blockchain', 'kth-network', 'kth-consensus', 'kth-database', 'kth-core', 'boost_atomic', 'boost_chrono', 'boost_date_time', 'boost_filesystem', 'boost_iostreams', 'boost_locale', 'boost_log', 'boost_log_setup', 'boost_program_options', 'boost_random', 'boost_regex', 'boost_system', 'boost_unit_test_framework', 'boost_prg_exec_monitor', 'boost_test_exec_monitor', 'boost_thread', 'boost_timer', 'secp256k1', 'bz2', 'gmp', 'z',]
-    fixed = ['kth-c-api', 'kth-node', 'kth-blockchain', 'kth-network', 'kth-consensus', 'kth-database', 'kth-domain', 'kth-infrastructure']
+    fixed = ['kth/lib/kth-c-api', 'kth/lib/kth-node', 'kth/lib/kth-blockchain', 'kth/lib/kth-network', 'kth/lib/kth-consensus', 'kth/lib/kth-database', 'kth/lib/kth-domain', 'kth/lib/kth-infrastructure']
+
 
     if platform == "win32":
         # libraries = ['boost_atomic', 'boost_chrono', 'boost_date_time', 'boost_filesystem', 'boost_iostreams', 'boost_locale', 'boost_log', 'boost_log_setup', 'boost_program_options', 'boost_random', 'boost_regex', 'boost_system', 'boost_unit_test_framework', 'boost_prg_exec_monitor', 'boost_test_exec_monitor', 'boost_thread', 'boost_timer', 'secp256k1', 'bz2', 'mpir', 'z',]
         # libraries = ['boost_atomic', 'boost_chrono', 'boost_date_time', 'boost_filesystem', 'boost_iostreams', 'boost_locale', 'boost_log', 'boost_log_setup', 'boost_program_options', 'boost_random', 'boost_regex', 'boost_system', 'boost_unit_test_framework', 'boost_prg_exec_monitor', 'boost_test_exec_monitor', 'boost_thread', 'boost_timer', 'secp256k1', 'mpir', 'z',]
-        libraries = ['boost_atomic', 'boost_chrono', 'boost_date_time', 'boost_filesystem', 'boost_iostreams', 'boost_locale', 'boost_log', 'boost_log_setup', 'boost_program_options', 'boost_random', 'boost_regex', 'boost_system', 'boost_unit_test_framework', 'boost_prg_exec_monitor', 'boost_test_exec_monitor', 'boost_thread', 'boost_timer', 'secp256k1', 'mpir',]
+        libraries = ['boost_atomic', 'boost_chrono', 'boost_date_time', 'boost_filesystem', 'boost_iostreams', 'boost_locale', 'boost_log', 'boost_log_setup', 'boost_program_options', 'boost_random', 'boost_regex', 'boost_system', 'boost_unit_test_framework', 'boost_prg_exec_monitor', 'boost_test_exec_monitor', 'boost_thread', 'boost_timer', 'secp256k1', 'mpir', 'lmdb']
         winlibs = fixed
         for lib in libraries:
             # print(lib)
@@ -74,7 +75,8 @@ def get_libraries():
     else:
         # libraries = ['boost_atomic', 'boost_chrono', 'boost_date_time', 'boost_filesystem', 'boost_iostreams', 'boost_locale', 'boost_log', 'boost_log_setup', 'boost_program_options', 'boost_random', 'boost_regex', 'boost_system', 'boost_unit_test_framework', 'boost_prg_exec_monitor', 'boost_test_exec_monitor', 'boost_thread', 'boost_timer', 'secp256k1', 'bz2', 'gmp', 'z',]
         # libraries = ['boost_atomic', 'boost_chrono', 'boost_date_time', 'boost_filesystem', 'boost_iostreams', 'boost_locale', 'boost_log', 'boost_log_setup', 'boost_program_options', 'boost_random', 'boost_regex', 'boost_system', 'boost_unit_test_framework', 'boost_prg_exec_monitor', 'boost_test_exec_monitor', 'boost_thread', 'boost_timer', 'secp256k1', 'gmp', 'z',]
-        libraries = ['boost_atomic', 'boost_chrono', 'boost_date_time', 'boost_filesystem', 'boost_iostreams', 'boost_locale', 'boost_log', 'boost_log_setup', 'boost_program_options', 'boost_random', 'boost_regex', 'boost_system', 'boost_unit_test_framework', 'boost_prg_exec_monitor', 'boost_test_exec_monitor', 'boost_thread', 'boost_timer', 'secp256k1', 'gmp', ]
+        libraries = ['kth/lib/boost_atomic', 'kth/lib/boost_chrono', 'kth/lib/boost_date_time', 'kth/lib/boost_filesystem', 'kth/lib/boost_iostreams', 'kth/lib/boost_locale', 'kth/lib/boost_log', 'kth/lib/boost_log_setup', 'kth/lib/boost_program_options', 'kth/lib/boost_random', 'kth/lib/boost_regex', 'kth/lib/boost_system', 'kth/lib/boost_unit_test_framework', 'kth/lib/boost_prg_exec_monitor', 'kth/lib/boost_test_exec_monitor', 'kth/lib/boost_thread', 'kth/lib/boost_timer', 'kth/lib/secp256k1', 'kth/lib/gmp', 'kth/lib/lmdb']
+        # libraries = []
         return fixed + libraries
 
 def do_conan_stuff(microarch=None, currency=None):
@@ -141,7 +143,8 @@ def do_build_stuff(microarch=None, currency=None):
     print(os.getcwd())
     print('*********************************************************************************************************')
 
-    extensions[0].libraries = get_libraries()
+    # extensions[0].libraries = get_libraries()
+    # extensions[0].extra_objects = get_libraries()
 
 
 class DevelopCommand(develop):
@@ -240,7 +243,7 @@ class BuildCommand(build):
 microarch = ''
 
 extensions = [
-	Extension('kth_py_native',
+	Extension('kth_native',
         define_macros = [
             ('KTH_LIB_STATIC', None),
             ('KTH_DB_NEW_FULL', None),
@@ -256,7 +259,6 @@ extensions = [
             'src/chain/header.c',
             'src/chain/block.c',
             'src/chain/merkle_block.c',
-            'src/module.cpp',
             'src/node.cpp',
             'src/chain/chain.c',
             'src/chain/point.c',
@@ -276,13 +278,47 @@ extensions = [
             'src/chain/stealth_compact_list.c',
             'src/p2p/p2p.c',
 
-            'src/config/node_settings.c'
+            'src/config/database_settings.cpp',
+            'src/config/node_settings.cpp',
+
+            'src/module.cpp',
+
         ],
 
-
-
         include_dirs=['kth/include', 'include'],
-        library_dirs=['kth/lib'],
+        # library_dirs=['kth/lib'],
+
+
+        extra_objects = [
+            'kth/lib/libkth-c-api.a',
+            'kth/lib/libkth-node.a',
+            'kth/lib/libkth-blockchain.a',
+            'kth/lib/libkth-network.a',
+            'kth/lib/libkth-consensus.a',
+            'kth/lib/libkth-database.a',
+            'kth/lib/libkth-domain.a',
+            'kth/lib/libkth-infrastructure.a',
+            'kth/lib/libboost_atomic.a',
+            'kth/lib/libboost_chrono.a',
+            'kth/lib/libboost_date_time.a',
+            'kth/lib/libboost_filesystem.a',
+            'kth/lib/libboost_iostreams.a',
+            'kth/lib/libboost_locale.a',
+            'kth/lib/libboost_log.a',
+            'kth/lib/libboost_log_setup.a',
+            'kth/lib/libboost_program_options.a',
+            'kth/lib/libboost_random.a',
+            'kth/lib/libboost_regex.a',
+            'kth/lib/libboost_system.a',
+            'kth/lib/libboost_unit_test_framework.a',
+            'kth/lib/libboost_prg_exec_monitor.a',
+            'kth/lib/libboost_test_exec_monitor.a',
+            'kth/lib/libboost_thread.a',
+            'kth/lib/libboost_timer.a',
+            'kth/lib/libsecp256k1.a',
+            'kth/lib/libgmp.a',
+            'kth/lib/liblmdb.a'
+        ]
     ),
 ]
 
@@ -292,6 +328,7 @@ setup(
     # version=VERSION,
     version=__version__,
 
+    python_requires=">=3.4",
 
     description='Knuth Project',
     long_description='Knuth Project',
@@ -318,8 +355,6 @@ setup(
         'License :: OSI Approved :: MIT License',
 
         'Programming Language :: C++',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',

@@ -46,6 +46,21 @@ PyObject* to_py_obj(void* obj) {
 #endif /* PY_MAJOR_VERSION >= 3 */
 }
 
+//inline
+// PyObject* to_py_str(char const* str, size_t n) {
+PyObject* to_py_str(char const* str) {
+    return Py_BuildValue("s", str);
+
+// return Py_BuildValue("y#", str, n);
+// return Py_BuildValue("s#", blocks, out_n);
+// #if PY_MAJOR_VERSION >= 3
+//     return Py_BuildValue("y#", blocks, out_n);
+// #else
+//     return Py_BuildValue("s#", blocks, out_n);
+// #endif
+
+}
+
 
 
 
