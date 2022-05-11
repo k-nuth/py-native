@@ -45,9 +45,15 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: true
-      - uses: actions/setup-python@v1
+
+      - uses: actions/setup-python@v3
         with:
-          python-version: "3.9"
+          python-version: '${{ matrix.config.python_version }}'
+          architecture: 'x64'
+
+      # - uses: actions/setup-python@v1
+      #   with:
+      #     python-version: "3.9"
 
       - name: Settting EnvVars (Unix)
         if: ${{ matrix.config.os_kind != 'windows' }}
@@ -74,7 +80,7 @@ jobs:
         run: |
           # echo ${NPM_AUTH_TOKEN}
           # echo ${NPM_EMAIL}
-          # echo ${PYTHON_VERSION}
+          echo ${PYTHON_VERSION}
           # echo ${NODE_PRE_GYP_GITHUB_TOKEN}
 
           echo "-------------------------------------------------------"
@@ -88,11 +94,6 @@ jobs:
       #   if: ${{ matrix.config.os_kind != 'linux' }}
       #   with:
       #     node-version: '${{ matrix.config.nodejs_version }}'
-
-      - uses: actions/setup-python@v3
-        with:
-          python-version: '${{ matrix.config.python_version }}'
-          architecture: 'x64'
 
       - name: Install (macOS)
         if: ${{ matrix.config.os_kind == 'macos' }}
