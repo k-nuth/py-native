@@ -19,7 +19,7 @@ debug.log
 error.log
 
 .vscode/
-kth/
+/kth/
 kth_native.cpython-39-darwin.so
 conan.lock
 conanbuildinfo.txt
