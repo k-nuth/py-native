@@ -16,10 +16,15 @@ echo "-----------------------------------------------------------------"
 echo "-----------------------------------------------------------------"
 echo "-----------------------------------------------------------------"
 
-sudo pip install --upgrade kthbuild
-sudo pip install --upgrade conan_package_tools
-sudo pip install --upgrade wheel
-sudo pip install --upgrade twine
+# sudo pip install --upgrade kthbuild
+# sudo pip install --upgrade conan_package_tools
+# sudo pip install --upgrade wheel
+# sudo pip install --upgrade twine
+
+pip install --upgrade kthbuild --user
+pip install --upgrade conan_package_tools --user
+pip install --upgrade wheel --user
+pip install --upgrade twine --user
 
 echo "-----------------------------------------------------------------"
 echo "-----------------------------------------------------------------"
@@ -29,6 +34,16 @@ echo "-----------------------------------------------------------------"
 
 conan --version
 conan user
+
+echo "-----------------------------------------------------------------"
+echo "-----------------------------------------------------------------"
+echo "-----------------------------------------------------------------"
+echo "-----------------------------------------------------------------"
+echo "-----------------------------------------------------------------"
+
+cd
+cd .conan/profiles
+ls
 
 echo "-----------------------------------------------------------------"
 echo "-----------------------------------------------------------------"
