@@ -52,6 +52,9 @@ echo "-----------------------------------------------------------------"
 echo "-----------------------------------------------------------------"
 
 conan profile list
+conan profile new default --detect
+conan profile list
+
 # conan remote add kth_temp https://knuth.jfrog.io/artifactory/api/conan/knuth
 conan config install https://github.com/k-nuth/ci-utils/raw/master/conan/config.zip
 
