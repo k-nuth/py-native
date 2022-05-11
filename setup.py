@@ -281,7 +281,7 @@ extensions = [
             'src/config/database_settings.cpp',
             'src/config/node_settings.cpp',
 
-            'src/module.cpp',
+            'src/module.c',
 
         ],
 

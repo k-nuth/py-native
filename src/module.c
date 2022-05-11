@@ -48,7 +48,7 @@
 
 #include <kth/capi.h>
 
-#include <iostream>
+// #include <iostream>
 
 #define KTH_PY_SETATTR(to, from, var, fmt) PyObject_SetAttrString(to, #var, Py_BuildValue(fmt, from.var))
 
