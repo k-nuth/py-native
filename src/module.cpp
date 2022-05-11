@@ -325,10 +325,10 @@ static PyTypeObject NodeSettingsType = {
     .tp_name = "kth_native.NodeSettings",
     .tp_basicsize = sizeof(NodeSettings),
     .tp_itemsize = 0,
+    // .tp_dealloc = (destructor) NodeSettings_dealloc,
     .tp_flags = Py_TPFLAGS_DEFAULT, // | Py_TPFLAGS_BASETYPE,
     .tp_doc = "Node Settings",
     // .tp_init = (initproc) NodeSettings_init,
-    // .tp_dealloc = (destructor) NodeSettings_dealloc,
     .tp_members = NodeSettings_members,
     // .tp_methods = NodeSettings_methods,
     .tp_new = PyType_GenericNew,
@@ -397,12 +397,12 @@ static PyTypeObject DatabaseSettingsType = {
     .tp_name = "kth_native.DatabaseSettings",
     .tp_basicsize = sizeof(DatabaseSettings),
     .tp_itemsize = 0,
+    .tp_dealloc = (destructor) DatabaseSettings_dealloc,
     .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
     .tp_doc = PyDoc_STR("Database Settings"),
 
     .tp_new = DatabaseSettings_new,
     // .tp_init = (initproc) DatabaseSettings_init,
-    .tp_dealloc = (destructor) DatabaseSettings_dealloc,
     .tp_members = DatabaseSettings_members,
     // .tp_methods = DatabaseSettings_methods,
 };
@@ -473,12 +473,12 @@ static PyTypeObject CheckpointType = {
     .tp_name = "kth_native.Checkpoint",
     .tp_basicsize = sizeof(Checkpoint),
     .tp_itemsize = 0,
+    .tp_dealloc = (destructor) Checkpoint_dealloc,
     .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
     .tp_doc = PyDoc_STR("Checkpoint"),
 
     .tp_new = Checkpoint_new,
     // .tp_init = (initproc) Checkpoint_init,
-    .tp_dealloc = (destructor) Checkpoint_dealloc,
     .tp_members = Checkpoint_members,
     // .tp_methods = Checkpoint_methods,
 };
@@ -510,12 +510,12 @@ static PyTypeObject AuthorityType = {
     .tp_name = "kth_native.Authority",
     .tp_basicsize = sizeof(Authority),
     .tp_itemsize = 0,
+    .tp_dealloc = (destructor) Authority_dealloc,
     .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
     .tp_doc = PyDoc_STR("Authority"),
 
     .tp_new = Authority_new,
     // .tp_init = (initproc) Authority_init,
-    .tp_dealloc = (destructor) Authority_dealloc,
     .tp_members = Authority_members,
     // .tp_methods = Authority_methods,
 };
@@ -554,12 +554,12 @@ static PyTypeObject EndpointType = {
     .tp_name = "kth_native.Endpoint",
     .tp_basicsize = sizeof(Endpoint),
     .tp_itemsize = 0,
+    .tp_dealloc = (destructor) Endpoint_dealloc,
     .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
     .tp_doc = PyDoc_STR("Endpoint"),
 
     .tp_new = Endpoint_new,
     // .tp_init = (initproc) Endpoint_init,
-    .tp_dealloc = (destructor) Endpoint_dealloc,
     .tp_members = Endpoint_members,
     // .tp_methods = Endpoint_methods,
 };
@@ -590,12 +590,12 @@ static PyTypeObject BlockchainSettingsType = {
     .tp_name = "kth_native.BlockchainSettings",
     .tp_basicsize = sizeof(BlockchainSettings),
     .tp_itemsize = 0,
+    .tp_dealloc = (destructor) BlockchainSettings_dealloc,
     .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
     .tp_doc = PyDoc_STR("Blockchain Settings"),
 
     .tp_new = BlockchainSettings_new,
     // .tp_init = (initproc) BlockchainSettings_init,
-    .tp_dealloc = (destructor) BlockchainSettings_dealloc,
     .tp_members = BlockchainSettings_members,
     // .tp_methods = BlockchainSettings_methods,
 };
@@ -751,12 +751,12 @@ static PyTypeObject NetworkSettingsType = {
     .tp_name = "kth_native.NetworkSettings",
     .tp_basicsize = sizeof(NetworkSettings),
     .tp_itemsize = 0,
+    .tp_dealloc = (destructor) NetworkSettings_dealloc,
     .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
     .tp_doc = PyDoc_STR("Network Settings"),
 
     .tp_new = NetworkSettings_new,
     // .tp_init = (initproc) NetworkSettings_init,
-    .tp_dealloc = (destructor) NetworkSettings_dealloc,
     .tp_members = NetworkSettings_members,
     // .tp_methods = NetworkSettings_methods,
 };
@@ -933,12 +933,12 @@ static PyTypeObject SettingsType = {
     .tp_name = "kth_native.Settings",
     .tp_basicsize = sizeof(Settings),
     .tp_itemsize = 0,
+    .tp_dealloc = (destructor) Settings_dealloc,
     .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
     .tp_doc = PyDoc_STR("Settings"),
 
     .tp_new = Settings_new,
     // .tp_init = (initproc) Settings_init,
-    .tp_dealloc = (destructor) Settings_dealloc,
     .tp_members = Settings_members,
     // .tp_methods = Settings_methods,
 };
