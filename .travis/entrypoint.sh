@@ -8,7 +8,7 @@ echo "-----------------------------------------------------------------"
 python --version
 python3 --version
 pyenv --version
-pyenv install --list
+# pyenv install --list
 
 echo "-----------------------------------------------------------------"
 echo "-----------------------------------------------------------------"
@@ -51,9 +51,15 @@ echo "-----------------------------------------------------------------"
 echo "-----------------------------------------------------------------"
 
 cd /home/conan/project
-sudo conan install .
-sudo pip install  -e .
-sudo python setup.py sdist
+
+# sudo conan install .
+# sudo pip install  -e .
+# sudo python setup.py sdist
+conan install .
+pip install  -e .
+python setup.py sdist
+
+
 
 # twine upload -u ${PYPI_USER_NAME} -p ${PYPI_PASSWORD} dist/*
 
