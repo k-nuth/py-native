@@ -1,5 +1,7 @@
 #include <kth/py-native/chain/transaction.h>
 
+#include <kth/capi.h>
+#include <kth/py-native/utils.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -17,11 +19,7 @@ PyObject* kth_py_native_chain_transaction_factory_from_data(PyObject* self, PyOb
     char* py_data;
     int py_n;
 
-#if PY_MAJOR_VERSION >= 3
     if ( ! PyArg_ParseTuple(args, "Iy#", &py_version, &py_data, &py_n)) {
-#else
-    if ( ! PyArg_ParseTuple(args, "Is#", &py_version, &py_data, &py_n)) {
-#endif
         return NULL;
     }
 
@@ -329,11 +327,7 @@ PyObject* kth_py_native_chain_transaction_to_data(PyObject* self, PyObject* args
     kth_size_t out_n;
     uint8_t* data = (uint8_t*)kth_chain_transaction_to_data(transaction, py_wire, &out_n);
 
-#if PY_MAJOR_VERSION >= 3
     return Py_BuildValue("y#", data, out_n);
-#else
-    return Py_BuildValue("s#", data, out_n);
-#endif
 }
 
 #ifdef __cplusplus

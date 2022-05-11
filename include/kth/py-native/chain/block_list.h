@@ -1,6 +1,8 @@
 #ifndef KTH_PY_NATIVE_CHAIN_BLOCK_LIST_H_
 #define KTH_PY_NATIVE_CHAIN_BLOCK_LIST_H_
 
+
+#define PY_SSIZE_T_CLEAN
 #include <Python.h>
 
 #ifdef __cplusplus

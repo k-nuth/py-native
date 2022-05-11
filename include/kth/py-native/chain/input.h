@@ -1,9 +1,8 @@
 #ifndef KTH_PY_NATIVE_CHAIN_INPUT_H_
 #define KTH_PY_NATIVE_CHAIN_INPUT_H_
 
+#define PY_SSIZE_T_CLEAN
 #include <Python.h>
-#include <kth/capi.h>
-#include <kth/py-native/utils.h>
 
 #ifdef __cplusplus
 extern "C" {

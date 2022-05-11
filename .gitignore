@@ -24,3 +24,5 @@ kth_native.cpython-39-darwin.so
 conan.lock
 conanbuildinfo.txt
 graph_info.json
+hosts.cache
+kth_py_native.egg-info/

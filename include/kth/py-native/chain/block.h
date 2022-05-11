@@ -1,6 +1,7 @@
 #ifndef KTH_PY_NATIVE_CHAIN_BLOCK_H_
 #define KTH_PY_NATIVE_CHAIN_BLOCK_H_
 
+#define PY_SSIZE_T_CLEAN
 #include <Python.h>
 // #include <kth/capi.h>
 // #include <kth/py-native/utils.h>
@@ -31,6 +32,7 @@ PyObject* kth_py_native_chain_block_is_valid_coinbase_script(PyObject* self, PyO
 PyObject* kth_py_native_chain_block_is_internal_double_spend(PyObject* self, PyObject* args);
 PyObject* kth_py_native_chain_block_is_valid_merkle_root(PyObject* self, PyObject* args);
 PyObject* kth_py_native_chain_block_destruct(PyObject* self, PyObject* args);
+PyObject* kth_py_native_chain_block_transactions(PyObject* self, PyObject* args);
 
 //TODO(KNUTH-NEW): implement
 // PyObject* kth_py_native_chain_block_transaction_count(PyObject* self, PyObject* args);

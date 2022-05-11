@@ -6,11 +6,7 @@ extern "C" {
 
 // inline
 void* get_ptr(PyObject* obj) {
-#if PY_MAJOR_VERSION >= 3
     return PyCapsule_GetPointer(obj, NULL);
-#else /* PY_MAJOR_VERSION >= 3 */
-    return PyCObject_AsVoidPtr(obj);
-#endif /* PY_MAJOR_VERSION >= 3 */
 }
 
 // inline
@@ -39,31 +35,13 @@ void hex2bin(const char* src, uint8_t* target) {
 
 // inline
 PyObject* to_py_obj(void* obj) {
-#if PY_MAJOR_VERSION >= 3
     return PyCapsule_New(obj, NULL, NULL);
-#else /* PY_MAJOR_VERSION >= 3 */
-    return PyCObject_FromVoidPtr(obj, NULL);
-#endif /* PY_MAJOR_VERSION >= 3 */
 }
 
 //inline
-// PyObject* to_py_str(char const* str, size_t n) {
 PyObject* to_py_str(char const* str) {
     return Py_BuildValue("s", str);
-
-// return Py_BuildValue("y#", str, n);
-// return Py_BuildValue("s#", blocks, out_n);
-// #if PY_MAJOR_VERSION >= 3
-//     return Py_BuildValue("y#", blocks, out_n);
-// #else
-//     return Py_BuildValue("s#", blocks, out_n);
-// #endif
-
 }
-
-
-
-
 
 #ifdef __cplusplus
 } //extern "C"

@@ -92,7 +92,7 @@ PyObject* kth_py_native_chain_merkle_block_reset(PyObject* self, PyObject* args)
     Py_RETURN_NONE;
 }
 
-PyObject * kth_py_native_chain_merkle_block_destruct(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_merkle_block_destruct(PyObject* self, PyObject* args){
     PyObject* py_merkle_block;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_merkle_block)) {

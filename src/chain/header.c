@@ -55,12 +55,7 @@ PyObject* kth_py_native_chain_header_get_previous_block_hash(PyObject* self, PyO
     kth_header_t header = (kth_header_t)get_ptr(py_header);
      kth_hash_t res = kth_chain_header_previous_block_hash(header);
 
-#if PY_MAJOR_VERSION >= 3
     return Py_BuildValue("y#", res.hash, 32);    //TODO: warning, hardcoded hash size!
-#else
-    return Py_BuildValue("s#", res.hash, 32);    //TODO: warning, hardcoded hash size!
-#endif
-
 }
 
 
@@ -113,11 +108,7 @@ PyObject* kth_py_native_chain_header_get_merkle(PyObject* self, PyObject* args){
     kth_header_t header = (kth_header_t)get_ptr(py_header);
      kth_hash_t res = kth_chain_header_merkle(header);
 
-#if PY_MAJOR_VERSION >= 3
     return Py_BuildValue("y#", res.hash, 32);    //TODO: warning, hardcoded hash size!
-#else
-    return Py_BuildValue("s#", res.hash, 32);    //TODO: warning, hardcoded hash size!
-#endif
 }
 
 PyObject* kth_py_native_chain_header_get_hash(PyObject* self, PyObject* args){
@@ -130,11 +121,7 @@ PyObject* kth_py_native_chain_header_get_hash(PyObject* self, PyObject* args){
     kth_header_t header = (kth_header_t)get_ptr(py_header);
      kth_hash_t res = kth_chain_header_hash(header);
 
-#if PY_MAJOR_VERSION >= 3
     return Py_BuildValue("y#", res.hash, 32);    //TODO: warning, hardcoded hash size!
-#else
-    return Py_BuildValue("s#", res.hash, 32);    //TODO: warning, hardcoded hash size!
-#endif
 }
 
 PyObject* kth_py_native_chain_header_get_timestamp(PyObject* self, PyObject* args){
@@ -220,7 +207,7 @@ PyObject* kth_py_native_chain_header_set_nonce(PyObject* self, PyObject* args){
 }
 
 
-PyObject * kth_py_native_chain_header_destruct(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_header_destruct(PyObject* self, PyObject* args){
     PyObject* py_header;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_header)) {

@@ -17,16 +17,19 @@ jobs:
       - name: Generate Job Matrix
         id: set-matrix
         env:
-          MATRIX: '{"config":[{"name":"Linux NodeJS 16","nodejs_version":"16","os":"ubuntu-20.04","os_kind":"linux","march_id":"x64-4fZKi37a595hP","test":"1"},
-                              {"name":"Linux NodeJS 14","nodejs_version":"14","os":"ubuntu-20.04","os_kind":"linux","march_id":"x64-4fZKi37a595hP","test":"1"},
-                              {"name":"Linux NodeJS 12","nodejs_version":"12","os":"ubuntu-20.04","os_kind":"linux","march_id":"x64-4fZKi37a595hP","test":"1"},
-                              {"name":"macOS NodeJS 16","nodejs_version":"16","os":"macos-11","os_kind":"macos","march_id":"x64-4fZKi37a595hP","test":"0"},
-                              {"name":"macOS NodeJS 14","nodejs_version":"14","os":"macos-11","os_kind":"macos","march_id":"x64-4fZKi37a595hP","test":"0"},
-                              {"name":"macOS NodeJS 12","nodejs_version":"12","os":"macos-11","os_kind":"macos","march_id":"x64-4fZKi37a595hP","test":"0"},
-                              {"name":"Windows NodeJS 16","nodejs_version":"16","os":"windows-2019","os_kind":"windows","march_id":"x64-4fZKi37a595hP","test":"1"},
-                              {"name":"Windows NodeJS 14","nodejs_version":"14","os":"windows-2019","os_kind":"windows","march_id":"x64-4fZKi37a595hP","test":"1"},
-                              {"name":"Windows NodeJS 12","nodejs_version":"12","os":"windows-2019","os_kind":"windows","march_id":"x64-4fZKi37a595hP","test":"1"},
-                              ]}'
+          MATRIX: '{"config":[{"name":"Linux Python 3.9","python_version":"3.9","os":"ubuntu-20.04","os_kind":"linux","march_id":"x64-4fZKi37a595hP","test":"1"},
+                  ]}'
+
+          # MATRIX: '{"config":[{"name":"Linux NodeJS 16","nodejs_version":"16","os":"ubuntu-20.04","os_kind":"linux","march_id":"x64-4fZKi37a595hP","test":"1"},
+          #                     {"name":"Linux NodeJS 14","nodejs_version":"14","os":"ubuntu-20.04","os_kind":"linux","march_id":"x64-4fZKi37a595hP","test":"1"},
+          #                     {"name":"Linux NodeJS 12","nodejs_version":"12","os":"ubuntu-20.04","os_kind":"linux","march_id":"x64-4fZKi37a595hP","test":"1"},
+          #                     {"name":"macOS NodeJS 16","nodejs_version":"16","os":"macos-11","os_kind":"macos","march_id":"x64-4fZKi37a595hP","test":"0"},
+          #                     {"name":"macOS NodeJS 14","nodejs_version":"14","os":"macos-11","os_kind":"macos","march_id":"x64-4fZKi37a595hP","test":"0"},
+          #                     {"name":"macOS NodeJS 12","nodejs_version":"12","os":"macos-11","os_kind":"macos","march_id":"x64-4fZKi37a595hP","test":"0"},
+          #                     {"name":"Windows NodeJS 16","nodejs_version":"16","os":"windows-2019","os_kind":"windows","march_id":"x64-4fZKi37a595hP","test":"1"},
+          #                     {"name":"Windows NodeJS 14","nodejs_version":"14","os":"windows-2019","os_kind":"windows","march_id":"x64-4fZKi37a595hP","test":"1"},
+          #                     {"name":"Windows NodeJS 12","nodejs_version":"12","os":"windows-2019","os_kind":"windows","march_id":"x64-4fZKi37a595hP","test":"1"},
+          #                     ]}'
         run: |
           echo "${MATRIX}"
           echo "::set-output name=matrix::${MATRIX}"
@@ -50,7 +53,7 @@ jobs:
         if: ${{ matrix.config.os_kind != 'windows' }}
         shell: bash
         run: |
-          echo "NODEJS_VERSION=${{ matrix.config.nodejs_version }}" >> $GITHUB_ENV
+          echo "PYTHON_VERSION=${{ matrix.config.python_version }}" >> $GITHUB_ENV
           echo "KTH_GHA_MARCH_ID=${{ matrix.config.march_id }}" >> $GITHUB_ENV
           echo "KTH_GHA_RUN_TESTS=${{ matrix.config.test }}" >> $GITHUB_ENV
 
@@ -58,7 +61,7 @@ jobs:
         if: ${{ matrix.config.os_kind == 'windows' }}
         shell: powershell
         run: |
-          echo "NODEJS_VERSION=${{ matrix.config.nodejs_version }}" >> $Env:GITHUB_ENV
+          echo "PYTHON_VERSION=${{ matrix.config.python_version }}" >> $Env:GITHUB_ENV
           echo "KTH_GHA_MARCH_ID=${{ matrix.config.march_id }}" >> $Env:GITHUB_ENV
           echo "KTH_GHA_RUN_TESTS=${{ matrix.config.test }}" >> $Env:GITHUB_ENV
 
@@ -71,7 +74,7 @@ jobs:
         run: |
           # echo ${NPM_AUTH_TOKEN}
           # echo ${NPM_EMAIL}
-          # echo ${NODEJS_VERSION}
+          # echo ${PYTHON_VERSION}
           # echo ${NODE_PRE_GYP_GITHUB_TOKEN}
 
           echo "-------------------------------------------------------"
@@ -79,12 +82,17 @@ jobs:
           echo "-------------------------------------------------------"
           chmod a+x .travis/entrypoint.sh
           chmod -R 777 ${PWD}
-          /usr/bin/docker run --rm -e KTH_GHA_MARCH_ID=$KTH_GHA_MARCH_ID -e NPM_AUTH_TOKEN=$NPM_AUTH_TOKEN -e NPM_EMAIL=$NPM_EMAIL -e NODEJS_VERSION=$NODEJS_VERSION -e NODE_PRE_GYP_GITHUB_TOKEN=$NODE_PRE_GYP_GITHUB_TOKEN -v ${PWD}:/home/conan/project -v ${PWD}/.travis/entrypoint.sh:/tmp/entrypoint.sh conanio/gcc10 /bin/bash -c /tmp/entrypoint.sh
+          /usr/bin/docker run --rm -e KTH_GHA_MARCH_ID=$KTH_GHA_MARCH_ID -e NPM_AUTH_TOKEN=$NPM_AUTH_TOKEN -e NPM_EMAIL=$NPM_EMAIL -e PYTHON_VERSION=$PYTHON_VERSION -e NODE_PRE_GYP_GITHUB_TOKEN=$NODE_PRE_GYP_GITHUB_TOKEN -v ${PWD}:/home/conan/project -v ${PWD}/.travis/entrypoint.sh:/tmp/entrypoint.sh conanio/gcc10 /bin/bash -c /tmp/entrypoint.sh
 
-      - uses: actions/setup-node@v2
-        if: ${{ matrix.config.os_kind != 'linux' }}
+      # - uses: actions/setup-node@v2
+      #   if: ${{ matrix.config.os_kind != 'linux' }}
+      #   with:
+      #     node-version: '${{ matrix.config.nodejs_version }}'
+
+      - uses: actions/setup-python@v3
         with:
-          node-version: '${{ matrix.config.nodejs_version }}'
+          python-version: '${{ matrix.config.python_version }}'
+          architecture: 'x64'
 
       - name: Install (macOS)
         if: ${{ matrix.config.os_kind == 'macos' }}

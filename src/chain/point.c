@@ -27,14 +27,8 @@ PyObject* kth_py_native_point_get_hash(PyObject* self, PyObject* args) {
     }
 
     kth_point_t p = (kth_point_t)get_ptr(py_point);
-
-     kth_hash_t res = kth_chain_point_get_hash(p);
-
-#if PY_MAJOR_VERSION >= 3
+    kth_hash_t res = kth_chain_point_get_hash(p);
     return Py_BuildValue("y#", res.hash, 32);    //TODO: warning, hardcoded hash size!
-#else
-    return Py_BuildValue("s#", res.hash, 32);    //TODO: warning, hardcoded hash size!
-#endif
 }
 
 PyObject* kth_py_native_point_is_valid(PyObject* self, PyObject* args) {

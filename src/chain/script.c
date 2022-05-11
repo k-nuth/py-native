@@ -1,5 +1,8 @@
 #include <kth/py-native/chain/script.h>
 
+#include <kth/capi.h>
+#include <kth/py-native/utils.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif

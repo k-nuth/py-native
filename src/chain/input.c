@@ -1,5 +1,8 @@
 #include <kth/py-native/chain/input.h>
 
+#include <kth/capi.h>
+#include <kth/py-native/utils.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -155,12 +158,7 @@ PyObject* kth_py_native_kth_chain_input_to_data(PyObject* self, PyObject* args) 
     kth_size_t out_n;
     uint8_t* data = (uint8_t*)kth_chain_input_to_data(input, py_wire, &out_n);
 
-#if PY_MAJOR_VERSION >= 3
     return Py_BuildValue("y#", data, out_n);
-#else
-    return Py_BuildValue("s#", data, out_n);
-#endif
-
 }
 
 

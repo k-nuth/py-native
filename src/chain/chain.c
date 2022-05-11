@@ -63,11 +63,7 @@ PyObject* kth_py_native_chain_fetch_block_by_hash(PyObject* self, PyObject* args
     size_t py_hash_size;
     PyObject* py_callback;
 
-#if PY_MAJOR_VERSION >= 3
     if ( ! PyArg_ParseTuple(args, "Oy#O", &py_chain, &py_hash, &py_hash_size, &py_callback)) {
-#else
-    if ( ! PyArg_ParseTuple(args, "Os#O", &py_chain, &py_hash, &py_hash_size, &py_callback)) {
-#endif
         return NULL;
     }
 
@@ -129,11 +125,7 @@ PyObject* kth_py_native_chain_fetch_merkle_block_by_hash(PyObject* self, PyObjec
     size_t py_hash_size;
     PyObject* py_callback;
 
-#if PY_MAJOR_VERSION >= 3
     if ( ! PyArg_ParseTuple(args, "Oy#O", &py_chain, &py_hash, &py_hash_size, &py_callback)) {
-#else
-    if ( ! PyArg_ParseTuple(args, "Os#O", &py_chain, &py_hash, &py_hash_size, &py_callback)) {
-#endif
         return NULL;
     }
 
@@ -194,11 +186,7 @@ PyObject* kth_py_native_chain_fetch_block_header_by_hash(PyObject* self, PyObjec
     size_t py_hash_size;
     PyObject* py_callback;
 
-#if PY_MAJOR_VERSION >= 3
     if ( ! PyArg_ParseTuple(args, "Oy#O", &py_chain, &py_hash, &py_hash_size, &py_callback)) {
-#else
-    if ( ! PyArg_ParseTuple(args, "Os#O", &py_chain, &py_hash, &py_hash_size, &py_callback)) {
-#endif
         return NULL;
     }
 
@@ -321,11 +309,7 @@ PyObject* kth_py_native_chain_fetch_block_height(PyObject* self, PyObject* args)
     size_t py_hash_size;
     PyObject* py_callback;
 
-#if PY_MAJOR_VERSION >= 3
     if ( ! PyArg_ParseTuple(args, "Oy#O", &py_chain, &py_hash, &py_hash_size, &py_callback)) {
-#else
-    if ( ! PyArg_ParseTuple(args, "Os#O", &py_chain, &py_hash, &py_hash_size, &py_callback)) {
-#endif
         return NULL;
     }
 
@@ -406,11 +390,7 @@ PyObject* kth_py_native_chain_fetch_transaction(PyObject* self, PyObject* args) 
     int py_require_confirmed;
     PyObject* py_callback;
 
-#if PY_MAJOR_VERSION >= 3
     if ( ! PyArg_ParseTuple(args, "Oy#iO", &py_chain, &py_hash, &py_hash_size, &py_require_confirmed,&py_callback)) {
-#else
-    if ( ! PyArg_ParseTuple(args, "Os#iO", &py_chain, &py_hash, &py_hash_size, &py_require_confirmed,&py_callback)) {
-#endif
         return NULL;
     }
 
@@ -450,11 +430,7 @@ PyObject* kth_py_native_chain_fetch_transaction(PyObject* self, PyObject* args) 
 //     int py_require_confirmed;
 //     PyObject* py_callback;
 
-// #if PY_MAJOR_VERSION >= 3
 //     if ( ! PyArg_ParseTuple(args, "Oy#IiO", &py_chain, &py_hash, &py_hash_size, &py_index, &py_require_confirmed, &py_callback)) {
-// #else
-//     if ( ! PyArg_ParseTuple(args, "Os#IiO", &py_chain, &py_hash, &py_hash_size, &py_index, &py_require_confirmed, &py_callback)) {
-// #endif
 //         return NULL;
 //     }
 
@@ -489,11 +465,7 @@ PyObject* kth_py_native_chain_fetch_transaction_position(PyObject* self, PyObjec
     int py_require_confirmed;
     PyObject* py_callback;
 
-#if PY_MAJOR_VERSION >= 3
     if ( ! PyArg_ParseTuple(args, "Oy#iO", &py_chain, &py_hash, &py_hash_size, &py_require_confirmed,&py_callback)) {
-#else
-    if ( ! PyArg_ParseTuple(args, "Os#iO", &py_chain, &py_hash, &py_hash_size, &py_require_confirmed,&py_callback)) {
-#endif
         return NULL;
     }
 
@@ -631,11 +603,7 @@ PyObject* kth_py_native_chain_fetch_compact_block_by_hash(PyObject* self, PyObje
     size_t py_hash_size;
     PyObject* py_callback;
 
-#if PY_MAJOR_VERSION >= 3
     if ( ! PyArg_ParseTuple(args, "Oy#O", &py_chain, &py_hash, &py_hash_size, &py_callback)) {
-#else
-    if ( ! PyArg_ParseTuple(args, "Os#O", &py_chain, &py_hash, &py_hash_size, &py_callback)) {
-#endif
         return NULL;
     }
 
@@ -763,17 +731,9 @@ int chain_subscribe_transaction_handler(kth_node_t node, kth_chain_t chain, void
 
 
     if (ret != NULL) {
-#if PY_MAJOR_VERSION >= 3
         int py_ret = (int)PyLong_AsLong(ret); //TODO(fernando): warning! convertion.. how to conver PyObject to int
-#else /* PY_MAJOR_VERSION >= 3 */
-        int py_ret = (int)PyInt_AsLong(ret); //TODO(fernando): warning! convertion.. how to conver PyObject to int
-#endif /* PY_MAJOR_VERSION >= 3 */
-
-
         Py_DECREF(ret);
-
         PyGILState_Release(gstate);
-
         return py_ret;
     }
 

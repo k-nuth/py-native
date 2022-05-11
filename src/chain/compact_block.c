@@ -4,7 +4,7 @@
 extern "C" {
 #endif
 
-PyObject * kth_py_native_chain_compact_block_header(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_compact_block_header(PyObject* self, PyObject* args){
     PyObject* py_compact_block;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_compact_block)) {
@@ -16,7 +16,7 @@ PyObject * kth_py_native_chain_compact_block_header(PyObject* self, PyObject* ar
     return to_py_obj(header);
 }
 
-PyObject * kth_py_native_chain_compact_block_is_valid(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_compact_block_is_valid(PyObject* self, PyObject* args){
     PyObject* py_compact_block;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_compact_block)) {
@@ -28,7 +28,7 @@ PyObject * kth_py_native_chain_compact_block_is_valid(PyObject* self, PyObject* 
     return Py_BuildValue("i", res);
 }
 
-PyObject * kth_py_native_chain_compact_block_serialized_size(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_compact_block_serialized_size(PyObject* self, PyObject* args){
     PyObject* py_compact_block;
     uint32_t py_version;
 
@@ -41,7 +41,7 @@ PyObject * kth_py_native_chain_compact_block_serialized_size(PyObject* self, PyO
     return Py_BuildValue("K", res);
 }
 
-PyObject * kth_py_native_chain_compact_block_transaction_count(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_compact_block_transaction_count(PyObject* self, PyObject* args){
     PyObject* py_compact_block;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_compact_block)) {
@@ -53,7 +53,7 @@ PyObject * kth_py_native_chain_compact_block_transaction_count(PyObject* self, P
     return Py_BuildValue("K", res);
 }
 
-PyObject * kth_py_native_chain_compact_block_transaction_nth(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_compact_block_transaction_nth(PyObject* self, PyObject* args){
     PyObject* py_compact_block;
     uint64_t py_n;
 
@@ -66,7 +66,7 @@ PyObject * kth_py_native_chain_compact_block_transaction_nth(PyObject* self, PyO
     return to_py_obj(res);
 }
 
-PyObject * kth_py_native_chain_compact_block_nonce(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_compact_block_nonce(PyObject* self, PyObject* args){
     PyObject* py_compact_block;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_compact_block)) {
@@ -78,7 +78,7 @@ PyObject * kth_py_native_chain_compact_block_nonce(PyObject* self, PyObject* arg
     return Py_BuildValue("K", res);
 }
 
-PyObject * kth_py_native_chain_compact_block_destruct(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_compact_block_destruct(PyObject* self, PyObject* args){
     PyObject* py_compact_block;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_compact_block)) {
@@ -90,7 +90,7 @@ PyObject * kth_py_native_chain_compact_block_destruct(PyObject* self, PyObject* 
     Py_RETURN_NONE;
 }
 
-PyObject * kth_py_native_chain_compact_block_reset(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_compact_block_reset(PyObject* self, PyObject* args){
     PyObject* py_compact_block;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_compact_block)) {

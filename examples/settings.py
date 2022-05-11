@@ -155,8 +155,8 @@ def print_network_settings(ns):
 
 # --------------------------------------------------------------------------------------------------------
 
-# res = kth_native.config_settings_get_from_file("/Users/fernando/dev/kth/py-native/examples/example.cfg")
-res = kth_native.config_settings_get_from_file("/Users/fernando/dev/kth/py-native/examples/example-fail.cfg")
+res = kth_native.config_settings_get_from_file("/Users/fernando/dev/kth/py-native/examples/example.cfg")
+# res = kth_native.config_settings_get_from_file("/Users/fernando/dev/kth/py-native/examples/example-fail.cfg")
 if not res[0]:
     raise Exception("error loading cfg file")
 

@@ -2,6 +2,7 @@
 #define KTH_PY_NATIVE_UTILS_H_
 
 
+#define PY_SSIZE_T_CLEAN
 #include <Python.h>
 #include <kth/capi.h>
 
