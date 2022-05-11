@@ -19,7 +19,7 @@ char** config_strings_to_c(PyObject* setts, size_t* out_size) {
     *out_size = n;
     char** buffer = kth_platform_allocate_array_of_strings(*out_size);
     for (size_t i = 0; i < n; ++i) {
-        auto str_py = PyList_GetItem(setts, i);
+        PyObject* str_py = PyList_GetItem(setts, i);
 
         char const* str;
         if ( ! PyArg_ParseTuple(Py_BuildValue("(O)", str_py), "s", &str)) {
