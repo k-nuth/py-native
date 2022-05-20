@@ -25,6 +25,7 @@ pip install --upgrade kthbuild --user
 pip install --upgrade conan_package_tools --user
 pip install --upgrade wheel --user
 pip install --upgrade twine --user
+pip install auditwheel
 
 echo "-----------------------------------------------------------------"
 echo "-----------------------------------------------------------------"
@@ -77,6 +78,21 @@ conan install .
 pip install  -e .
 python setup.py sdist
 python setup.py bdist_wheel
+
+
+echo "*************************************************"
+ls
+echo "*************************************************"
+auditwheel show kth_py_native-0.1.0-cp37-cp37m-linux_x86_64.whl
+echo "*************************************************"
+auditwheel repair kth_py_native-0.1.0-cp37-cp37m-linux_x86_64.whl
+echo "*************************************************"
+ls
+echo "*************************************************"
+auditwheel show kth_py_native-0.1.0-cp37-cp37m-linux_x86_64.whl
+echo "*************************************************"
+
+
 
 # twine upload -u ${PYPI_USER_NAME} -p ${PYPI_PASSWORD} dist/*
 
