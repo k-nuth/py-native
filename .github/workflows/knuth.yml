@@ -278,10 +278,14 @@ jobs:
         if: ${{ matrix.config.os_kind != 'windows' }}
         # if: github.ref == 'refs/heads/master'
         env:
-          PYPI_USER_NAME: ${{ secrets.PYPI_USER_NAME }}
-          PYPI_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+          PYPI_USER_NAME_X: ${{ secrets.PYPI_USER_NAME_X }}
+          PYPI_PASSWORD_X: ${{ secrets.PYPI_PASSWORD_X }}
         shell: bash
         run: |
+          echo "--------------------------------------"
+          echo ${PYPI_USER_NAME_X}
+          echo "--------------------------------------"
+          echo ${PYPI_PASSWORD_X}
           pwd
           echo "--------------------------------------"
           ls
@@ -290,7 +294,7 @@ jobs:
           echo "--------------------------------------"
           pip install --upgrade twine --user
           echo "--------------------------------------"
-          twine upload -u ${PYPI_USER_NAME} -p ${PYPI_PASSWORD} dist/* || true
+          twine upload -u ${PYPI_USER_NAME_X} -p ${PYPI_PASSWORD_X} dist/* || true
 
 # References:
   # https://github.com/radareorg/radare2
