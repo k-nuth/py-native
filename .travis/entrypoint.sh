@@ -76,8 +76,7 @@ cd /home/conan/project
 conan install .
 pip install  -e .
 python setup.py sdist
-
-
+python setup.py bdist_wheel
 
 # twine upload -u ${PYPI_USER_NAME} -p ${PYPI_PASSWORD} dist/*
 
