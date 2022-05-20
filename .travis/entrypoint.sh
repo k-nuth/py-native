@@ -83,13 +83,13 @@ python setup.py bdist_wheel
 echo "*************************************************"
 ls
 echo "*************************************************"
-auditwheel show kth_py_native-0.1.0-cp37-cp37m-linux_x86_64.whl
+auditwheel show dist/kth_py_native-0.1.0-cp37-cp37m-linux_x86_64.whl
 echo "*************************************************"
-auditwheel repair kth_py_native-0.1.0-cp37-cp37m-linux_x86_64.whl
+auditwheel repair dist/kth_py_native-0.1.0-cp37-cp37m-linux_x86_64.whl
 echo "*************************************************"
 ls
 echo "*************************************************"
-auditwheel show kth_py_native-0.1.0-cp37-cp37m-linux_x86_64.whl
+auditwheel show dist/kth_py_native-0.1.0-cp37-cp37m-linux_x86_64.whl
 echo "*************************************************"
 
 
