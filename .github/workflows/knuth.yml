@@ -282,6 +282,8 @@ jobs:
           PYPI_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
         shell: bash
         run: |
+          # pip install kthbuild --upgrade
+          pip install --upgrade twine --user
           twine upload -u ${PYPI_USER_NAME} -p ${PYPI_PASSWORD} dist/* || true
 
 # References:
