@@ -5,9 +5,9 @@ echo "-----------------------------------------------------------------"
 echo "-----------------------------------------------------------------"
 echo "-----------------------------------------------------------------"
 
-python --version
+# python --version
 python3 --version
-pyenv --version
+# pyenv --version
 # pyenv install --list
 
 echo "-----------------------------------------------------------------"
@@ -21,11 +21,11 @@ echo "-----------------------------------------------------------------"
 # sudo pip install --upgrade wheel
 # sudo pip install --upgrade twine
 
-pip install --upgrade kthbuild --user
-pip install --upgrade conan_package_tools --user
-pip install --upgrade wheel --user
-pip install --upgrade twine --user
-pip install auditwheel
+pip3 install --upgrade kthbuild --user
+pip3 install --upgrade conan_package_tools --user
+pip3 install --upgrade wheel --user
+pip3 install --upgrade twine --user
+pip3 install auditwheel
 
 echo "-----------------------------------------------------------------"
 echo "-----------------------------------------------------------------"
