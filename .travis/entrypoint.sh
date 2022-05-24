@@ -46,7 +46,7 @@ cd $HOME
 ls -la
 cd .local
 ls -la
-cd .bin
+cd bin
 ls -la
 # /home/fernando/.local/bin/conan
 
