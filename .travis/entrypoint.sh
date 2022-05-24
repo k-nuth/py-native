@@ -35,6 +35,18 @@ pip3 install --upgrade wheel --user
 pip3 install --upgrade twine --user
 pip3 install auditwheel
 
+
+echo "-----------------------------------------------------------------"
+echo "-----------------------------------------------------------------"
+echo "-----------------------------------------------------------------"
+echo "-----------------------------------------------------------------"
+echo "-----------------------------------------------------------------"
+
+cd $HOME
+ls -la
+
+# /home/fernando/.local/bin/conan
+
 echo "-----------------------------------------------------------------"
 echo "-----------------------------------------------------------------"
 echo "-----------------------------------------------------------------"
@@ -83,7 +95,7 @@ cd /home/conan/project
 # sudo pip install  -e .
 # sudo python setup.py sdist
 conan install .
-pip install  -e .
+pip3 install  -e .
 python3 setup.py sdist
 python3 setup.py bdist_wheel
 
