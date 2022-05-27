@@ -308,7 +308,8 @@ jobs:
           echo "--------------------------------------"
           pip install --upgrade twine --user
           echo "--------------------------------------"
-          twine upload -u ${PYPI_USER_NAME_X} -p ${PYPI_PASSWORD_X} dist/* || true
+          twine upload -u ${PYPI_USER_NAME_X} -p ${PYPI_PASSWORD_X} dist/*.tar.gz || true
+          twine upload -u ${PYPI_USER_NAME_X} -p ${PYPI_PASSWORD_X} wheelhouse/*.whl || true
 
 # References:
   # https://github.com/radareorg/radare2
