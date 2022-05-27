@@ -90,7 +90,9 @@ jobs:
           chmod a+x .travis/entrypoint.sh
           chmod -R 777 ${PWD}
           # /usr/bin/docker run --rm -e KTH_GHA_MARCH_ID=$KTH_GHA_MARCH_ID -e NPM_AUTH_TOKEN=$NPM_AUTH_TOKEN -e NPM_EMAIL=$NPM_EMAIL -e PYTHON_VERSION=$PYTHON_VERSION -e NODE_PRE_GYP_GITHUB_TOKEN=$NODE_PRE_GYP_GITHUB_TOKEN -v ${PWD}:/home/conan/project -v ${PWD}/.travis/entrypoint.sh:/tmp/entrypoint.sh conanio/gcc9 /bin/bash -c /tmp/entrypoint.sh
-          /usr/bin/docker run --rm -e KTH_GHA_MARCH_ID=$KTH_GHA_MARCH_ID -e NPM_AUTH_TOKEN=$NPM_AUTH_TOKEN -e NPM_EMAIL=$NPM_EMAIL -e PYTHON_VERSION=$PYTHON_VERSION -e NODE_PRE_GYP_GITHUB_TOKEN=$NODE_PRE_GYP_GITHUB_TOKEN -v ${PWD}:/home/conan/project -v ${PWD}/.travis/entrypoint.sh:/tmp/entrypoint.sh quay.io/pypa/manylinux_2_24_x86_64 /bin/bash -c /tmp/entrypoint.sh
+          # /usr/bin/docker run --rm -e KTH_GHA_MARCH_ID=$KTH_GHA_MARCH_ID -e NPM_AUTH_TOKEN=$NPM_AUTH_TOKEN -e NPM_EMAIL=$NPM_EMAIL -e PYTHON_VERSION=$PYTHON_VERSION -e NODE_PRE_GYP_GITHUB_TOKEN=$NODE_PRE_GYP_GITHUB_TOKEN -v ${PWD}:/home/conan/project -v ${PWD}/.travis/entrypoint.sh:/tmp/entrypoint.sh quay.io/pypa/manylinux_2_24_x86_64 /bin/bash -c /tmp/entrypoint.sh
+          /usr/bin/docker run --rm -e KTH_GHA_MARCH_ID=$KTH_GHA_MARCH_ID -e NPM_AUTH_TOKEN=$NPM_AUTH_TOKEN -e NPM_EMAIL=$NPM_EMAIL -e PYTHON_VERSION=$PYTHON_VERSION -e NODE_PRE_GYP_GITHUB_TOKEN=$NODE_PRE_GYP_GITHUB_TOKEN -v ${PWD}:/home/conan/project -v ${PWD}/.travis/entrypoint.sh:/tmp/entrypoint.sh fpelliccioni/manylinux_gcc10 /bin/bash -c /tmp/entrypoint.sh
+
 
       # - uses: actions/setup-node@v2
       #   if: ${{ matrix.config.os_kind != 'linux' }}

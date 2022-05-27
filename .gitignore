@@ -26,3 +26,6 @@ conanbuildinfo.txt
 graph_info.json
 hosts.cache
 kth_py_native.egg-info/
+kth_native.cpython-35m-x86_64-linux-gnu.so
+wheelhouse/kth_py_native-0.1.0-cp35-cp35m-manylinux_2_24_x86_64.whl
+.travis/entrypoint copy.sh
