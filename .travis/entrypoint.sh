@@ -84,7 +84,12 @@ auditwheel repair dist/kth_py_native-0.1.0-cp35-cp35m-linux_x86_64.whl
 echo "*************************************************"
 ls
 echo "*************************************************"
-auditwheel show dist/kth_py_native-0.1.0-cp35-cp35m-linux_x86_64.whl
+
+echo "*************************************************"
+ls wheelhouse
+echo "*************************************************"
+# auditwheel show dist/kth_py_native-0.1.0-cp35-cp35m-linux_x86_64.whl
+auditwheel show wheelhouse/kth_py_native-0.1.0-cp35-cp35m-manylinux_2_24_x86_64.whl
 echo "*************************************************"
 
 
