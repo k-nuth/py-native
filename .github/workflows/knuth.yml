@@ -17,8 +17,8 @@ jobs:
       - name: Generate Job Matrix
         id: set-matrix
         env:
-          MATRIX: '{"config":[{"name":"Linux Python 3.9","python_version":"3.9","os":"ubuntu-20.04","os_kind":"linux","march_id":"x64-4fZKi37a595hP","test":"1"},
-                              {"name":"Linux Python 3.10","python_version":"3.10","os":"ubuntu-20.04","os_kind":"linux","march_id":"x64-4fZKi37a595hP","test":"1"},
+          MATRIX: '{"config":[{"name":"Linux Python 3.9","python_version":"3.9.13","os":"ubuntu-20.04","os_kind":"linux","march_id":"x64-4fZKi37a595hP","test":"1"},
+                              {"name":"Linux Python 3.10","python_version":"3.10.4","os":"ubuntu-20.04","os_kind":"linux","march_id":"x64-4fZKi37a595hP","test":"1"},
                   ]}'
 
           # MATRIX: '{"config":[{"name":"Linux NodeJS 16","nodejs_version":"16","os":"ubuntu-20.04","os_kind":"linux","march_id":"x64-4fZKi37a595hP","test":"1"},
