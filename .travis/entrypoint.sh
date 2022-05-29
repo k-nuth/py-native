@@ -148,12 +148,12 @@ conan install .
 echo "*************************************************"
 ls
 echo "*************************************************"
-auditwheel show dist/kth_py_native-0.1.0-$CP_PYTHON_VERSION-$CP_PYTHON_VERSION-linux_x86_64.whl
+auditwheel show dist/kth_py_native-$PROJECT_VERSION-$CP_PYTHON_VERSION-$CP_PYTHON_VERSION-linux_x86_64.whl
 echo "*************************************************"
-auditwheel repair dist/kth_py_native-0.1.0-$CP_PYTHON_VERSION-$CP_PYTHON_VERSION-linux_x86_64.whl
+auditwheel repair dist/kth_py_native-$PROJECT_VERSION-$CP_PYTHON_VERSION-$CP_PYTHON_VERSION-linux_x86_64.whl
 
 
-# rm dist/kth_py_native-0.1.0-$CP_PYTHON_VERSION-$CP_PYTHON_VERSION-linux_x86_64.whl
+# rm dist/kth_py_native-$PROJECT_VERSION-$CP_PYTHON_VERSION-$CP_PYTHON_VERSION-linux_x86_64.whl
 # echo "*************************************************"
 # ls
 # echo "*************************************************"
@@ -161,8 +161,8 @@ auditwheel repair dist/kth_py_native-0.1.0-$CP_PYTHON_VERSION-$CP_PYTHON_VERSION
 # echo "*************************************************"
 # ls wheelhouse
 # echo "*************************************************"
-# auditwheel show dist/kth_py_native-0.1.0-$CP_PYTHON_VERSION-$CP_PYTHON_VERSION-linux_x86_64.whl
-# auditwheel show wheelhouse/kth_py_native-0.1.0-cp35-cp35m-manylinux_2_24_x86_64.whl
+# auditwheel show dist/kth_py_native-$PROJECT_VERSION-$CP_PYTHON_VERSION-$CP_PYTHON_VERSION-linux_x86_64.whl
+# auditwheel show wheelhouse/kth_py_native-$PROJECT_VERSION-cp35-cp35m-manylinux_2_24_x86_64.whl
 # echo "*************************************************"
 
 
