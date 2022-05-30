@@ -156,9 +156,11 @@ conan install .
 echo "*************************************************"
 ls
 echo "*************************************************"
-auditwheel show dist/kth_py_native-$PROJECT_VERSION-$CP_PYTHON_VERSION-$CP_PYTHON_VERSION-linux_x86_64.whl
+# auditwheel show dist/kth_py_native-$PROJECT_VERSION-$CP_PYTHON_VERSION-$CP_PYTHON_VERSION-linux_x86_64.whl
+auditwheel show dist/kth_py_native-*.whl
 echo "*************************************************"
-auditwheel repair dist/kth_py_native-$PROJECT_VERSION-$CP_PYTHON_VERSION-$CP_PYTHON_VERSION-linux_x86_64.whl
+# auditwheel repair dist/kth_py_native-$PROJECT_VERSION-$CP_PYTHON_VERSION-$CP_PYTHON_VERSION-linux_x86_64.whl
+auditwheel repair dist/kth_py_native-*.whl
 
 
 # rm dist/kth_py_native-$PROJECT_VERSION-$CP_PYTHON_VERSION-$CP_PYTHON_VERSION-linux_x86_64.whl
