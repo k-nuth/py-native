@@ -118,28 +118,7 @@ jobs:
         run: |
           set -x
 
-          brew update
-          brew outdated pyenv || brew upgrade pyenv
-          brew install pyenv-virtualenv
           # brew install cmake || true
-
-          if which pyenv > /dev/null; then
-            eval "$(pyenv init -)"
-            eval "$(pyenv virtualenv-init -)"
-          fi
-
-          pyenv install --list
-          pyenv install 3.8.7
-          pyenv virtualenv 3.8.7 conan
-
-          pyenv rehash
-          pyenv activate conan
-
-          # npm install -g node-gyp
-          # npm install -g @mapbox/node-pre-gyp
-          # # npm install -g aws-sdk
-          # # npm install -g node-pre-gyp-github
-          # npm install -g @mmomtchev/node-pre-gyp-github
 
           # pip install conan --upgrade
 
@@ -159,11 +138,6 @@ jobs:
           NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
         shell: bash
         run: |
-          if which pyenv > /dev/null; then
-            eval "$(pyenv init -)"
-            eval "$(pyenv virtualenv-init -)"
-          fi
-          pyenv activate conan
 
           echo "-----------------------------------------------------------------"
           echo "-----------------------------------------------------------------"
@@ -174,7 +148,11 @@ jobs:
           python --version
           conan --version
           conan user
+
           conan profile list
+          conan profile new default --detect
+          conan profile list
+
           conan config install https://github.com/k-nuth/ci-utils/raw/master/conan/config.zip
           # conan remote add kth_temp https://knuth.jfrog.io/artifactory/api/conan/knuth || true
           # conan install . --build=missing
