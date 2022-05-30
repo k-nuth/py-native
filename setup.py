@@ -249,37 +249,37 @@ extensions = [
             ('KTH_CURRENCY_BCH', None),
         ],
 
-        # 'binary.c'
-        # 'chain/word_list.c',
+        # 'binary.cpp'
+        # 'chain/word_list.cpp',
 
     	sources = [
-            'src/utils.c',
-            'src/chain/header.c',
-            'src/chain/block.c',
-            'src/chain/merkle_block.c',
+            'src/utils.cpp',
+            'src/chain/header.cpp',
+            'src/chain/block.cpp',
+            'src/chain/merkle_block.cpp',
             'src/node.cpp',
-            'src/chain/chain.c',
-            'src/chain/point.c',
-            'src/chain/history.c',
-            'src/chain/transaction.c',
-            'src/chain/output.c',
-            'src/chain/output_list.c',
-            'src/chain/input.c',
-            'src/chain/input_list.c',
-            'src/chain/script.c',
-            'src/chain/payment_address.c',
-            'src/chain/compact_block.c',
-            'src/chain/output_point.c',
-            'src/chain/block_list.c',
-            'src/chain/transaction_list.c',
-            'src/chain/stealth_compact.c',
-            'src/chain/stealth_compact_list.c',
-            'src/p2p/p2p.c',
+            'src/chain/chain.cpp',
+            'src/chain/point.cpp',
+            'src/chain/history.cpp',
+            'src/chain/transaction.cpp',
+            'src/chain/output.cpp',
+            'src/chain/output_list.cpp',
+            'src/chain/input.cpp',
+            'src/chain/input_list.cpp',
+            'src/chain/script.cpp',
+            'src/chain/payment_address.cpp',
+            'src/chain/compact_block.cpp',
+            'src/chain/output_point.cpp',
+            'src/chain/block_list.cpp',
+            'src/chain/transaction_list.cpp',
+            'src/chain/stealth_compact.cpp',
+            'src/chain/stealth_compact_list.cpp',
+            'src/p2p/p2p.cpp',
 
             'src/config/database_settings.cpp',
             'src/config/node_settings.cpp',
 
-            'src/module.c',
+            'src/module.cpp',
 
         ],
 
@@ -319,6 +319,7 @@ extensions = [
         ],
 
         language='c++17',
+        extra_link_args=["-stdlib=libc++", "-mmacosx-version-min=13"]
     ),
 ]
 

@@ -23,7 +23,7 @@ void chain_fetch_block_handler(kth_chain_t chain, void* ctx, kth_error_code_t er
     PyGILState_STATE gstate;
     gstate = PyGILState_Ensure();
 
-    PyObject* py_callback = ctx;
+    PyObject* py_callback = (PyObject*)ctx;
 
     PyObject* py_block = to_py_obj(block);
 
@@ -88,7 +88,7 @@ PyObject* kth_py_native_chain_fetch_block_by_hash(PyObject* self, PyObject* args
 // -------------------------------------------------------------------
 
 void chain_fetch_merkle_block_handler(kth_chain_t chain, void* ctx, kth_error_code_t error, kth_merkleblock_t merkle, kth_size_t h) {
-    PyObject* py_callback = ctx;
+    PyObject* py_callback = (PyObject*)ctx;
 
     PyObject* py_merkle = to_py_obj(merkle);
 
@@ -149,7 +149,7 @@ PyObject* kth_py_native_chain_fetch_merkle_block_by_hash(PyObject* self, PyObjec
 // -------------------------------------------------------------------
 
 void chain_fetch_block_header_handler(kth_chain_t chain, void* ctx, kth_error_code_t error , kth_header_t header, kth_size_t h) {
-    PyObject* py_callback = ctx;
+    PyObject* py_callback = (PyObject*)ctx;
 
     PyObject* py_header = to_py_obj(header);
 
@@ -213,7 +213,7 @@ void chain_fetch_last_height_handler(kth_chain_t chain, void* ctx, kth_error_cod
     PyGILState_STATE gstate;
     gstate = PyGILState_Ensure();
 
-    PyObject* py_callback = ctx;
+    PyObject* py_callback = (PyObject*)ctx;
 
     PyObject* arglist = Py_BuildValue("(iK)", error, h);
     PyObject_CallObject(py_callback, arglist);
@@ -249,7 +249,7 @@ PyObject* kth_py_native_chain_fetch_last_height(PyObject* self, PyObject* args) 
 
 void chain_fetch_history_handler(kth_chain_t chain, void* ctx, kth_error_code_t error, kth_history_compact_list_t history_list) {
 
-    PyObject* py_callback = ctx;
+    PyObject* py_callback = (PyObject*)ctx;
     PyObject* py_history_list = to_py_obj(history_list);
 
     // PyCapsule_GetPointer(py_history_list, NULL); //TODO: ????
@@ -295,7 +295,7 @@ PyObject* kth_py_native_chain_fetch_history(PyObject* self, PyObject* args) {
 
 void kth_chain_block_height_fetch_handler(kth_chain_t chain, void* ctx, kth_error_code_t error, kth_size_t h) {
 
-    PyObject* py_callback = ctx;
+    PyObject* py_callback = (PyObject*)ctx;
 
     PyObject* arglist = Py_BuildValue("(iK)", error, h);
     PyObject_CallObject(py_callback, arglist);
@@ -334,7 +334,7 @@ PyObject* kth_py_native_chain_fetch_block_height(PyObject* self, PyObject* args)
 // ---------------------------------------------------------
 
 void chain_stealth_fetch_handler(kth_chain_t chain, void* ctx, kth_error_code_t error, kth_stealth_compact_list_t stealth_list) {
-    PyObject* py_callback = ctx;
+    PyObject* py_callback = (PyObject*)ctx;
 
     PyObject* py_stealth_list = to_py_obj(stealth_list);
     // /*void* ptr_void =*/ PyCapsule_GetPointer(py_stealth_list, NULL);
@@ -372,7 +372,7 @@ void chain_fetch_transaction_handler(kth_chain_t chain, void* ctx, kth_error_cod
     PyGILState_STATE gstate;
     gstate = PyGILState_Ensure();
 
-    PyObject* py_callback = ctx;
+    PyObject* py_callback = (PyObject*)ctx;
     PyObject* py_transaction = to_py_obj(transaction);
 
     PyObject* arglist = Py_BuildValue("(iOKK)", error, py_transaction, index, height);
@@ -412,7 +412,7 @@ PyObject* kth_py_native_chain_fetch_transaction(PyObject* self, PyObject* args) 
 
 // Note: Removed on 3.3.0
 // void chain_fetch_output_handler(kth_chain_t chain, void* ctx, kth_error_code_t error, kth_output_t output) {
-//     PyObject* py_callback = ctx;
+//     PyObject* py_callback = (PyObject*)ctx;
 //     PyObject* py_output = to_py_obj(output);
 
 //     PyObject* arglist = Py_BuildValue("(iO)", error, py_output);
@@ -450,7 +450,7 @@ PyObject* kth_py_native_chain_fetch_transaction(PyObject* self, PyObject* args) 
 // }
 
 void chain_fetch_transaction_position_handler(kth_chain_t chain, void* ctx, kth_error_code_t error, uint64_t position, uint64_t height) {
-    PyObject* py_callback = ctx;
+    PyObject* py_callback = (PyObject*)ctx;
     PyObject* arglist = Py_BuildValue("(iKK)", error, position, height);
     PyObject_CallObject(py_callback, arglist);
     Py_DECREF(arglist);
@@ -483,7 +483,7 @@ PyObject* kth_py_native_chain_fetch_transaction_position(PyObject* self, PyObjec
 }
 
 void chain_organize_handler(kth_chain_t chain, void* ctx, kth_error_code_t error) {
-    PyObject* py_callback = ctx;
+    PyObject* py_callback = (PyObject*)ctx;
     PyObject* arglist = Py_BuildValue("(i)", error);
     PyObject_CallObject(py_callback, arglist);
     Py_DECREF(arglist);
@@ -535,7 +535,7 @@ PyObject* kth_py_native_chain_organize_transaction(PyObject* self, PyObject* arg
 }
 
 void chain_validate_tx_handler(kth_chain_t chain, void* ctx, kth_error_code_t error, char const* msg) {
-    PyObject* py_callback = ctx;
+    PyObject* py_callback = (PyObject*)ctx;
     PyObject* arglist = Py_BuildValue("(is)", error, msg);
     PyObject_CallObject(py_callback, arglist);
     Py_DECREF(arglist);
@@ -567,7 +567,7 @@ PyObject* kth_py_native_chain_validate_tx(PyObject* self, PyObject* args){
 
 
 void chain_fetch_compact_block_handler(kth_chain_t chain, void* ctx, kth_error_code_t error , kth_compact_block_t compact, kth_size_t h) {
-    PyObject* py_callback = ctx;
+    PyObject* py_callback = (PyObject*)ctx;
     PyObject* py_compact = to_py_obj(compact);
 
     PyObject* arglist = Py_BuildValue("(iOK)", error, py_compact, h);
@@ -624,7 +624,7 @@ PyObject* kth_py_native_chain_fetch_compact_block_by_hash(PyObject* self, PyObje
 
 
 void chain_fetch_spend_handler(kth_chain_t chain, void* ctx, kth_error_code_t error , kth_point_t point) {
-    PyObject* py_callback = ctx;
+    PyObject* py_callback = (PyObject*)ctx;
     PyObject* py_point = to_py_obj(point);
 
     PyObject* arglist = Py_BuildValue("(iO)", error, py_point);
@@ -665,7 +665,7 @@ int chain_subscribe_blockchain_handler(kth_node_t node, kth_chain_t chain, void*
     PyGILState_STATE gstate;
     gstate = PyGILState_Ensure();
 
-    PyObject* py_callback = ctx;
+    PyObject* py_callback = (PyObject*)ctx;
 
     PyObject* py_blocks_incoming = blocks_incoming != NULL ? to_py_obj(blocks_incoming) : Py_None;
     PyObject* py_blocks_replaced = blocks_replaced != NULL ? to_py_obj(blocks_replaced) : Py_None;
@@ -721,7 +721,7 @@ int chain_subscribe_transaction_handler(kth_node_t node, kth_chain_t chain, void
     PyGILState_STATE gstate;
     gstate = PyGILState_Ensure();
 
-    PyObject* py_callback = ctx;
+    PyObject* py_callback = (PyObject*)ctx;
     PyObject* py_transaction = to_py_obj(tx);
 
     PyObject* arglist = Py_BuildValue("(iO)", error, py_transaction);
