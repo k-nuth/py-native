@@ -31,10 +31,18 @@ echo "-----------------------------------------------------------------"
 echo "-----------------------------------------------------------------"
 echo "-----------------------------------------------------------------"
 
+cd
 wget https://www.python.org/ftp/python/$PYTHON_VERSION/Python-$PYTHON_VERSION.tgz
 tar -xf Python-$PYTHON_VERSION.tgz
 cd Python-$PYTHON_VERSION
-./configure --prefix=$HOME/opt --with-openssl=$HOME/opt/ssl --with-openssl-rpath=auto && make && make install
+
+if [[ "${CP_PYTHON_VERSION}" == "cp310" ]]; then
+    ./configure --prefix=$HOME/opt --with-openssl=$HOME/opt/ssl --with-openssl-rpath=auto
+else
+    export LD_LIBRARY_PATH=$HOME/opt/ssl/lib
+    ./configure --prefix=$HOME/opt --with-openssl=$HOME/opt/ssl
+fi
+make && make install
 
 
 echo "-----------------------------------------------------------------"
