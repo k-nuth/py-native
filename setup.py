@@ -329,7 +329,7 @@ setup(
     # version=VERSION,
     version=__version__,
 
-    python_requires=">=3.4",
+    python_requires=">=3.6",
 
     description='Knuth Project',
     long_description='Knuth Project',

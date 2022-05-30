@@ -190,7 +190,7 @@ jobs:
 
           # conan install . --build=boost --build=bzip2 --build=gmp
           conan install . --build=missing
-          CC=clang++ CXXFLAGS="--std=c++17" pip install  -e . -vvv
+          CC=clang++ CXXFLAGS="--std=c++17" CFLAGS="--std=c++17" pip install  -e . -vvv
           python setup.py sdist
           python setup.py bdist_wheel
 
