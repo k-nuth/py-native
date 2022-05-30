@@ -22,6 +22,8 @@ jobs:
                               {"name":"Linux Python 3.8","python_version":"3.8.13","cp_python_version":"cp38","os":"ubuntu-20.04","os_kind":"linux","march_id":"x64-4fZKi37a595hP","test":"1"},
                               {"name":"Linux Python 3.9","python_version":"3.9.13","cp_python_version":"cp39","os":"ubuntu-20.04","os_kind":"linux","march_id":"x64-4fZKi37a595hP","test":"1"},
                               {"name":"Linux Python 3.10","python_version":"3.10.4","cp_python_version":"cp310","os":"ubuntu-20.04","os_kind":"linux","march_id":"x64-4fZKi37a595hP","test":"1"},
+
+                              {"name":"Linux Python 3.10","python_version":"3.10.4","cp_python_version":"cp310","os":"macos-11","os_kind":"macos","march_id":"x64-4fZKi37a595hP","test":"1"},
                   ]}'
 
           # MATRIX: '{"config":[{"name":"Linux NodeJS 16","nodejs_version":"16","os":"ubuntu-20.04","os_kind":"linux","march_id":"x64-4fZKi37a595hP","test":"1"},
