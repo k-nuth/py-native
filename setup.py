@@ -118,8 +118,6 @@ def do_conan_stuff(microarch=None, currency=None):
 
     c.install(refe, verify=None, manifests_interactive=None, manifests=None, options=opts)
 
-
-
 def do_build_stuff(microarch=None, currency=None):
 
     print('*********************************************************************************************************')
@@ -318,7 +316,9 @@ extensions = [
             'kth/lib/libsecp256k1.a',
             'kth/lib/libgmp.a',
             'kth/lib/liblmdb.a'
-        ]
+        ],
+
+        language='c++17',
     ),
 ]
 
@@ -356,9 +356,6 @@ setup(
 
         'Programming Language :: C++',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
