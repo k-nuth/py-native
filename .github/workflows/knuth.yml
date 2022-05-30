@@ -160,28 +160,51 @@ jobs:
           fi
           pyenv activate conan
 
+          echo "-----------------------------------------------------------------"
+          echo "-----------------------------------------------------------------"
+          echo "-----------------------------------------------------------------"
+          echo "-----------------------------------------------------------------"
+          echo "-----------------------------------------------------------------"
+
           python --version
+          conan --version
           conan user
-          conan remote add kth_temp https://knuth.jfrog.io/artifactory/api/conan/knuth || true
-          conan install . --build=missing
+          conan profile list
+          conan config install https://github.com/k-nuth/ci-utils/raw/master/conan/config.zip
+          # conan remote add kth_temp https://knuth.jfrog.io/artifactory/api/conan/knuth || true
+          # conan install . --build=missing
+          conan remote list
 
+
+          echo "-----------------------------------------------------------------"
+          echo "-----------------------------------------------------------------"
+          echo "-----------------------------------------------------------------"
+          echo "-----------------------------------------------------------------"
+          echo "-----------------------------------------------------------------"
+
+          conan install .
+          pip install  -e .
+          python setup.py sdist
+          python setup.py bdist_wheel
+
+
+          # # npm install --loglevel verbose
           # npm install --loglevel verbose
-          npm install --loglevel verbose
 
-          if [[ "${KTH_GHA_RUN_TESTS}" == "1" ]]; then
-            npm run test
-            # /Users/runner/work/_temp/1cbd6dec-60ec-4181-81bd-cceaf2210ae3.sh: line 13: 37183 Illegal instruction: 4  npm run test
-          fi
+          # if [[ "${KTH_GHA_RUN_TESTS}" == "1" ]]; then
+          #   npm run test
+          #   # /Users/runner/work/_temp/1cbd6dec-60ec-4181-81bd-cceaf2210ae3.sh: line 13: 37183 Illegal instruction: 4  npm run test
+          # fi
 
-          # node-pre-gyp configure build package --verbose --target_arch=${KTH_GHA_MARCH_ID}
-          node-pre-gyp configure build package --verbose
+          # # node-pre-gyp configure build package --verbose --target_arch=${KTH_GHA_MARCH_ID}
+          # node-pre-gyp configure build package --verbose
 
-          node-pre-gyp-github publish --release || true
+          # node-pre-gyp-github publish --release || true
 
-          # node-pre-gyp clean
-          # node-gyp clean
-          # npm install
-          # npm publish || true
+          # # node-pre-gyp clean
+          # # node-gyp clean
+          # # npm install
+          # # npm publish || true
 
       - name: Install (Windows)
         if: ${{ matrix.config.os_kind == 'windows' }}
