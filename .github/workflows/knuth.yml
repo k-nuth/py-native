@@ -182,7 +182,7 @@ jobs:
           echo "-----------------------------------------------------------------"
           echo "-----------------------------------------------------------------"
 
-          conan install .
+          conan install . --build=boost --build=bzip2 --build=gmp
           pip install  -e .
           python setup.py sdist
           python setup.py bdist_wheel
