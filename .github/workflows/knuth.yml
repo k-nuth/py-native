@@ -19,10 +19,10 @@ jobs:
         env:
           MATRIX: '{"config":[
                               {"name":"Linux Python 3.7","python_version_long":"3.7.13","python_version_short":"3.7","cp_python_version":"cp37","os":"ubuntu-20.04","os_kind":"linux","march_id":"x64-4fZKi37a595hP","test":"1"},
-                              {"name":"Linux Python 3.8","python_version":"3.8.13","python_version_short":"3.8","cp_python_version":"cp38","os":"ubuntu-20.04","os_kind":"linux","march_id":"x64-4fZKi37a595hP","test":"1"},
-                              {"name":"Linux Python 3.9","python_version":"3.9.13","python_version_short":"3.9","cp_python_version":"cp39","os":"ubuntu-20.04","os_kind":"linux","march_id":"x64-4fZKi37a595hP","test":"1"},
-                              {"name":"Linux Python 3.10","python_version":"3.10.4","python_version_short":"3.10","cp_python_version":"cp310","os":"ubuntu-20.04","os_kind":"linux","march_id":"x64-4fZKi37a595hP","test":"1"},
-                              {"name":"Linux Python 3.10","python_version":"3.10.4","python_version_short":"3.10","cp_python_version":"cp310","os":"macos-11","os_kind":"macos","march_id":"x64-4fZKi37a595hP","test":"1"},
+                              {"name":"Linux Python 3.8","python_version_long":"3.8.13","python_version_short":"3.8","cp_python_version":"cp38","os":"ubuntu-20.04","os_kind":"linux","march_id":"x64-4fZKi37a595hP","test":"1"},
+                              {"name":"Linux Python 3.9","python_version_long":"3.9.13","python_version_short":"3.9","cp_python_version":"cp39","os":"ubuntu-20.04","os_kind":"linux","march_id":"x64-4fZKi37a595hP","test":"1"},
+                              {"name":"Linux Python 3.10","python_version_long":"3.10.4","python_version_short":"3.10","cp_python_version":"cp310","os":"ubuntu-20.04","os_kind":"linux","march_id":"x64-4fZKi37a595hP","test":"1"},
+                              {"name":"macOS Python 3.10","python_version_long":"3.10.4","python_version_short":"3.10","cp_python_version":"cp310","os":"macos-11","os_kind":"macos","march_id":"x64-4fZKi37a595hP","test":"1"},
                   ]}'
 
           # MATRIX: '{"config":[{"name":"Linux NodeJS 16","nodejs_version":"16","os":"ubuntu-20.04","os_kind":"linux","march_id":"x64-4fZKi37a595hP","test":"1"},
