@@ -292,8 +292,8 @@ jobs:
           # conan remote remove kthbuild_kth_temp_
           # $ErrorActionPreference = 'Continue'
 
-      - name: Upload (Unix)
-        if: ${{ matrix.config.os_kind != 'windows' }}
+      - name: Upload (Linux)
+        if: ${{ matrix.config.os_kind == 'linux' }}
         # if: github.ref == 'refs/heads/master'
         env:
           PYPI_USER_NAME_X: ${{ secrets.PYPI_USER_NAME_X }}
@@ -325,6 +325,35 @@ jobs:
           echo "--------------------------------------"
           twine upload -u ${PYPI_USER_NAME_X} -p ${PYPI_PASSWORD_X} dist/*.tar.gz || true
           twine upload -u ${PYPI_USER_NAME_X} -p ${PYPI_PASSWORD_X} wheelhouse/*.whl || true
+
+      - name: Upload (macOS)
+        if: ${{ matrix.config.os_kind == 'macos' }}
+        # if: github.ref == 'refs/heads/master'
+        env:
+          PYPI_USER_NAME_X: ${{ secrets.PYPI_USER_NAME_X }}
+          PYPI_PASSWORD_X: ${{ secrets.PYPI_PASSWORD_X }}
+        shell: bash
+        run: |
+          echo "--------------------------------------"
+          echo ${PYPI_USER_NAME_X}
+          echo "--------------------------------------"
+          echo ${PYPI_PASSWORD_X}
+          pwd
+          echo "--------------------------------------"
+          ls
+          echo "--------------------------------------"
+          echo "--------------------------------------"
+          echo "--------------------------------------"
+          echo "--------------------------------------"
+          ls dist
+          echo "--------------------------------------"
+          echo "--------------------------------------"
+          echo "--------------------------------------"
+          echo "--------------------------------------"
+          pip install --upgrade twine --user
+          echo "--------------------------------------"
+          twine upload -u ${PYPI_USER_NAME_X} -p ${PYPI_PASSWORD_X} dist/*.tar.gz || true
+          twine upload -u ${PYPI_USER_NAME_X} -p ${PYPI_PASSWORD_X} dist/*.whl || true
 
 # References:
   # https://github.com/radareorg/radare2
