@@ -1,12 +1,9 @@
 __pycache__/
-bitprim/
-bitprim_native.egg-info/
 build/
 conan_imports_manifest.txt
 conanbuildinfo.cmake
 conaninfo.txt
 
-bitprim_native.cp36-win_amd64.pyd
 dist/
 
 examples/blockchain/
@@ -14,7 +11,6 @@ examples/debug.log
 examples/error.log
 examples/hosts.cache
 
-bitprim_native.so
 conanfile.pyc
 setup.pyc
 
@@ -23,4 +19,14 @@ debug.log
 error.log
 
 .vscode/
-bitprim_native.pyd
+/kth/
+kth_native.cpython-39-darwin.so
+conan.lock
+conanbuildinfo.txt
+graph_info.json
+hosts.cache
+kth_py_native.egg-info/
+.travis/entrypoint copy.sh
+kth_native.cpython*.so
+wheelhouse/kth_py_native*.whl
+version.pyc

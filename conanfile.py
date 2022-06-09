@@ -1,47 +1,43 @@
 from conans import ConanFile, CMake
 # import os
 
-
-class BitprimTestForPy(ConanFile):
-    name = "bitprim-test-for-py"
+class KnuthPyNative(ConanFile):
+    name = "knuth-py-native"
     version = "0.1"
     license = "http://www.boost.org/users/license.html"
-    url = "https://github.com/bitprim/bitprim-py"
+    url = "https://github.com/k-nuth/py-native"
     description = "Bitcoin Full Node Library with Python interface"
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False]}
     default_options = "shared=False"
     generators = "cmake"
-    # exports_sources = "src/*", "CMakeLists.txt", "cmake/*", "bitprim-node-cintConfig.cmake.in", "include/*", "test/*", "console/*"
-    # package_files = "build/lbitprim-node-cint.so"
-    # build_policy = "missing"
 
-    # TODO(fernando): queda pendiente seleccionar el default Shared=False
-    requires = (("bitprim-node-cint/0.12.0@bitprim/stable"))
-    # default_options = "bitprim-node-cint:shared=False" #, "OpenSSL:shared=True"
+    requires = (("c-api/0.25.0@kth/stable"))
 
-
-    # conan install bitprim-node-cint/0.3@bitprim/stable -o shared=True
-    # conan install -o Pkg:shared=True -o OtherPkg:option=value
+    def configure(self):
+        ConanFile.configure(self)
+        self.options["c-api"].db = "full"
+        self.options["c-api"].march_id = "4fZKi37a595hP"
+        self.options["c-api"].shared = False
 
     def imports(self):
-        # self.copy("*.h", "./bitprim/include/bitprim", "include/bitprim")
-        # self.copy("*.hpp", dst="./bitprim/include/bitprim", src="include/bitprim")
-        # self.copy("*.dylib", dst="./bitprim/lib", src="lib")
-        # self.copy("*.so", dst="./bitprim/lib", src="lib")
-        # self.copy("*.lib", dst="./bitprim/lib", src="lib")
-        # self.copy("*.dll", dst="./bitprim/lib", src="lib")
-        self.copy("*.h", "./bitprim/include/bitprim", "include/bitprim")
-        self.copy("*.hpp", dst="./bitprim/include/bitprim", src="include/bitprim")
-        
-        self.copy("*.lib", dst="./bitprim/lib", src="lib")
-        self.copy("*.a", dst="./bitprim/lib", src="lib")
-        self.copy("*.dylib", dst="./bitprim/lib", src="lib")
-        self.copy("*.so", dst="./bitprim/lib", src="lib")
-        self.copy("*.dll", dst="./bitprim/lib", src="lib")
+        # self.copy("*.h", "./kth/include/kth", "include/kth")
+        # self.copy("*.hpp", dst="./kth/include/kth", src="include/kth")
+        # self.copy("*.dylib", dst="./kth/lib", src="lib")
+        # self.copy("*.so", dst="./kth/lib", src="lib")
+        # self.copy("*.lib", dst="./kth/lib", src="lib")
+        # self.copy("*.dll", dst="./kth/lib", src="lib")
+        self.copy("*.h", "./kth/include/kth", "include/kth")
+        self.copy("*.hpp", dst="./kth/include/kth", src="include/kth")
 
-        # self.copy("*.h", dst="/Users/fernando/fertest", src="include/bitprim")
-        # self.copy("*.hpp", dst="/Users/fernando/fertest", src="include/bitprim")
+        self.copy("*.lib", dst="./kth/lib", src="lib")
+        self.copy("*.a", dst="./kth/lib", src="lib")
+        self.copy("*.dylib", dst="./kth/lib", src="lib")
+        self.copy("*.so", dst="./kth/lib", src="lib")
+        self.copy("*.dll", dst="./kth/lib", src="lib")
+
+        # self.copy("*.h", dst="/Users/fernando/fertest", src="include/kth")
+        # self.copy("*.hpp", dst="/Users/fernando/fertest", src="include/kth")
         # self.copy("*.dylib", dst="/Users/fernando/fertest", src="lib")
 
     # def build(self):
