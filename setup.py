@@ -144,7 +144,6 @@ def do_build_stuff(microarch=None, currency=None):
     # extensions[0].libraries = get_libraries()
     # extensions[0].extra_objects = get_libraries()
 
-
 class DevelopCommand(develop):
     user_options = develop.user_options + [
         ('microarch=', None, 'CPU microarchitecture'),
@@ -170,11 +169,9 @@ class DevelopCommand(develop):
         print(microarch)
         print(currency)
 
-        do_build_stuff(microarch, currency)
+        # do_build_stuff(microarch, currency)
 
         develop.run(self)
-
-
 
 class InstallCommand(install):
     user_options = install.user_options + [
@@ -205,6 +202,34 @@ class InstallCommand(install):
 
         install.run(self)
 
+# class BuildCommand(build):
+#     user_options = build.user_options + [
+#         ('microarch=', None, 'CPU microarchitecture'),
+#         ('currency=', None, 'Cryptocurrency')
+#     ]
+
+#     def initialize_options(self):
+#         build.initialize_options(self)
+#         self.microarch = None
+#         self.currency = None
+
+#     def finalize_options(self):
+#         build.finalize_options(self)
+
+#     def run(self):
+#         global microarch
+#         microarch = self.microarch
+
+#         global currency
+#         currency = self.currency
+
+#         print('--------------------------------------- BuildCommand run microarch currency')
+#         print(microarch)
+#         print(currency)
+
+#         do_build_stuff(microarch, currency)
+
+#         build.run(self)
 
 class BuildCommand(build):
     user_options = build.user_options + [
@@ -231,10 +256,7 @@ class BuildCommand(build):
         print(microarch)
         print(currency)
 
-        do_build_stuff(microarch, currency)
-
         build.run(self)
-
 
 # ------------------------------------------------
 
@@ -326,7 +348,6 @@ extensions = [
 exec(open('./version.py').read())
 setup(
     name=PKG_NAME,
-    # version=VERSION,
     version=__version__,
 
     python_requires=">=3.6",

@@ -60,10 +60,6 @@ jobs:
           python-version: '${{ matrix.config.python_version_short }}'
           architecture: 'x64'
 
-      # - uses: actions/setup-python@v1
-      #   with:
-      #     python-version: "3.9"
-
       - name: Settting EnvVars (Unix)
         if: ${{ matrix.config.os_kind != 'windows' }}
         shell: bash
@@ -81,33 +77,6 @@ jobs:
           echo "CP_PYTHON_VERSION=${{ matrix.config.cp_python_version }}" >> $Env:GITHUB_ENV
           echo "KTH_GHA_MARCH_ID=${{ matrix.config.march_id }}" >> $Env:GITHUB_ENV
           echo "KTH_GHA_RUN_TESTS=${{ matrix.config.test }}" >> $Env:GITHUB_ENV
-
-      - name: Build (Linux)
-        if: ${{ matrix.config.os_kind == 'linux' }}
-        env:
-          NODE_PRE_GYP_GITHUB_TOKEN: ${{ secrets.NODE_PRE_GYP_GITHUB_TOKEN }}
-          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-        shell: bash
-        run: |
-          # echo ${NPM_AUTH_TOKEN}
-          # echo ${NPM_EMAIL}
-          echo ${PYTHON_VERSION}
-          echo ${CP_PYTHON_VERSION}
-          # echo ${NODE_PRE_GYP_GITHUB_TOKEN}
-
-          echo "-------------------------------------------------------"
-          whoami
-          echo "-------------------------------------------------------"
-          chmod a+x .travis/entrypoint.sh
-          chmod -R 777 ${PWD}
-          # /usr/bin/docker run --rm -e KTH_GHA_MARCH_ID=$KTH_GHA_MARCH_ID -e NPM_AUTH_TOKEN=$NPM_AUTH_TOKEN -e NPM_EMAIL=$NPM_EMAIL -e PYTHON_VERSION=$PYTHON_VERSION -e NODE_PRE_GYP_GITHUB_TOKEN=$NODE_PRE_GYP_GITHUB_TOKEN -v ${PWD}:/home/conan/project -v ${PWD}/.travis/entrypoint.sh:/tmp/entrypoint.sh conanio/gcc9 /bin/bash -c /tmp/entrypoint.sh
-          /usr/bin/docker run --rm -e KTH_GHA_MARCH_ID=$KTH_GHA_MARCH_ID -e NPM_AUTH_TOKEN=$NPM_AUTH_TOKEN -e NPM_EMAIL=$NPM_EMAIL -e PYTHON_VERSION=$PYTHON_VERSION -e CP_PYTHON_VERSION=$CP_PYTHON_VERSION -e NODE_PRE_GYP_GITHUB_TOKEN=$NODE_PRE_GYP_GITHUB_TOKEN -v ${PWD}:/home/conan/project -v ${PWD}/.travis/entrypoint.sh:/tmp/entrypoint.sh fpelliccioni/manylinux_gcc10 /bin/bash -c /tmp/entrypoint.sh
-
-
-      # - uses: actions/setup-node@v2
-      #   if: ${{ matrix.config.os_kind != 'linux' }}
-      #   with:
-      #     node-version: '${{ matrix.config.nodejs_version }}'
 
       - name: Install (macOS)
         if: ${{ matrix.config.os_kind == 'macos' }}
@@ -130,67 +99,6 @@ jobs:
 
           conan --version
           conan user
-
-      - name: Build (macOS)
-        if: ${{ matrix.config.os_kind == 'macos' }}
-        env:
-          NODE_PRE_GYP_GITHUB_TOKEN: ${{ secrets.NODE_PRE_GYP_GITHUB_TOKEN }}
-          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-        shell: bash
-        run: |
-
-          echo "-----------------------------------------------------------------"
-          echo "-----------------------------------------------------------------"
-          echo "-----------------------------------------------------------------"
-          echo "-----------------------------------------------------------------"
-          echo "-----------------------------------------------------------------"
-
-          python --version
-          conan --version
-          conan user
-
-          conan profile list
-          conan profile new default --detect
-          conan profile list
-
-          conan config install https://github.com/k-nuth/ci-utils/raw/master/conan/config.zip
-          # conan remote add kth_temp https://knuth.jfrog.io/artifactory/api/conan/knuth || true
-          # conan install . --build=missing
-
-
-          conan profile show default
-          conan profile update settings.compiler.version=13.0 default
-          conan profile show default
-
-          conan remote list
-
-          echo "-----------------------------------------------------------------"
-          echo "-----------------------------------------------------------------"
-          echo "-----------------------------------------------------------------"
-          echo "-----------------------------------------------------------------"
-          echo "-----------------------------------------------------------------"
-
-          # conan install . --build=boost --build=bzip2 --build=gmp
-          conan install . --build=missing
-          CC=clang++ CXXFLAGS="--std=c++17" CFLAGS="--std=c++17" pip install  -e . -vvv
-          python setup.py sdist
-          python setup.py bdist_wheel
-
-
-          # if [[ "${KTH_GHA_RUN_TESTS}" == "1" ]]; then
-          #   npm run test
-          #   # /Users/runner/work/_temp/1cbd6dec-60ec-4181-81bd-cceaf2210ae3.sh: line 13: 37183 Illegal instruction: 4  npm run test
-          # fi
-
-          # # node-pre-gyp configure build package --verbose --target_arch=${KTH_GHA_MARCH_ID}
-          # node-pre-gyp configure build package --verbose
-
-          # node-pre-gyp-github publish --release || true
-
-          # # node-pre-gyp clean
-          # # node-gyp clean
-          # # npm install
-          # # npm publish || true
 
       - name: Install (Windows)
         if: ${{ matrix.config.os_kind == 'windows' }}
@@ -229,6 +137,55 @@ jobs:
           # conan install . -s compiler.runtime=MT
           conan user
           $ErrorActionPreference = 'Continue'
+
+      - name: Build (Linux)
+        if: ${{ matrix.config.os_kind == 'linux' }}
+        env:
+          NODE_PRE_GYP_GITHUB_TOKEN: ${{ secrets.NODE_PRE_GYP_GITHUB_TOKEN }}
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+        shell: bash
+        run: |
+          echo ${PYTHON_VERSION}
+          echo ${CP_PYTHON_VERSION}
+
+          chmod a+x .travis/entrypoint.sh
+          chmod -R 777 ${PWD}
+          /usr/bin/docker run --rm -e KTH_GHA_MARCH_ID=$KTH_GHA_MARCH_ID -e NPM_AUTH_TOKEN=$NPM_AUTH_TOKEN -e NPM_EMAIL=$NPM_EMAIL -e PYTHON_VERSION=$PYTHON_VERSION -e CP_PYTHON_VERSION=$CP_PYTHON_VERSION -e NODE_PRE_GYP_GITHUB_TOKEN=$NODE_PRE_GYP_GITHUB_TOKEN -v ${PWD}:/home/conan/project -v ${PWD}/.travis/entrypoint.sh:/tmp/entrypoint.sh fpelliccioni/manylinux_gcc10 /bin/bash -c /tmp/entrypoint.sh
+
+      - name: Build (macOS)
+        if: ${{ matrix.config.os_kind == 'macos' }}
+        env:
+          NODE_PRE_GYP_GITHUB_TOKEN: ${{ secrets.NODE_PRE_GYP_GITHUB_TOKEN }}
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+        shell: bash
+        run: |
+
+          python --version
+          conan --version
+          conan user
+
+          conan profile list
+          conan profile new default --detect
+          conan profile list
+
+          conan config install https://github.com/k-nuth/ci-utils/raw/master/conan/config.zip
+
+          conan profile show default
+          conan profile update settings.compiler.version=13.0 default
+          conan profile show default
+
+          conan remote list
+
+          conan install . --build=missing
+          CC=clang++ CXXFLAGS="--std=c++17" CFLAGS="--std=c++17" pip install  -e . -vvv
+          python setup.py sdist
+          python setup.py bdist_wheel
+
+
+          # if [[ "${KTH_GHA_RUN_TESTS}" == "1" ]]; then
+          #   npm run test
+          #   # /Users/runner/work/_temp/1cbd6dec-60ec-4181-81bd-cceaf2210ae3.sh: line 13: 37183 Illegal instruction: 4  npm run test
+          # fi
 
       - name: Build (Windows)
         if: ${{ matrix.config.os_kind == 'windows' }}
@@ -300,29 +257,7 @@ jobs:
           PYPI_PASSWORD_X: ${{ secrets.PYPI_PASSWORD_X }}
         shell: bash
         run: |
-          echo "--------------------------------------"
-          echo ${PYPI_USER_NAME_X}
-          echo "--------------------------------------"
-          echo ${PYPI_PASSWORD_X}
-          pwd
-          echo "--------------------------------------"
-          ls
-          echo "--------------------------------------"
-          echo "--------------------------------------"
-          echo "--------------------------------------"
-          echo "--------------------------------------"
-          ls dist
-          echo "--------------------------------------"
-          echo "--------------------------------------"
-          echo "--------------------------------------"
-          echo "--------------------------------------"
-          ls wheelhouse
-          echo "--------------------------------------"
-          echo "--------------------------------------"
-          echo "--------------------------------------"
-          echo "--------------------------------------"
           pip install --upgrade twine --user
-          echo "--------------------------------------"
           twine upload -u ${PYPI_USER_NAME_X} -p ${PYPI_PASSWORD_X} dist/*.tar.gz || true
           twine upload -u ${PYPI_USER_NAME_X} -p ${PYPI_PASSWORD_X} wheelhouse/*.whl || true
 
@@ -334,24 +269,7 @@ jobs:
           PYPI_PASSWORD_X: ${{ secrets.PYPI_PASSWORD_X }}
         shell: bash
         run: |
-          echo "--------------------------------------"
-          echo ${PYPI_USER_NAME_X}
-          echo "--------------------------------------"
-          echo ${PYPI_PASSWORD_X}
-          pwd
-          echo "--------------------------------------"
-          ls
-          echo "--------------------------------------"
-          echo "--------------------------------------"
-          echo "--------------------------------------"
-          echo "--------------------------------------"
-          ls dist
-          echo "--------------------------------------"
-          echo "--------------------------------------"
-          echo "--------------------------------------"
-          echo "--------------------------------------"
           pip install --upgrade twine --user
-          echo "--------------------------------------"
           twine upload -u ${PYPI_USER_NAME_X} -p ${PYPI_PASSWORD_X} dist/*.tar.gz || true
           twine upload -u ${PYPI_USER_NAME_X} -p ${PYPI_PASSWORD_X} dist/*.whl || true
 
