@@ -350,7 +350,7 @@ extensions = [
 ]
 
 if platform == "darwin":
-    extensions[0].extra_link_args = ["-stdlib=libc++", "-mmacosx-version-min=13"]
+    extensions[0].extra_link_args = ["-stdlib=libc++", "-mmacosx-version-min=12"]
 
 
 # print("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-")
