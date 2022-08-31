@@ -353,6 +353,10 @@ if platform == "darwin":
     extensions[0].extra_link_args = ["-stdlib=libc++", "-mmacosx-version-min=13"]
 
 
+# print("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-")
+# print(open("README.md").read())
+# print("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-")
+
 exec(open('./version.py').read())
 setup(
     name=PKG_NAME,
@@ -364,7 +368,7 @@ setup(
     # long_description='Knuth Project',
     # long_description="""# Markdown supported!\n\n* Cheer\n* Celebrate\n""",
 
-    long_description=open("README.md").read()
+    long_description=open("README.md").read(),
     long_description_content_type='text/markdown',
 
     url='https://github.com/k-nuth/py-native',
