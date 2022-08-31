@@ -19,10 +19,11 @@ jobs:
         env:
           MATRIX: '{"config":[
                               {"name":"Linux (GCC11) Python 3.10","python_version_long":"3.10.4","python_version_short":"3.10","cp_python_version":"cp310","os":"ubuntu-20.04","os_kind":"linux","march_id":"x64-ZLm9Pjh","test":"1"},
+                              {"name":"macOS 12 Python 3.10","python_version_long":"3.10.4","python_version_short":"3.10","cp_python_version":"cp310","os":"macos-12","os_kind":"macos","march_id":"x64-ZLm9Pjh","test":"1"},
                   ]}'
 
           # MATRIX: '{"config":[
-          #                     {"name":"macOS Python 3.10","python_version_long":"3.10.4","python_version_short":"3.10","cp_python_version":"cp310","os":"macos-12","os_kind":"macos","march_id":"x64-ZLm9Pjh","test":"1"},
+          #
           #         ]}'
 
           # MATRIX: '{"config":[
