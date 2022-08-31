@@ -360,8 +360,13 @@ setup(
 
     python_requires=">=3.6",
 
-    description='Knuth Project',
-    long_description='Knuth Project',
+    # description='Knuth Project',
+    # long_description='Knuth Project',
+    # long_description="""# Markdown supported!\n\n* Cheer\n* Celebrate\n""",
+
+    long_description=open("README.md").read()
+    long_description_content_type='text/markdown',
+
     url='https://github.com/k-nuth/py-native',
 
     # Author details
