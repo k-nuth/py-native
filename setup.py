@@ -169,7 +169,7 @@ class DevelopCommand(develop):
         print(microarch)
         print(currency)
 
-        # do_build_stuff(microarch, currency)
+        do_build_stuff(microarch, currency)
 
         develop.run(self)
 
@@ -256,6 +256,7 @@ class BuildCommand(build):
         print(microarch)
         print(currency)
 
+        do_build_stuff(microarch, currency)
         build.run(self)
 
 # ------------------------------------------------
