@@ -20,6 +20,7 @@ docker run -i -t -v ${PWD}:/root/project fpelliccioni/manylinux_gcc11 /bin/bash
   # python3 -m pip install --upgrade pip
 
   dnf -y install wget
+  dnf -y install libffi-devel
 
   cd
   wget https://github.com/openssl/openssl/archive/refs/heads/OpenSSL_1_1_1-stable.zip
@@ -39,7 +40,7 @@ docker run -i -t -v ${PWD}:/root/project fpelliccioni/manylinux_gcc11 /bin/bash
 
 
 docker ps -a
-docker commit 03e39a5fab1a fpelliccioni/manylinux_gcc11
+docker commit 77306d6742a6 fpelliccioni/manylinux_gcc11
 docker push fpelliccioni/manylinux_gcc11
 
 
