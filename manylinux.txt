@@ -39,7 +39,7 @@ docker run -i -t -v ${PWD}:/root/project fpelliccioni/manylinux_gcc11 /bin/bash
 
 
 docker ps -a
-docker commit a5485471f682 fpelliccioni/manylinux_gcc11
+docker commit 03e39a5fab1a fpelliccioni/manylinux_gcc11
 docker push fpelliccioni/manylinux_gcc11
 
 

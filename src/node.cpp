@@ -9,7 +9,7 @@
 #include <kth/py-native/utils.h>
 
 #include <kth/capi.h>
-#include <kth/py-native/config/settings.hpp>
+#include <kth/py-native/config/settings.h>
 
 #include <atomic>
 #include <thread>

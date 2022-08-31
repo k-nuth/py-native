@@ -36,15 +36,15 @@
 
 #include <kth/py-native/p2p/p2p.h>
 
-#include <kth/py-native/config/authority.hpp>
-#include <kth/py-native/config/blockchain_settings.hpp>
-#include <kth/py-native/config/checkpoint.hpp>
-// #include <kth/py-native/config/convertions.hpp>
-#include <kth/py-native/config/database_settings.hpp>
-#include <kth/py-native/config/endpoint.hpp>
-#include <kth/py-native/config/network_settings.hpp>
-#include <kth/py-native/config/node_settings.hpp>
-#include <kth/py-native/config/settings.hpp>
+#include <kth/py-native/config/authority.h>
+#include <kth/py-native/config/blockchain_settings.h>
+#include <kth/py-native/config/checkpoint.h>
+// #include <kth/py-native/config/convertions.h>
+#include <kth/py-native/config/database_settings.h>
+#include <kth/py-native/config/endpoint.h>
+#include <kth/py-native/config/network_settings.h>
+#include <kth/py-native/config/node_settings.h>
+#include <kth/py-native/config/settings.h>
 
 
 #include <kth/capi.h>

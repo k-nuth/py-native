@@ -5,8 +5,8 @@
 #include <Python.h>
 #include "structmember.h"
 
-#include <kth/py-native/config/common.hpp>
-#include <kth/py-native/config/checkpoint.hpp>
+#include <kth/py-native/config/common.h>
+#include <kth/py-native/config/checkpoint.h>
 
 #ifdef __cplusplus
 extern "C" {

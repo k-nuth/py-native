@@ -13,8 +13,8 @@
 
 #include <kth/capi/config/node_settings.h>
 
-#include <kth/py-native/config/node_settings.hpp>
-// #include <kth/py-native/helper.hpp>
+#include <kth/py-native/config/node_settings.h>
+// #include <kth/py-native/helper.h>
 
 
 

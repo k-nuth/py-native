@@ -5,7 +5,7 @@
 #include <Python.h>
 #include "structmember.h"
 
-#include <kth/py-native/config/common.hpp>
+#include <kth/py-native/config/common.h>
 
 #ifdef __cplusplus
 extern "C" {

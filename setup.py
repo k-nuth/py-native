@@ -262,6 +262,10 @@ class BuildCommand(build):
 
 microarch = ''
 
+print('platform --------------------------')
+print(platform)
+print('platform --------------------------')
+
 extensions = [
 	Extension('kth_native',
         define_macros = [
@@ -301,7 +305,7 @@ extensions = [
             'src/config/database_settings.cpp',
             'src/config/node_settings.cpp',
 
-            'src/module.cpp',
+            'src/module.c',
 
         ],
 
@@ -341,9 +345,13 @@ extensions = [
         ],
 
         language='c++17',
-        extra_link_args=["-stdlib=libc++", "-mmacosx-version-min=13"]
+        # extra_link_args=["-stdlib=libc++", "-mmacosx-version-min=13"]
     ),
 ]
+
+if platform == "darwin":
+    extensions[0].extra_link_args = ["-stdlib=libc++", "-mmacosx-version-min=13"]
+
 
 exec(open('./version.py').read())
 setup(

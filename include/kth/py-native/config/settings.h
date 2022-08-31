@@ -5,10 +5,10 @@
 #include <Python.h>
 #include "structmember.h"
 
-#include <kth/py-native/config/blockchain_settings.hpp>
-#include <kth/py-native/config/database_settings.hpp>
-#include <kth/py-native/config/network_settings.hpp>
-#include <kth/py-native/config/node_settings.hpp>
+#include <kth/py-native/config/blockchain_settings.h>
+#include <kth/py-native/config/database_settings.h>
+#include <kth/py-native/config/network_settings.h>
+#include <kth/py-native/config/node_settings.h>
 
 #ifdef __cplusplus
 extern "C" {

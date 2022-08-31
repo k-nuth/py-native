@@ -5,9 +5,9 @@
 #include <Python.h>
 #include "structmember.h"
 
-#include <kth/py-native/config/authority.hpp>
-#include <kth/py-native/config/common.hpp>
-#include <kth/py-native/config/endpoint.hpp>
+#include <kth/py-native/config/authority.h>
+#include <kth/py-native/config/common.h>
+#include <kth/py-native/config/endpoint.h>
 
 #ifdef __cplusplus
 extern "C" {
