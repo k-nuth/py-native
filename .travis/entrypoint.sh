@@ -29,7 +29,7 @@ conan profile list
 conan profile update settings.compiler.libcxx=libstdc++11 default
 
 
-cd $HOME/project
+cd /home/conan/project
 # PROJECT_VERSION="$(/root/opt/bin/python3 -c 'from version import __version__; print(__version__)')"
 # echo $PROJECT_VERSION
 
