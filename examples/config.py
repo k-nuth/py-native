@@ -12,6 +12,10 @@ def main():
     # config = kth.settings.getDefault(kth.network.mainnet);
     config = kth_native.config_settings_default(0)     #mainnet
     print(config)
+    print(config.node)
+    print(config.chain)
+    print(config.database)
+    print(config.network)
 
 if __name__ == "__main__":
     main()

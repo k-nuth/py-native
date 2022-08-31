@@ -797,7 +797,7 @@ PyObject* kth_py_native_config_network_settings_to_py(kth_network_settings const
         res2 = KTH_PY_SETATTR(obj, setts, invalid_services, "K");
         res2 = KTH_PY_SETATTR(obj, setts, relay_transactions, "i");
         res2 = KTH_PY_SETATTR(obj, setts, validate_checksum, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, identifier, "i");
+        res2 = KTH_PY_SETATTR(obj, setts, identifier, "K");
         res2 = KTH_PY_SETATTR(obj, setts, inbound_port, "i");
         res2 = KTH_PY_SETATTR(obj, setts, inbound_connections, "i");
         res2 = KTH_PY_SETATTR(obj, setts, outbound_connections, "i");
