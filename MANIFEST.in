@@ -11,3 +11,4 @@ include test/*
 include conanfile.py
 
 include version.py
+include README.md

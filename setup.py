@@ -306,7 +306,6 @@ extensions = [
             'src/config/node_settings.cpp',
 
             'src/module.c',
-
         ],
 
         include_dirs=['kth/include', 'include'],
@@ -345,11 +344,11 @@ extensions = [
         ],
 
         language='c++17',
-        # extra_link_args=["-stdlib=libc++", "-mmacosx-version-min=13"]
     ),
 ]
 
 if platform == "darwin":
+    # extensions[0].extra_link_args = ["-stdlib=libc++", "-mmacosx-version-min=13"]
     extensions[0].extra_link_args = ["-stdlib=libc++", "-mmacosx-version-min=12"]
 
 
