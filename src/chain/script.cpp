@@ -109,7 +109,7 @@ PyObject* kth_py_native_chain_script_sigops(PyObject* self, PyObject* args){
 //     kth_script_t prevout_script = (kth_script_t)get_ptr(py_prevout_script);
 //     uint64_t res = kth_chain_script_embedded_sigops(script, prevout_script);
 
-//     BITPRIM_EXPORT
+//     KTH_EXPORT
 //     kth_size_t kth_chain_script_sigops(kth_script_t script, bool_t embedded);
 
 //     return Py_BuildValue("K", res);

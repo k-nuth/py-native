@@ -2,14 +2,14 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-# pip install --upgrade --index-url https://test.pypi.org/pypi/ --install-option="--currency=BCH" bitprim-native
-# pip install --upgrade --index-url https://test.pypi.org/pypi/ bitprim-native
+# pip install --upgrade --index-url https://test.pypi.org/pypi/ --install-option="--currency=BCH" kth-py-native
+# pip install --upgrade --index-url https://test.pypi.org/pypi/ kth-py-native
 
 import os
 import signal
 import sys
 import time
-import bitprim_native as bn
+import kth_native as bn
 
 
 def tx_inputs_outputs_size(tx_hex_str):
