@@ -16,8 +16,8 @@ PyObject* kth_py_native_node_construct(PyObject* self, PyObject* args);
 PyObject* kth_py_native_node_destruct(PyObject* self, PyObject* args);
 PyObject* kth_py_native_node_init_run_and_wait_for_signal(PyObject* self, PyObject* args);
 PyObject* kth_py_native_node_signal_stop(PyObject* self, PyObject* args);
-PyObject* kth_py_native_node_get_chain(PyObject* self, PyObject* args);
-PyObject* kth_py_native_node_get_p2p(PyObject* self, PyObject* args);
+PyObject* kth_py_native_node_chain(PyObject* self, PyObject* args);
+PyObject* kth_py_native_node_p2p(PyObject* self, PyObject* args);
 
 PyObject* kth_py_native_node_print_thread_id(PyObject* self, PyObject* args);
 

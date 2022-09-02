@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-PyObject* kth_py_native_chain_output_point_get_hash(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_output_point_hash(PyObject* self, PyObject* args){
     PyObject* py_output_point;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_output_point)) {
@@ -19,7 +19,7 @@ PyObject* kth_py_native_chain_output_point_get_hash(PyObject* self, PyObject* ar
     return Py_BuildValue("y#", res.hash, 32);    //TODO: warning, hardcoded hash size!
 }
 
-PyObject* kth_py_native_chain_output_point_get_index(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_output_point_index(PyObject* self, PyObject* args){
     PyObject* py_output_point;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_output_point)) {
@@ -80,7 +80,7 @@ PyObject* kth_py_native_point_is_valid(PyObject* self, PyObject* args) {
 }
 
 
-PyObject* kth_py_native_point_get_checksum(PyObject* self, PyObject* args) {
+PyObject* kth_py_native_point_checksum(PyObject* self, PyObject* args) {
     PyObject* py_point;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_point)) {
@@ -89,7 +89,7 @@ PyObject* kth_py_native_point_get_checksum(PyObject* self, PyObject* args) {
 
     // kth_point_t p = (kth_point_t)PyCObject_AsVoidPtr(py_point);
     kth_point_t p = (kth_point_t)PyCapsule_GetPointer(py_point, NULL);
-    uint64_t res = point_get_checksum(p);
+    uint64_t res = point_checksum(p);
 
     return Py_BuildValue("K", res);
 }

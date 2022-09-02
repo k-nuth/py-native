@@ -7,6 +7,11 @@
 extern "C" {
 #endif
 
+PyObject* kth_py_native_chain_output_list_construct_default(PyObject* self, PyObject* args){
+    kth_output_list_t res = (kth_output_list_t)kth_chain_output_list_construct_default();
+    return to_py_obj(res);
+}
+
 PyObject* kth_py_native_output_list_push_back(PyObject* self, PyObject* args){
     PyObject* py_output_list;
     PyObject* py_output;

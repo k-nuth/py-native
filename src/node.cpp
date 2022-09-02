@@ -9,7 +9,7 @@
 #include <kth/py-native/utils.h>
 
 #include <kth/capi.h>
-#include <kth/py-native/config/settings.hpp>
+#include <kth/py-native/config/settings.h>
 
 #include <atomic>
 #include <thread>
@@ -141,7 +141,7 @@ PyObject* kth_py_native_node_signal_stop(PyObject* self, PyObject* args) {
     Py_RETURN_NONE;
 }
 
-PyObject* kth_py_native_node_get_chain(PyObject* self, PyObject* args) {
+PyObject* kth_py_native_node_chain(PyObject* self, PyObject* args) {
     PyObject* py_node;
     if ( ! PyArg_ParseTuple(args, "O", &py_node))
         return NULL;
@@ -153,7 +153,7 @@ PyObject* kth_py_native_node_get_chain(PyObject* self, PyObject* args) {
     return Py_BuildValue("O", py_chain);
 }
 
-PyObject* kth_py_native_node_get_p2p(PyObject* self, PyObject* args) {
+PyObject* kth_py_native_node_p2p(PyObject* self, PyObject* args) {
     PyObject* py_node;
     if ( ! PyArg_ParseTuple(args, "O", &py_node))
         return NULL;

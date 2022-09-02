@@ -6,11 +6,7 @@ import os
 import signal
 import sys
 import time
-import bitprim_native as bn
-
-
-
-
+import kth_native as bn
 
 wl = bn.word_list_construct()
 

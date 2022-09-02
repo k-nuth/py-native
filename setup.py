@@ -169,7 +169,7 @@ class DevelopCommand(develop):
         print(microarch)
         print(currency)
 
-        # do_build_stuff(microarch, currency)
+        do_build_stuff(microarch, currency)
 
         develop.run(self)
 
@@ -256,11 +256,16 @@ class BuildCommand(build):
         print(microarch)
         print(currency)
 
+        do_build_stuff(microarch, currency)
         build.run(self)
 
 # ------------------------------------------------
 
 microarch = ''
+
+print('platform --------------------------')
+print(platform)
+print('platform --------------------------')
 
 extensions = [
 	Extension('kth_native',
@@ -301,8 +306,7 @@ extensions = [
             'src/config/database_settings.cpp',
             'src/config/node_settings.cpp',
 
-            'src/module.cpp',
-
+            'src/module.c',
         ],
 
         include_dirs=['kth/include', 'include'],
@@ -341,9 +345,17 @@ extensions = [
         ],
 
         language='c++17',
-        extra_link_args=["-stdlib=libc++", "-mmacosx-version-min=13"]
     ),
 ]
+
+if platform == "darwin":
+    # extensions[0].extra_link_args = ["-stdlib=libc++", "-mmacosx-version-min=13"]
+    extensions[0].extra_link_args = ["-stdlib=libc++", "-mmacosx-version-min=12"]
+
+
+# print("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-")
+# print(open("README.md").read())
+# print("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-")
 
 exec(open('./version.py').read())
 setup(
@@ -352,8 +364,13 @@ setup(
 
     python_requires=">=3.6",
 
-    description='Knuth Project',
-    long_description='Knuth Project',
+    # description='Knuth Project',
+    # long_description='Knuth Project',
+    # long_description="""# Markdown supported!\n\n* Cheer\n* Celebrate\n""",
+
+    long_description=open("README.md").read(),
+    long_description_content_type='text/markdown',
+
     url='https://github.com/k-nuth/py-native',
 
     # Author details

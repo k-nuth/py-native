@@ -65,7 +65,7 @@ PyObject* kth_py_native_history_compact_list_nth(PyObject* self, PyObject* args)
 // history_compact
 // -------------------------------------------------------------------
 
-PyObject* kth_py_native_history_compact_get_point_kind(PyObject* self, PyObject* args) {
+PyObject* kth_py_native_history_compact_point_kind(PyObject* self, PyObject* args) {
     PyObject* py_history_compact;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_history_compact)) {
@@ -79,7 +79,7 @@ PyObject* kth_py_native_history_compact_get_point_kind(PyObject* self, PyObject*
     return Py_BuildValue("K", res);
 }
 
-PyObject* kth_py_native_history_compact_get_point(PyObject* self, PyObject* args) {
+PyObject* kth_py_native_history_compact_point(PyObject* self, PyObject* args) {
     PyObject* py_history_compact;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_history_compact)) {
@@ -94,7 +94,7 @@ PyObject* kth_py_native_history_compact_get_point(PyObject* self, PyObject* args
     return Py_BuildValue("O", py_p);
 }
 
-PyObject* kth_py_native_history_compact_get_height(PyObject* self, PyObject* args) {
+PyObject* kth_py_native_history_compact_height(PyObject* self, PyObject* args) {
     PyObject* py_history_compact;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_history_compact)) {
@@ -108,7 +108,7 @@ PyObject* kth_py_native_history_compact_get_height(PyObject* self, PyObject* arg
     return Py_BuildValue("K", res);
 }
 
-PyObject* kth_py_native_history_compact_get_value_or_previous_checksum(PyObject* self, PyObject* args) {
+PyObject* kth_py_native_history_compact_value_or_previous_checksum(PyObject* self, PyObject* args) {
     PyObject* py_history_compact;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_history_compact)) {

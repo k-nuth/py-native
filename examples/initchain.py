@@ -6,7 +6,7 @@ import os
 import signal
 import sys
 import time
-import bitprim_native as bn
+import kth_native as bn
 
 
 def signal_handler(signal, frame):

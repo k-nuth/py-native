@@ -10,7 +10,12 @@
 extern "C" {
 #endif
 
-PyObject* kth_py_native_chain_block_get_header(PyObject* self, PyObject* args);
+PyObject* kth_py_native_chain_block_to_data(PyObject* self, PyObject* args);
+
+PyObject* kth_py_native_chain_block_construct(PyObject* self, PyObject* args);
+PyObject* kth_py_native_chain_block_factory_from_data(PyObject* self, PyObject* args);
+
+PyObject* kth_py_native_chain_block_header(PyObject* self, PyObject* args);
 
 PyObject* kth_py_native_chain_block_serialized_size(PyObject* self, PyObject* args);
 PyObject* kth_py_native_chain_block_subsidy(PyObject* self, PyObject* args);

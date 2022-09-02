@@ -5,9 +5,9 @@
 #include <Python.h>
 #include "structmember.h"
 
-#include <kth/py-native/config/authority.hpp>
-#include <kth/py-native/config/common.hpp>
-#include <kth/py-native/config/endpoint.hpp>
+#include <kth/py-native/config/authority.h>
+#include <kth/py-native/config/common.h>
+#include <kth/py-native/config/endpoint.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -71,7 +71,7 @@ static PyMemberDef NetworkSettings_members[] = {
     {"invalid_services", T_ULONGLONG, offsetof(NetworkSettings, invalid_services), 0, "invalid_services"},
     {"relay_transactions", T_INT, offsetof(NetworkSettings, relay_transactions), 0, "relay_transactions"},
     {"validate_checksum", T_INT, offsetof(NetworkSettings, validate_checksum), 0, "validate_checksum"},
-    {"identifier", T_INT, offsetof(NetworkSettings, identifier), 0, "identifier"},
+    {"identifier", T_UINT, offsetof(NetworkSettings, identifier), 0, "identifier"},
     {"inbound_port", T_INT, offsetof(NetworkSettings, inbound_port), 0, "inbound_port"},
     {"inbound_connections", T_INT, offsetof(NetworkSettings, inbound_connections), 0, "inbound_connections"},
     {"outbound_connections", T_INT, offsetof(NetworkSettings, outbound_connections), 0, "outbound_connections"},
@@ -122,7 +122,7 @@ kth_network_settings kth_py_native_config_network_settings_to_c(PyObject* setts)
     KTH_PY_GETATTR(res, setts, invalid_services, "K");
     KTH_PY_GETATTR(res, setts, relay_transactions, "i");
     KTH_PY_GETATTR(res, setts, validate_checksum, "i");
-    KTH_PY_GETATTR(res, setts, identifier, "i");
+    KTH_PY_GETATTR(res, setts, identifier, "I");
     KTH_PY_GETATTR(res, setts, inbound_port, "i");
     KTH_PY_GETATTR(res, setts, inbound_connections, "i");
     KTH_PY_GETATTR(res, setts, outbound_connections, "i");

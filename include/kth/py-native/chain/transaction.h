@@ -8,6 +8,8 @@
 extern "C" {
 #endif
 
+PyObject* kth_py_native_chain_transaction_is_valid(PyObject* self, PyObject* args);
+PyObject* kth_py_native_chain_transaction_construct(PyObject* self, PyObject* args);
 PyObject* kth_py_native_chain_transaction_factory_from_data(PyObject* self, PyObject* args);
 PyObject* kth_py_native_chain_transaction_version(PyObject* self, PyObject* args);
 PyObject* kth_py_native_chain_transaction_set_version(PyObject* self, PyObject* args);

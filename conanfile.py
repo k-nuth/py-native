@@ -12,12 +12,12 @@ class KnuthPyNative(ConanFile):
     default_options = "shared=False"
     generators = "cmake"
 
-    requires = (("c-api/0.25.0@kth/stable"))
+    requires = (("c-api/0.27.0@kth/stable"))
 
     def configure(self):
         ConanFile.configure(self)
         self.options["c-api"].db = "full"
-        self.options["c-api"].march_id = "4fZKi37a595hP"
+        self.options["c-api"].march_id = "ZLm9Pjh"
         self.options["c-api"].shared = False
 
     def imports(self):

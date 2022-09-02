@@ -8,7 +8,7 @@
 extern "C" {
 #endif
 
-PyObject* kth_py_native_chain_merkle_block_get_header(PyObject* self, PyObject* args);
+PyObject* kth_py_native_chain_merkle_block_header(PyObject* self, PyObject* args);
 PyObject* kth_py_native_chain_merkle_block_is_valid(PyObject* self, PyObject* args);
 PyObject* kth_py_native_chain_merkle_block_hash_count(PyObject* self, PyObject* args);
 PyObject* kth_py_native_chain_merkle_block_total_transaction_count(PyObject* self, PyObject* args);

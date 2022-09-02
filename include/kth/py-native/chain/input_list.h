@@ -8,6 +8,7 @@
 extern "C" {
 #endif
 
+PyObject* kth_py_native_chain_input_list_construct_default(PyObject* self, PyObject* args);
 PyObject* kth_py_native_input_list_push_back(PyObject* self, PyObject* args);
 PyObject* kth_py_native_input_list_count(PyObject* self, PyObject* args);
 PyObject* kth_py_native_input_list_nth(PyObject* self, PyObject* args);
