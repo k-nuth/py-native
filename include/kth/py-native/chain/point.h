@@ -8,10 +8,10 @@
 extern "C" {
 #endif
 
-PyObject* kth_py_native_point_get_hash(PyObject* self, PyObject* args);
+PyObject* kth_py_native_point_hash(PyObject* self, PyObject* args);
 PyObject* kth_py_native_point_is_valid(PyObject* self, PyObject* args);
-PyObject* kth_py_native_point_get_index(PyObject* self, PyObject* args);
-PyObject* kth_py_native_point_get_checksum(PyObject* self, PyObject* args);
+PyObject* kth_py_native_point_index(PyObject* self, PyObject* args);
+PyObject* kth_py_native_point_checksum(PyObject* self, PyObject* args);
 
 #ifdef __cplusplus
 } //extern "C"

@@ -10,7 +10,52 @@
 extern "C" {
 #endif
 
-PyObject* kth_py_native_chain_block_get_header(PyObject* self, PyObject* args){
+// uint8_t const* kth_chain_block_to_data(kth_block_t block, kth_bool_t wire, kth_size_t* out_size);
+PyObject* kth_py_native_chain_block_to_data(PyObject* self, PyObject* args) {
+    PyObject* py_block;
+    int py_wire;
+
+    if ( ! PyArg_ParseTuple(args, "Oi", &py_block, &py_wire)) {
+        return NULL;
+    }
+
+    kth_block_t block = (kth_block_t)get_ptr(py_block);
+    kth_size_t out_n;
+    uint8_t* data = (uint8_t*)kth_chain_block_to_data(block, py_wire, &out_n);
+
+    return Py_BuildValue("y#", data, out_n);
+}
+
+// kth_block_t kth_chain_block_construct(kth_header_t header, kth_transaction_list_t transactions);
+PyObject* kth_py_native_chain_block_construct(PyObject* self, PyObject* args){
+    PyObject* py_header;
+    PyObject* py_transactions;
+
+    if ( ! PyArg_ParseTuple(args, "OO", &py_header, &py_transactions)) {
+        return NULL;
+    }
+
+    kth_header_t header = (kth_header_t)get_ptr(py_header);
+    kth_transaction_list_t transactions = (kth_transaction_list_t)get_ptr(py_transactions);
+
+    kth_block_t res = kth_chain_block_construct(header, transactions);
+    return to_py_obj(res);
+}
+
+PyObject* kth_py_native_chain_block_factory_from_data(PyObject* self, PyObject* args){
+    uint32_t py_version;
+    char* py_data;
+    int py_n;
+
+    if ( ! PyArg_ParseTuple(args, "Iy#", &py_version, &py_data, &py_n)) {
+        return NULL;
+    }
+
+    kth_block_t res = kth_chain_block_factory_from_data(py_version, (uint8_t*)py_data, py_n);
+    return to_py_obj(res);
+}
+
+PyObject* kth_py_native_chain_block_header(PyObject* self, PyObject* args){
     PyObject* py_block;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_block)) {

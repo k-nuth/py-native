@@ -7,6 +7,34 @@
 extern "C" {
 #endif
 
+// kth_output_t kth_chain_output_construct(uint64_t value, kth_script_t script);
+PyObject* kth_py_native_chain_output_construct(PyObject* self, PyObject* args){
+    uint64_t py_value;
+    PyObject* py_script;
+
+    if ( ! PyArg_ParseTuple(args, "KO", &py_value, &py_script)) {
+        return NULL;
+    }
+
+    kth_script_t script = (kth_script_t)get_ptr(py_script);
+
+    kth_output_t res = kth_chain_output_construct(py_value, script);
+    return to_py_obj(res);
+}
+
+// kth_output_t kth_chain_output_factory_from_data(uint8_t* data, uint64_t n);
+PyObject* kth_py_native_chain_output_factory_from_data(PyObject* self, PyObject* args){
+    char* py_data;
+    int py_n;
+
+    if ( ! PyArg_ParseTuple(args, "y#", &py_data, &py_n)) {
+        return NULL;
+    }
+
+    kth_output_t res = kth_chain_output_factory_from_data((uint8_t*)py_data, py_n);
+    return to_py_obj(res);
+}
+
 PyObject* kth_py_native_chain_output_is_valid(PyObject* self, PyObject* args){
     PyObject* py_output;
 
@@ -84,7 +112,7 @@ PyObject* kth_py_native_chain_output_script(PyObject* self, PyObject* args){
 }
 
 /*
-PyObject* kth_py_native_chain_output_get_hash(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_output_hash(PyObject* self, PyObject* args){
     PyObject* py_output;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_output)) {
@@ -92,14 +120,14 @@ PyObject* kth_py_native_chain_output_get_hash(PyObject* self, PyObject* args){
     }
 
     kth_output_t output = (kth_output_t)get_ptr(py_output);
-     kth_hash_t res = kth_chain_output_get_hash(output);
+     kth_hash_t res = kth_chain_output_hash(output);
     return PyByteArray_FromStringAndSize(res.hash, 32);
 
 }
 */
 
 /*
-PyObject* kth_py_native_chain_output_get_index(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_output_index(PyObject* self, PyObject* args){
     PyObject* py_output;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_output)) {
@@ -107,7 +135,7 @@ PyObject* kth_py_native_chain_output_get_index(PyObject* self, PyObject* args){
     }
 
     kth_output_t output = (kth_output_t)get_ptr(py_output);
-    uint32_t res = kth_chain_output_get_index(output);
+    uint32_t res = kth_chain_output_index(output);
     return Py_BuildValue("L", res);
 
 }

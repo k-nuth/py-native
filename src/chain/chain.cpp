@@ -508,6 +508,8 @@ PyObject* kth_py_native_chain_organize_block(PyObject* self, PyObject* args){
     kth_block_t block = (kth_block_t)get_ptr(py_block);
 
     Py_XINCREF(py_callback);
+
+    // void kth_chain_async_organize_block(kth_chain_t chain, void* ctx, kth_block_t block, kth_result_handler_t handler);
     kth_chain_async_organize_block(chain, py_callback, block, chain_organize_handler);
     Py_RETURN_NONE;
 }

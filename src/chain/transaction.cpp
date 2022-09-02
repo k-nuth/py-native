@@ -7,6 +7,37 @@
 extern "C" {
 #endif
 
+PyObject* kth_py_native_chain_transaction_is_valid(PyObject* self, PyObject* args){
+    PyObject* py_transaction;
+
+    if ( ! PyArg_ParseTuple(args, "O", &py_transaction)) {
+        return NULL;
+    }
+
+    kth_transaction_t transaction = (kth_transaction_t)get_ptr(py_transaction);
+    int res = kth_chain_transaction_is_valid(transaction);
+    return Py_BuildValue("i", res);
+}
+
+// kth_transaction_t kth_chain_transaction_construct(uint32_t version, uint32_t locktime, kth_input_list_t inputs, kth_output_list_t outputs);
+PyObject* kth_py_native_chain_transaction_construct(PyObject* self, PyObject* args){
+    uint32_t py_version;
+    uint32_t py_locktime;
+    PyObject* py_inputs;
+    PyObject* py_outputs;
+
+    if ( ! PyArg_ParseTuple(args, "IIOO", &py_version, &py_locktime, &py_inputs, &py_outputs)) {
+        return NULL;
+    }
+
+    kth_input_list_t inputs = (kth_input_list_t)get_ptr(py_inputs);
+    kth_output_list_t outputs = (kth_output_list_t)get_ptr(py_outputs);
+
+    kth_transaction_t res = kth_chain_transaction_construct(py_version, py_locktime, inputs, outputs);
+    return to_py_obj(res);
+}
+
+
 // kth_transaction_t kth_chain_transaction_factory_from_data(uint32_t version, uint8_t* data, uint64_t n) {
 //     libbitcoin::data_chunk data_cpp(data, std::next(data, n));
 //     auto tx = libbitcoin::message::transaction::factory_from_data(version, data_cpp);

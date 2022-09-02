@@ -11,7 +11,7 @@ extern "C" {
 #endif
 
 
-PyObject* kth_py_native_chain_merkle_block_get_header(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_merkle_block_header(PyObject* self, PyObject* args){
     PyObject* py_merkle;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_merkle)) {

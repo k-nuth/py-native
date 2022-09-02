@@ -7,7 +7,39 @@
 extern "C" {
 #endif
 
-PyObject* kth_py_native_kth_chain_input_is_valid(PyObject* self, PyObject* args){
+// kth_input_t kth_chain_input_factory_from_data(uint8_t* data, uint64_t n);
+PyObject* kth_py_native_chain_input_factory_from_data(PyObject* self, PyObject* args){
+    char* py_data;
+    int py_n;
+
+    if ( ! PyArg_ParseTuple(args, "y#", &py_data, &py_n)) {
+        return NULL;
+    }
+
+    kth_input_t res = kth_chain_input_factory_from_data((uint8_t*)py_data, py_n);
+    return to_py_obj(res);
+}
+
+// kth_input_t kth_chain_input_construct(kth_outputpoint_t previous_output,
+// kth_script_t script,
+// uint32_t sequence);
+PyObject* kth_py_native_chain_input_construct(PyObject* self, PyObject* args){
+    PyObject* py_previous_output;
+    PyObject* py_script;
+    uint32_t py_sequence;
+
+    if ( ! PyArg_ParseTuple(args, "OOI", &py_previous_output, &py_script, &py_sequence)) {
+        return NULL;
+    }
+
+    kth_outputpoint_t previous_output = (kth_outputpoint_t)get_ptr(py_previous_output);
+    kth_script_t script = (kth_script_t)get_ptr(py_script);
+
+    kth_input_t res = kth_chain_input_construct(previous_output, script, py_sequence);
+    return to_py_obj(res);
+}
+
+PyObject* kth_py_native_chain_input_is_valid(PyObject* self, PyObject* args){
     PyObject* py_input;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_input)) {
@@ -19,7 +51,7 @@ PyObject* kth_py_native_kth_chain_input_is_valid(PyObject* self, PyObject* args)
     return Py_BuildValue("i", res);
 }
 
-PyObject* kth_py_native_kth_chain_input_is_final(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_input_is_final(PyObject* self, PyObject* args){
     PyObject* py_input;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_input)) {
@@ -31,7 +63,7 @@ PyObject* kth_py_native_kth_chain_input_is_final(PyObject* self, PyObject* args)
     return Py_BuildValue("i", res);
 }
 
-PyObject* kth_py_native_kth_chain_input_serialized_size(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_input_serialized_size(PyObject* self, PyObject* args){
     PyObject* py_input;
     int py_wire;
 
@@ -44,7 +76,7 @@ PyObject* kth_py_native_kth_chain_input_serialized_size(PyObject* self, PyObject
     return Py_BuildValue("K", res);
 }
 
-PyObject* kth_py_native_kth_chain_input_sequence(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_input_sequence(PyObject* self, PyObject* args){
     PyObject* py_input;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_input)) {
@@ -56,7 +88,7 @@ PyObject* kth_py_native_kth_chain_input_sequence(PyObject* self, PyObject* args)
     return Py_BuildValue("I", res);
 }
 
-PyObject* kth_py_native_kth_chain_input_signature_operations(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_input_signature_operations(PyObject* self, PyObject* args){
     PyObject* py_input;
     int py_bip16_active;
 
@@ -69,7 +101,7 @@ PyObject* kth_py_native_kth_chain_input_signature_operations(PyObject* self, PyO
     return Py_BuildValue("K", res);
 }
 
-PyObject* kth_py_native_kth_chain_input_destruct(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_input_destruct(PyObject* self, PyObject* args){
     PyObject* py_input;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_input)) {
@@ -82,7 +114,7 @@ PyObject* kth_py_native_kth_chain_input_destruct(PyObject* self, PyObject* args)
 }
 
 
-PyObject* kth_py_native_kth_chain_input_script(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_input_script(PyObject* self, PyObject* args){
     PyObject* py_input;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_input)) {
@@ -94,7 +126,7 @@ PyObject* kth_py_native_kth_chain_input_script(PyObject* self, PyObject* args){
     return to_py_obj(script);
 }
 
-PyObject* kth_py_native_kth_chain_input_previous_output(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_input_previous_output(PyObject* self, PyObject* args){
     PyObject* py_input;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_input)) {
@@ -107,7 +139,7 @@ PyObject* kth_py_native_kth_chain_input_previous_output(PyObject* self, PyObject
 }
 
 /*
-PyObject* kth_py_native_kth_chain_input_get_hash(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_input_hash(PyObject* self, PyObject* args){
     PyObject* py_input;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_input)) {
@@ -115,14 +147,14 @@ PyObject* kth_py_native_kth_chain_input_get_hash(PyObject* self, PyObject* args)
     }
 
     kth_input_t input = (kth_input_t)get_ptr(py_input);
-     kth_hash_t res = kth_chain_input_get_hash(input);
+     kth_hash_t res = kth_chain_input_hash(input);
     return PyByteArray_FromStringAndSize(res.hash, 32);
 
 }
 */
 
 /*
-PyObject* kth_py_native_kth_chain_input_get_index(PyObject* self, PyObject* args){
+PyObject* kth_py_native_chain_input_index(PyObject* self, PyObject* args){
     PyObject* py_input;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_input)) {
@@ -130,7 +162,7 @@ PyObject* kth_py_native_kth_chain_input_get_index(PyObject* self, PyObject* args
     }
 
     kth_input_t input = (kth_input_t)get_ptr(py_input);
-    uint32_t res = kth_chain_input_get_index(input);
+    uint32_t res = kth_chain_input_index(input);
     return Py_BuildValue("L", res);
 
 }
@@ -146,7 +178,7 @@ PyObject* kth_py_native_kth_chain_input_get_index(PyObject* self, PyObject* args
 //     return ret;
 // }
 
-PyObject* kth_py_native_kth_chain_input_to_data(PyObject* self, PyObject* args) {
+PyObject* kth_py_native_chain_input_to_data(PyObject* self, PyObject* args) {
     PyObject* py_input;
     int py_wire;
 

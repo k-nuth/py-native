@@ -6,7 +6,7 @@
 extern "C" {
 #endif
 
-PyObject* kth_py_native_stealth_compact_get_ephemeral_public_key_hash(PyObject* self, PyObject* args){
+PyObject* kth_py_native_stealth_compact_ephemeral_public_key_hash(PyObject* self, PyObject* args){
     PyObject* py_stealth;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_stealth)) {
@@ -19,7 +19,7 @@ PyObject* kth_py_native_stealth_compact_get_ephemeral_public_key_hash(PyObject* 
     return Py_BuildValue("y#", res.hash, 32); //TODO: warning, hardcoded hash size!
 }
 
-PyObject* kth_py_native_stealth_compact_get_transaction_hash(PyObject* self, PyObject* args){
+PyObject* kth_py_native_stealth_compact_transaction_hash(PyObject* self, PyObject* args){
     PyObject* py_stealth;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_stealth)) {
@@ -32,7 +32,7 @@ PyObject* kth_py_native_stealth_compact_get_transaction_hash(PyObject* self, PyO
     return Py_BuildValue("y#", res.hash, 32); //TODO: warning, hardcoded hash size!
 }
 
-PyObject* kth_py_native_stealth_compact_get_public_key_hash(PyObject* self, PyObject* args){
+PyObject* kth_py_native_stealth_compact_public_key_hash(PyObject* self, PyObject* args){
     PyObject* py_stealth;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_stealth)) {
