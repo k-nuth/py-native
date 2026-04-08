@@ -1,4 +1,4 @@
-// Copyright (c) 2016-2022 Knuth Project developers.
+// Copyright (c) 2016-present Knuth Project developers.
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -53,6 +53,17 @@
 
 // #define KTH_PY_SETATTR(to, from, var, fmt) PyObject_SetAttrString(to, #var, Py_BuildValue(fmt, from.var))
 #define KTH_PY_SETATTR(to, from, var, fmt) PyObject_SetAttrString(to, #var, Py_BuildValue(fmt, from->var))
+
+// Try a SetAttr-style call; on failure (negative return) decref `obj` and
+// return NULL from the enclosing function. Python has already set the error.
+#define KTH_TRY_SETATTR(obj, expr) \
+    do { if ((expr) < 0) { Py_DECREF(obj); return NULL; } } while (0)
+
+// Bail out of a `*_to_py` function when PyObject_CallFunction returned NULL
+// (allocation failure / type init failed). Python has already set the
+// error; we just need to propagate.
+#define KTH_OBJ_OR_FAIL(obj) \
+    do { if ((obj) == NULL) { return NULL; } } while (0)
 
 #ifdef __cplusplus
 extern "C" {
@@ -109,7 +120,6 @@ PyMethodDef KnuthNativeMethods[] = {
     {"chain_transaction_version",  kth_py_native_chain_transaction_version, METH_VARARGS, "..."},
     {"chain_transaction_set_version",  kth_py_native_chain_transaction_set_version, METH_VARARGS, "..."},
     {"chain_transaction_hash",  kth_py_native_chain_transaction_hash, METH_VARARGS, "..."},
-    {"chain_transaction_hash_sighash_type",  kth_py_native_chain_transaction_hash_sighash_type, METH_VARARGS, "..."},
     {"chain_transaction_locktime",  kth_py_native_chain_transaction_locktime, METH_VARARGS, "..."},
     {"chain_transaction_serialized_size",  kth_py_native_chain_transaction_serialized_size, METH_VARARGS, "..."},
     {"chain_transaction_fees",  kth_py_native_chain_transaction_fees, METH_VARARGS, "..."},
@@ -238,7 +248,7 @@ PyMethodDef KnuthNativeMethods[] = {
     {"chain_point_index",  kth_py_native_point_index, METH_VARARGS, "..."},
     {"chain_point_checksum",  kth_py_native_point_checksum, METH_VARARGS, "..."},
 
-    {"chain_script_construct",  kth_py_native_chain_script_construct, METH_VARARGS, "..."},
+    {"chain_script_construct_from_bytes",  kth_py_native_chain_script_construct_from_bytes, METH_VARARGS, "..."},
     {"chain_script_to_data",  kth_py_native_chain_script_to_data, METH_VARARGS, "..."},
     {"chain_script_destruct",  kth_py_native_chain_script_destruct, METH_VARARGS, "..."},
     {"chain_script_is_valid",  kth_py_native_chain_script_is_valid, METH_VARARGS, "..."},
@@ -286,7 +296,11 @@ PyMethodDef KnuthNativeMethods[] = {
     {"chain_stealth_compact_list_nth",  kth_py_native_chain_stealth_compact_list_nth, METH_VARARGS, "..."},
 
     {"wallet_payment_address_destruct",  kth_py_native_wallet_payment_address_destruct, METH_VARARGS, "..."},
-    {"wallet_payment_address_encoded",  kth_py_native_wallet_payment_address_encoded, METH_VARARGS, "..."},
+    {"wallet_payment_address_encoded_legacy",  kth_py_native_wallet_payment_address_encoded_legacy, METH_VARARGS, "..."},
+#if defined(KTH_CURRENCY_BCH)
+    {"wallet_payment_address_encoded_cashaddr",  kth_py_native_wallet_payment_address_encoded_cashaddr, METH_VARARGS, "..."},
+    {"wallet_payment_address_encoded_token",  kth_py_native_wallet_payment_address_encoded_token, METH_VARARGS, "..."},
+#endif
     {"wallet_payment_address_version",  kth_py_native_wallet_payment_address_version, METH_VARARGS, "..."},
     {"wallet_payment_address_construct_from_string",  kth_py_native_wallet_payment_address_construct_from_string, METH_VARARGS, "..."},
 
@@ -357,13 +371,14 @@ static PyTypeObject NodeSettingsType = {
 
 PyObject* kth_py_native_config_node_settings_to_py(kth_node_settings const* setts) {
     PyObject* obj = PyObject_CallFunction((PyObject*)&NodeSettingsType, NULL);
+    KTH_OBJ_OR_FAIL(obj);
 
-    int res2 = KTH_PY_SETATTR(obj, setts, sync_peers, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, sync_timeout_seconds, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, block_latency_seconds, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, refresh_transactions, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, compact_blocks_high_bandwidth, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, ds_proofs_enabled, "i");
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, sync_peers, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, sync_timeout_seconds, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, block_latency_seconds, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, refresh_transactions, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, compact_blocks_high_bandwidth, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, ds_proofs_enabled, "i"));
 
     return obj;
 }
@@ -418,15 +433,14 @@ static PyTypeObject DatabaseSettingsType = {
 
 PyObject* kth_py_native_config_database_settings_to_py(kth_database_settings const* setts) {
     PyObject* obj = PyObject_CallFunction((PyObject*)&DatabaseSettingsType, NULL);
+    KTH_OBJ_OR_FAIL(obj);
 
-    int res2 = KTH_PY_SETATTR(obj, setts, directory, "s");
-        res2 = KTH_PY_SETATTR(obj, setts, flush_writes, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, file_growth_rate, "I");
-        res2 = KTH_PY_SETATTR(obj, setts, index_start_height, "I");
-        res2 = KTH_PY_SETATTR(obj, setts, reorg_pool_limit, "I");
-        res2 = KTH_PY_SETATTR(obj, setts, db_max_size, "K");
-        res2 = KTH_PY_SETATTR(obj, setts, safe_mode, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, cache_capacity, "I");
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, directory, "s"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, db_mode, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, reorg_pool_limit, "I"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, db_max_size, "K"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, safe_mode, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, cache_capacity, "I"));
 
     return obj;
 }
@@ -598,9 +612,10 @@ static PyTypeObject BlockchainSettingsType = {
 
 PyObject* config_checkpoint_to_py(kth_checkpoint const* checkpoint) {
     PyObject* obj = PyObject_CallFunction((PyObject*)&CheckpointType, NULL);
+    KTH_OBJ_OR_FAIL(obj);
 
-    int res2 = PyObject_SetAttrString(obj, "hash", Py_BuildValue("y#", checkpoint->hash.hash, 32));
-        res2 = KTH_PY_SETATTR(obj, checkpoint, height, "i");
+    KTH_TRY_SETATTR(obj, PyObject_SetAttrString(obj, "hash", Py_BuildValue("y#", checkpoint->hash.hash, 32)));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, checkpoint, height, "i"));
     return obj;
 }
 
@@ -616,39 +631,44 @@ PyObject* config_checkpoints_to_py(kth_checkpoint* checkpoint, size_t n) {
 
 PyObject* kth_py_native_config_blockchain_settings_to_py(kth_blockchain_settings const* setts) {
     PyObject* obj = PyObject_CallFunction((PyObject*)&BlockchainSettingsType, NULL);
+    KTH_OBJ_OR_FAIL(obj);
 
-    int res2 = KTH_PY_SETATTR(obj, setts, cores, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, priority, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, byte_fee_satoshis, "f");
-        res2 = KTH_PY_SETATTR(obj, setts, sigop_fee_satoshis, "f");
-        res2 = KTH_PY_SETATTR(obj, setts, minimum_output_satoshis, "K");
-        res2 = KTH_PY_SETATTR(obj, setts, notify_limit_hours, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, reorganization_limit, "i");
-        res2 = PyObject_SetAttrString(obj, "checkpoints", config_checkpoints_to_py(setts->checkpoints, setts->checkpoint_count));
-        res2 = KTH_PY_SETATTR(obj, setts, fix_checkpoints, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, allow_collisions, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, easy_blocks, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, retarget, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, bip16, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, bip30, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, bip34, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, bip66, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, bip65, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, bip90, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, bip68, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, bip112, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, bip113, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, bch_uahf, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, bch_daa_cw144, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, bch_pythagoras, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, bch_euclid, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, bch_pisano, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, bch_mersenne, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, bch_fermat, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, bch_euler, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, gauss_activation_time, "K");
-        res2 = KTH_PY_SETATTR(obj, setts, descartes_activation_time, "K");
-        res2 = KTH_PY_SETATTR(obj, setts, asert_half_life, "K");
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, cores, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, priority, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, byte_fee_satoshis, "f"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, sigop_fee_satoshis, "f"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, minimum_output_satoshis, "K"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, notify_limit_hours, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, reorganization_limit, "i"));
+    KTH_TRY_SETATTR(obj, PyObject_SetAttrString(obj, "checkpoints", config_checkpoints_to_py(setts->checkpoints, setts->checkpoint_count)));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, fix_checkpoints, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, allow_collisions, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, easy_blocks, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, retarget, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, bip16, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, bip30, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, bip34, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, bip66, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, bip65, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, bip90, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, bip68, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, bip112, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, bip113, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, bch_uahf, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, bch_daa_cw144, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, bch_pythagoras, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, bch_euclid, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, bch_pisano, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, bch_mersenne, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, bch_fermat, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, bch_euler, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, bch_gauss, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, bch_descartes, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, bch_lobachevski, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, bch_galois, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, leibniz_activation_time, "K"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, cantor_activation_time, "K"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, asert_half_life, "K"));
 
     return obj;
 }
@@ -759,9 +779,10 @@ static PyTypeObject NetworkSettingsType = {
 
 PyObject* config_authority_to_py(kth_authority const* authority) {
     PyObject* obj = PyObject_CallFunction((PyObject*)&AuthorityType, NULL);
+    KTH_OBJ_OR_FAIL(obj);
 
-    int res2 = PyObject_SetAttrString(obj, "ip", Py_BuildValue("s", authority->ip));
-        res2 = KTH_PY_SETATTR(obj, authority, port, "i");
+    KTH_TRY_SETATTR(obj, PyObject_SetAttrString(obj, "ip", Py_BuildValue("s", authority->ip)));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, authority, port, "i"));
     return obj;
 }
 
@@ -777,10 +798,11 @@ PyObject* config_authorities_to_py(kth_authority* authorities, size_t n) {
 
 PyObject* config_endpoint_to_py(kth_endpoint const* endpoint) {
     PyObject* obj = PyObject_CallFunction((PyObject*)&EndpointType, NULL);
+    KTH_OBJ_OR_FAIL(obj);
 
-    int res2 = PyObject_SetAttrString(obj, "scheme", Py_BuildValue("s", endpoint->scheme));
-        res2 = PyObject_SetAttrString(obj, "host", Py_BuildValue("s", endpoint->host));
-        res2 = KTH_PY_SETATTR(obj, endpoint, port, "i");
+    KTH_TRY_SETATTR(obj, PyObject_SetAttrString(obj, "scheme", Py_BuildValue("s", endpoint->scheme)));
+    KTH_TRY_SETATTR(obj, PyObject_SetAttrString(obj, "host", Py_BuildValue("s", endpoint->host)));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, endpoint, port, "i"));
 
     return obj;
 }
@@ -807,43 +829,44 @@ PyObject* config_strings_to_py(char** strs, size_t n) {
 
 PyObject* kth_py_native_config_network_settings_to_py(kth_network_settings const* setts) {
     PyObject* obj = PyObject_CallFunction((PyObject*)&NetworkSettingsType, NULL);
+    KTH_OBJ_OR_FAIL(obj);
 
-    int res2 = KTH_PY_SETATTR(obj, setts, threads, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, protocol_maximum, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, protocol_minimum, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, services, "K");
-        res2 = KTH_PY_SETATTR(obj, setts, invalid_services, "K");
-        res2 = KTH_PY_SETATTR(obj, setts, relay_transactions, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, validate_checksum, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, identifier, "I");
-        res2 = KTH_PY_SETATTR(obj, setts, inbound_port, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, inbound_connections, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, outbound_connections, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, manual_attempt_limit, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, connect_batch_size, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, connect_timeout_seconds, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, channel_handshake_seconds, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, channel_heartbeat_minutes, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, channel_inactivity_minutes, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, channel_expiration_minutes, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, channel_germination_seconds, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, host_pool_capacity, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, hosts_file, "s");
-        res2 = PyObject_SetAttrString(obj, "self", config_authority_to_py(&setts->self));
-        res2 = PyObject_SetAttrString(obj, "blacklist", config_authorities_to_py(setts->blacklist, setts->blacklist_count));
-        res2 = PyObject_SetAttrString(obj, "peers", config_endpoints_to_py(setts->peers, setts->peer_count));
-        res2 = PyObject_SetAttrString(obj, "seeds", config_endpoints_to_py(setts->seeds, setts->seed_count));
-        res2 = KTH_PY_SETATTR(obj, setts, debug_file, "s");
-        res2 = KTH_PY_SETATTR(obj, setts, error_file, "s");
-        res2 = KTH_PY_SETATTR(obj, setts, archive_directory, "s");
-        res2 = KTH_PY_SETATTR(obj, setts, rotation_size, "K");
-        res2 = KTH_PY_SETATTR(obj, setts, minimum_free_space, "K");
-        res2 = KTH_PY_SETATTR(obj, setts, maximum_archive_size, "K");
-        res2 = KTH_PY_SETATTR(obj, setts, maximum_archive_files, "K");
-        res2 = PyObject_SetAttrString(obj, "statistics_server", config_authority_to_py(&setts->statistics_server));
-        res2 = KTH_PY_SETATTR(obj, setts, verbose, "i");
-        res2 = KTH_PY_SETATTR(obj, setts, use_ipv6, "i");
-        res2 = PyObject_SetAttrString(obj, "user_agent_blacklist", config_strings_to_py(setts->user_agent_blacklist, setts->user_agent_blacklist_count));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, threads, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, protocol_maximum, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, protocol_minimum, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, services, "K"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, invalid_services, "K"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, relay_transactions, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, validate_checksum, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, identifier, "I"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, inbound_port, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, inbound_connections, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, outbound_connections, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, manual_attempt_limit, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, connect_batch_size, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, connect_timeout_seconds, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, channel_handshake_seconds, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, channel_heartbeat_minutes, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, channel_inactivity_minutes, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, channel_expiration_minutes, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, channel_germination_seconds, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, host_pool_capacity, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, hosts_file, "s"));
+    KTH_TRY_SETATTR(obj, PyObject_SetAttrString(obj, "self", config_authority_to_py(&setts->self)));
+    KTH_TRY_SETATTR(obj, PyObject_SetAttrString(obj, "blacklist", config_authorities_to_py(setts->blacklist, setts->blacklist_count)));
+    KTH_TRY_SETATTR(obj, PyObject_SetAttrString(obj, "peers", config_endpoints_to_py(setts->peers, setts->peer_count)));
+    KTH_TRY_SETATTR(obj, PyObject_SetAttrString(obj, "seeds", config_endpoints_to_py(setts->seeds, setts->seed_count)));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, debug_file, "s"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, error_file, "s"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, archive_directory, "s"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, rotation_size, "K"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, minimum_free_space, "K"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, maximum_archive_size, "K"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, maximum_archive_files, "K"));
+    KTH_TRY_SETATTR(obj, PyObject_SetAttrString(obj, "statistics_server", config_authority_to_py(&setts->statistics_server)));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, verbose, "i"));
+    KTH_TRY_SETATTR(obj, KTH_PY_SETATTR(obj, setts, use_ipv6, "i"));
+    KTH_TRY_SETATTR(obj, PyObject_SetAttrString(obj, "user_agent_blacklist", config_strings_to_py(setts->user_agent_blacklist, setts->user_agent_blacklist_count)));
 
     return obj;
 }
@@ -900,10 +923,11 @@ static PyTypeObject SettingsType = {
 
 PyObject* kth_py_native_config_settings_to_py(kth_settings const* setts) {
     PyObject* obj = PyObject_CallFunction((PyObject*)&SettingsType, NULL);
-    int res2 = PyObject_SetAttrString(obj, "node", kth_py_native_config_node_settings_to_py(&setts->node));
-        res2 = PyObject_SetAttrString(obj, "chain", kth_py_native_config_blockchain_settings_to_py(&setts->chain));
-        res2 = PyObject_SetAttrString(obj, "database", kth_py_native_config_database_settings_to_py(&setts->database));
-        res2 = PyObject_SetAttrString(obj, "network", kth_py_native_config_network_settings_to_py(&setts->network));
+    KTH_OBJ_OR_FAIL(obj);
+    KTH_TRY_SETATTR(obj, PyObject_SetAttrString(obj, "node", kth_py_native_config_node_settings_to_py(&setts->node)));
+    KTH_TRY_SETATTR(obj, PyObject_SetAttrString(obj, "chain", kth_py_native_config_blockchain_settings_to_py(&setts->chain)));
+    KTH_TRY_SETATTR(obj, PyObject_SetAttrString(obj, "database", kth_py_native_config_database_settings_to_py(&setts->database)));
+    KTH_TRY_SETATTR(obj, PyObject_SetAttrString(obj, "network", kth_py_native_config_network_settings_to_py(&setts->network)));
     return obj;
 }
 
@@ -1028,7 +1052,7 @@ PyInit_kth_native(void) {
     }
 
     Py_INCREF(&NetworkSettingsType);
-    if (PyModule_AddObject(module, "NetworkSetting", (PyObject*) &NetworkSettingsType) < 0) {
+    if (PyModule_AddObject(module, "NetworkSettings", (PyObject*) &NetworkSettingsType) < 0) {
         Py_DECREF(&NetworkSettingsType);
         Py_DECREF(module);
         return NULL;
@@ -1056,7 +1080,7 @@ PyInit_kth_native(void) {
     }
 
     Py_INCREF(&SettingsType);
-    if (PyModule_AddObject(module, "Setting", (PyObject*) &SettingsType) < 0) {
+    if (PyModule_AddObject(module, "Settings", (PyObject*) &SettingsType) < 0) {
         Py_DECREF(&SettingsType);
         Py_DECREF(module);
         return NULL;

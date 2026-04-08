@@ -14,7 +14,6 @@ PyObject* kth_py_native_chain_transaction_factory_from_data(PyObject* self, PyOb
 PyObject* kth_py_native_chain_transaction_version(PyObject* self, PyObject* args);
 PyObject* kth_py_native_chain_transaction_set_version(PyObject* self, PyObject* args);
 PyObject* kth_py_native_chain_transaction_hash(PyObject* self, PyObject* args);
-PyObject* kth_py_native_chain_transaction_hash_sighash_type(PyObject* self, PyObject* args);
 PyObject* kth_py_native_chain_transaction_locktime(PyObject* self, PyObject* args);
 PyObject* kth_py_native_chain_transaction_serialized_size(PyObject* self, PyObject* args);
 PyObject* kth_py_native_chain_transaction_fees(PyObject* self, PyObject* args);

@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2022 Knuth Project developers.
+# Copyright (c) 2016-present Knuth Project developers.
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -29,13 +29,9 @@ def print_node_settings(ns):
 
 def print_database_settings(ds):
     print(ds.directory)
-    print(ds.flush_writes)
-    print(ds.file_growth_rate)
-    print(ds.index_start_height)
-
+    print(ds.db_mode)  # 0=pruned, 1=normal, 2=full_indexed
     print(ds.reorg_pool_limit)
     print(ds.db_max_size)
-
     print(ds.safe_mode)
     print(ds.cache_capacity)
 
@@ -73,8 +69,12 @@ def print_blockchain_settings(bs):
     print(bs.bch_mersenne)
     print(bs.bch_fermat)
     print(bs.bch_euler)
-    print(bs.gauss_activation_time)
-    print(bs.descartes_activation_time)
+    print(bs.bch_gauss)
+    print(bs.bch_descartes)
+    print(bs.bch_lobachevski)
+    print(bs.bch_galois)
+    print(bs.leibniz_activation_time)
+    print(bs.cantor_activation_time)
     print(bs.asert_half_life)
 
 def print_network_settings(ns):

@@ -46,7 +46,7 @@ PyObject* kth_py_native_chain_output_point_construct_from_hash_index(PyObject* s
 
     kth_hash_t hash;
     memcpy(hash.hash, py_hash, 32);
-    kth_outputpoint_t res = kth_chain_output_point_construct_from_hash_index(hash, py_index);
+    kth_outputpoint_t res = kth_chain_output_point_construct_from_hash_index(&hash, py_index);
     return to_py_obj(res);
 }
 

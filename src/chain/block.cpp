@@ -1,4 +1,4 @@
-// Copyright (c) 2016-2022 Knuth Project developers.
+// Copyright (c) 2016-present Knuth Project developers.
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -43,15 +43,14 @@ PyObject* kth_py_native_chain_block_construct(PyObject* self, PyObject* args){
 }
 
 PyObject* kth_py_native_chain_block_factory_from_data(PyObject* self, PyObject* args){
-    uint32_t py_version;
     char* py_data;
-    int py_n;
+    Py_ssize_t py_n;
 
-    if ( ! PyArg_ParseTuple(args, "Iy#", &py_version, &py_data, &py_n)) {
+    if ( ! PyArg_ParseTuple(args, "y#", &py_data, &py_n)) {
         return NULL;
     }
 
-    kth_block_t res = kth_chain_block_factory_from_data(py_version, (uint8_t*)py_data, py_n);
+    kth_block_t res = kth_chain_block_factory_from_data((uint8_t*)py_data, (kth_size_t)py_n);
     return to_py_obj(res);
 }
 
@@ -101,14 +100,13 @@ PyObject* kth_py_native_chain_block_header(PyObject* self, PyObject* args){
 
 PyObject* kth_py_native_chain_block_serialized_size(PyObject* self, PyObject* args){
     PyObject* py_block;
-    uint32_t py_version;
 
-    if ( ! PyArg_ParseTuple(args, "OI", &py_block, &py_version)) {
+    if ( ! PyArg_ParseTuple(args, "O", &py_block)) {
         return NULL;
     }
 
     kth_block_t block = (kth_block_t)get_ptr(py_block);
-    kth_size_t res = kth_chain_block_serialized_size(block, py_version);
+    kth_size_t res = kth_chain_block_serialized_size(block);
 
     return Py_BuildValue("K", res);
 }

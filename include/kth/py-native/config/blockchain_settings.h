@@ -45,8 +45,12 @@ typedef struct {
     kth_bool_t bch_mersenne;
     kth_bool_t bch_fermat;
     kth_bool_t bch_euler;
-    uint64_t gauss_activation_time;
-    uint64_t descartes_activation_time;
+    kth_bool_t bch_gauss;
+    kth_bool_t bch_descartes;
+    kth_bool_t bch_lobachevski;
+    kth_bool_t bch_galois;
+    uint64_t leibniz_activation_time;
+    uint64_t cantor_activation_time;
     uint64_t asert_half_life;
 } BlockchainSettings;
 
@@ -81,8 +85,12 @@ static PyMemberDef BlockchainSettings_members[] = {
     {"bch_mersenne", T_INT, offsetof(BlockchainSettings, bch_mersenne), 0, "bch_mersenne"},
     {"bch_fermat", T_INT, offsetof(BlockchainSettings, bch_fermat), 0, "bch_fermat"},
     {"bch_euler", T_INT, offsetof(BlockchainSettings, bch_euler), 0, "bch_euler"},
-    {"gauss_activation_time", T_ULONGLONG, offsetof(BlockchainSettings, gauss_activation_time), 0, "gauss_activation_time"},
-    {"descartes_activation_time", T_ULONGLONG, offsetof(BlockchainSettings, descartes_activation_time), 0, "descartes_activation_time"},
+    {"bch_gauss", T_INT, offsetof(BlockchainSettings, bch_gauss), 0, "bch_gauss"},
+    {"bch_descartes", T_INT, offsetof(BlockchainSettings, bch_descartes), 0, "bch_descartes"},
+    {"bch_lobachevski", T_INT, offsetof(BlockchainSettings, bch_lobachevski), 0, "bch_lobachevski"},
+    {"bch_galois", T_INT, offsetof(BlockchainSettings, bch_galois), 0, "bch_galois"},
+    {"leibniz_activation_time", T_ULONGLONG, offsetof(BlockchainSettings, leibniz_activation_time), 0, "leibniz_activation_time"},
+    {"cantor_activation_time", T_ULONGLONG, offsetof(BlockchainSettings, cantor_activation_time), 0, "cantor_activation_time"},
     {"asert_half_life", T_ULONGLONG, offsetof(BlockchainSettings, asert_half_life), 0, "asert_half_life"},
 
     {NULL}  /* Sentinel */
@@ -126,8 +134,12 @@ kth_blockchain_settings kth_py_native_config_blockchain_settings_to_c(PyObject* 
     KTH_PY_GETATTR(res, setts, bch_mersenne, "i");
     KTH_PY_GETATTR(res, setts, bch_fermat, "i");
     KTH_PY_GETATTR(res, setts, bch_euler, "i");
-    KTH_PY_GETATTR(res, setts, gauss_activation_time, "K");
-    KTH_PY_GETATTR(res, setts, descartes_activation_time, "K");
+    KTH_PY_GETATTR(res, setts, bch_gauss, "i");
+    KTH_PY_GETATTR(res, setts, bch_descartes, "i");
+    KTH_PY_GETATTR(res, setts, bch_lobachevski, "i");
+    KTH_PY_GETATTR(res, setts, bch_galois, "i");
+    KTH_PY_GETATTR(res, setts, leibniz_activation_time, "K");
+    KTH_PY_GETATTR(res, setts, cantor_activation_time, "K");
     KTH_PY_GETATTR(res, setts, asert_half_life, "K");
 
     return res;

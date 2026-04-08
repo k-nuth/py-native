@@ -1,285 +1,183 @@
 #!/usr/bin/env python
 
-# Copyright (c) 2016-2022 Knuth Project developers.
+# Copyright (c) 2016-present Knuth Project developers.
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 import glob
 import os
-import platform
-import shutil
-import stat
+import subprocess
 import sys
 
-from setuptools import setup, find_packages
+from setuptools import setup
 from setuptools.extension import Extension
-from distutils import dir_util, file_util
-from distutils import log
-from setuptools.command.install_lib import install_lib
-from setuptools.command.install import install
-from setuptools.command.develop import develop
-# from setuptools.command.egg_info import egg_info
 from setuptools.command.build_ext import build_ext
-
-from distutils.command.build import build
+from setuptools.command.develop import develop
 from setuptools.command.install import install
+from distutils.command.build import build
 
-from setuptools.dist import Distribution
-from conans.client.conan_api import (Conan, default_manifest_folder)
-import fnmatch
-
-from sys import platform
-
-PKG_NAME = 'kth-py-native'
-# VERSION = '1.1.9'
-SYSTEM = sys.platform
+HERE = os.path.dirname(os.path.abspath(__file__))
+KTH_INCLUDE = os.path.join(HERE, 'kth', 'include')
+KTH_LIB = os.path.join(HERE, 'kth', 'lib')
 
 
-def get_similar_lib(path, pattern):
-    # for file in os.listdir('.'):
-    #     if fnmatch.fnmatch(file, '*.txt'):
-    #         print file
-    for file in os.listdir(path):
-        if fnmatch.fnmatch(file, pattern):
-            return file
-    return ""
+def run_conan_install(microarch=None, currency=None):
+    """Stage Knuth headers + static libs into ./kth/ via Conan 2."""
+    # CLI flags win over env, env wins over recipe defaults.
+    microarch = microarch or os.environ.get('KTH_MARCH_ID')
+    currency = currency or os.environ.get('KTH_CURRENCY')
 
-
-# if platform == "linux" or platform == "linux2":
-#     # linux
-# elif platform == "darwin":
-#     # OS X
-# elif platform == "win32":
-#     # Windows...
-
-def get_libraries():
-    # libraries = ['kth-c-api', 'kth-node', 'kth-blockchain', 'kth-network', 'kth-consensus', 'kth-database', 'kth-core', 'boost_atomic', 'boost_chrono', 'boost_date_time', 'boost_filesystem', 'boost_iostreams', 'boost_locale', 'boost_log', 'boost_log_setup', 'boost_program_options', 'boost_random', 'boost_regex', 'boost_system', 'boost_unit_test_framework', 'boost_prg_exec_monitor', 'boost_test_exec_monitor', 'boost_thread', 'boost_timer', 'secp256k1', 'bz2', 'gmp', 'z',]
-    fixed = ['kth/lib/kth-c-api', 'kth/lib/kth-node', 'kth/lib/kth-blockchain', 'kth/lib/kth-network', 'kth/lib/kth-consensus', 'kth/lib/kth-database', 'kth/lib/kth-domain', 'kth/lib/kth-infrastructure']
-
-
-    if platform == "win32":
-        # libraries = ['boost_atomic', 'boost_chrono', 'boost_date_time', 'boost_filesystem', 'boost_iostreams', 'boost_locale', 'boost_log', 'boost_log_setup', 'boost_program_options', 'boost_random', 'boost_regex', 'boost_system', 'boost_unit_test_framework', 'boost_prg_exec_monitor', 'boost_test_exec_monitor', 'boost_thread', 'boost_timer', 'secp256k1', 'bz2', 'mpir', 'z',]
-        # libraries = ['boost_atomic', 'boost_chrono', 'boost_date_time', 'boost_filesystem', 'boost_iostreams', 'boost_locale', 'boost_log', 'boost_log_setup', 'boost_program_options', 'boost_random', 'boost_regex', 'boost_system', 'boost_unit_test_framework', 'boost_prg_exec_monitor', 'boost_test_exec_monitor', 'boost_thread', 'boost_timer', 'secp256k1', 'mpir', 'z',]
-        libraries = ['boost_atomic', 'boost_chrono', 'boost_date_time', 'boost_filesystem', 'boost_iostreams', 'boost_locale', 'boost_log', 'boost_log_setup', 'boost_program_options', 'boost_random', 'boost_regex', 'boost_system', 'boost_unit_test_framework', 'boost_prg_exec_monitor', 'boost_test_exec_monitor', 'boost_thread', 'boost_timer', 'secp256k1', 'mpir', 'lmdb']
-        winlibs = fixed
-        for lib in libraries:
-            # print(lib)
-            xxx = get_similar_lib('kth/lib', "*" + lib + "*")
-            if xxx != '':
-                xxx = xxx.replace('.lib', '')
-                # print(xxx)
-                winlibs.append(xxx)
-
-        # print(winlibs)
-        return winlibs
-    else:
-        # libraries = ['boost_atomic', 'boost_chrono', 'boost_date_time', 'boost_filesystem', 'boost_iostreams', 'boost_locale', 'boost_log', 'boost_log_setup', 'boost_program_options', 'boost_random', 'boost_regex', 'boost_system', 'boost_unit_test_framework', 'boost_prg_exec_monitor', 'boost_test_exec_monitor', 'boost_thread', 'boost_timer', 'secp256k1', 'bz2', 'gmp', 'z',]
-        # libraries = ['boost_atomic', 'boost_chrono', 'boost_date_time', 'boost_filesystem', 'boost_iostreams', 'boost_locale', 'boost_log', 'boost_log_setup', 'boost_program_options', 'boost_random', 'boost_regex', 'boost_system', 'boost_unit_test_framework', 'boost_prg_exec_monitor', 'boost_test_exec_monitor', 'boost_thread', 'boost_timer', 'secp256k1', 'gmp', 'z',]
-        libraries = ['kth/lib/boost_atomic', 'kth/lib/boost_chrono', 'kth/lib/boost_date_time', 'kth/lib/boost_filesystem', 'kth/lib/boost_iostreams', 'kth/lib/boost_locale', 'kth/lib/boost_log', 'kth/lib/boost_log_setup', 'kth/lib/boost_program_options', 'kth/lib/boost_random', 'kth/lib/boost_regex', 'kth/lib/boost_system', 'kth/lib/boost_unit_test_framework', 'kth/lib/boost_prg_exec_monitor', 'kth/lib/boost_test_exec_monitor', 'kth/lib/boost_thread', 'kth/lib/boost_timer', 'kth/lib/secp256k1', 'kth/lib/gmp', 'kth/lib/lmdb']
-        # libraries = []
-        return fixed + libraries
-
-def do_conan_stuff(microarch=None, currency=None):
-
-    # if not microarch:
-    #     microarch = 'x86_64'
-
-    print('do_conan_stuff microarch currency')
-    print(microarch)
-
-    # New API in Conan 0.28
-    c, _, _ = Conan.factory()
-
-    try:
-        # c.remote_add(remote, url, verify_ssl, args.insert)
-        c.remote_add('kth', 'https://knuth.jfrog.io/artifactory/api/conan/knuth')
-    except:
-        print ("Conan Remote exists, ignoring exception")
-
-    refe = "."
-
-    opts = None
-
-    # if microarch:
-    #     # c.install(refe, verify=None, manifests=None)
-    #     opts = ['*:microarchitecture=%s' % (microarch,)]
-    #     c.install(refe, verify=None, manifests_interactive=None, manifests=None, options=opts)
-    # else:
-    #     c.install(refe, verify=None, manifests_interactive=None, manifests=None)
-
+    cmd = [
+        'conan', 'install', '.',
+        '--build=missing',
+        '-s', 'build_type=Release',
+        # kth/0.78.0 requires cppstd=23 (or higher). Conan's auto-detected
+        # default profile picks gnu17 on most toolchains, so force it here.
+        '-s', 'compiler.cppstd=23',
+    ]
     if microarch:
-        opts = ['*:microarchitecture=%s' % (microarch,)]
-
+        cmd += ['-o', f'kth/*:march_id={microarch}']
     if currency:
-        if opts:
-            opts.append('*:currency=%s' % (currency,))
-        else:
-            opts = ['*:currency=%s' % (currency,)]
+        cmd += ['-o', f'kth/*:currency={currency}']
 
-    c.install(refe, verify=None, manifests_interactive=None, manifests=None, options=opts)
+    print('Running:', ' '.join(cmd))
+    subprocess.check_call(cmd, cwd=HERE)
 
-def do_build_stuff(microarch=None, currency=None):
 
-    print('*********************************************************************************************************')
-    print(os.path.dirname(os.path.abspath(__file__)))
-    print(os.getcwd())
-    print('*********************************************************************************************************')
+def discover_static_libs():
+    """Return absolute paths to every static lib staged by conanfile.py."""
+    if not os.path.isdir(KTH_LIB):
+        return []
+    libs = sorted(glob.glob(os.path.join(KTH_LIB, '*.a')))
+    if sys.platform == 'win32':
+        libs += sorted(glob.glob(os.path.join(KTH_LIB, '*.lib')))
+    return libs
 
-    prev_dir = os.getcwd()
 
-    do_conan_stuff(microarch, currency)
-
-    print('*********************************************************************************************************')
-    print(os.path.dirname(os.path.abspath(__file__)))
-    print(os.getcwd())
-    print('*********************************************************************************************************')
-
-    os.chdir(prev_dir)
-
-    print('*********************************************************************************************************')
-    print(os.path.dirname(os.path.abspath(__file__)))
-    print(os.getcwd())
-    print('*********************************************************************************************************')
-
-    # extensions[0].libraries = get_libraries()
-    # extensions[0].extra_objects = get_libraries()
-
-class DevelopCommand(develop):
-    user_options = develop.user_options + [
-        ('microarch=', None, 'CPU microarchitecture'),
-        ('currency=', None, 'Cryptocurrency')
+class _ConanMixin:
+    user_options_extra = [
+        ('microarch=', None, 'CPU microarchitecture (kth march_id)'),
+        ('currency=', None, 'Cryptocurrency (BCH/BTC/LTC)'),
     ]
 
-    def initialize_options(self):
-        develop.initialize_options(self)
+    def _init_extra(self):
         self.microarch = None
         self.currency = None
 
-    def finalize_options(self):
-        develop.finalize_options(self)
+    def _do_conan(self):
+        run_conan_install(self.microarch, self.currency)
 
-    def run(self):
-        global microarch
-        microarch = self.microarch
 
-        global currency
-        currency = self.currency
-
-        print('*********************************** DevelopCommand run microarch currency')
-        print(microarch)
-        print(currency)
-
-        do_build_stuff(microarch, currency)
-
-        develop.run(self)
-
-class InstallCommand(install):
-    user_options = install.user_options + [
-        ('microarch=', None, 'CPU microarchitecture'),
-        ('currency=', None, 'Cryptocurrency')
-    ]
-
-    def initialize_options(self):
-        install.initialize_options(self)
-        self.microarch = None
-        self.currency = None
-
-    def finalize_options(self):
-        install.finalize_options(self)
-
-    def run(self):
-        global microarch
-        microarch = self.microarch
-
-        global currency
-        currency = self.currency
-
-        print('*********************************** InstallCommand run microarch currency')
-        print(microarch)
-        print(currency)
-
-        do_build_stuff(microarch, currency)
-
-        install.run(self)
-
-# class BuildCommand(build):
-#     user_options = build.user_options + [
-#         ('microarch=', None, 'CPU microarchitecture'),
-#         ('currency=', None, 'Cryptocurrency')
-#     ]
-
-#     def initialize_options(self):
-#         build.initialize_options(self)
-#         self.microarch = None
-#         self.currency = None
-
-#     def finalize_options(self):
-#         build.finalize_options(self)
-
-#     def run(self):
-#         global microarch
-#         microarch = self.microarch
-
-#         global currency
-#         currency = self.currency
-
-#         print('--------------------------------------- BuildCommand run microarch currency')
-#         print(microarch)
-#         print(currency)
-
-#         do_build_stuff(microarch, currency)
-
-#         build.run(self)
-
-class BuildCommand(build):
-    user_options = build.user_options + [
-        ('microarch=', None, 'CPU microarchitecture'),
-        ('currency=', None, 'Cryptocurrency')
-    ]
+class BuildCommand(_ConanMixin, build):
+    user_options = build.user_options + _ConanMixin.user_options_extra
 
     def initialize_options(self):
         build.initialize_options(self)
+        self._init_extra()
+
+    def run(self):
+        self._do_conan()
+        build.run(self)
+
+
+class InstallCommand(_ConanMixin, install):
+    user_options = install.user_options + _ConanMixin.user_options_extra
+
+    def initialize_options(self):
+        install.initialize_options(self)
+        self._init_extra()
+
+    def run(self):
+        self._do_conan()
+        install.run(self)
+
+
+class DevelopCommand(_ConanMixin, develop):
+    user_options = develop.user_options + _ConanMixin.user_options_extra
+
+    def initialize_options(self):
+        develop.initialize_options(self)
+        self._init_extra()
+
+    def run(self):
+        self._do_conan()
+        develop.run(self)
+
+
+class BuildExtCommand(build_ext):
+    """Run `conan install` if libs aren't staged yet, then build the ext."""
+
+    user_options = build_ext.user_options + _ConanMixin.user_options_extra
+
+    def initialize_options(self):
+        build_ext.initialize_options(self)
         self.microarch = None
         self.currency = None
 
-    def finalize_options(self):
-        build.finalize_options(self)
+    def build_extensions(self):
+        # The extension mixes C (src/module.c — Python type tables that
+        # don't trivially retrofit as C++) with C++ for the rest. The
+        # Extension carries `-std=c++23` in extra_compile_args for the
+        # whole project, which C compilers reject when handed a .c file.
+        # Hook the underlying compiler to strip C++-only -std= flags
+        # whenever the source ends in .c.
+        original_compile = self.compiler._compile
+
+        def filtered_compile(obj, src, ext, cc_args, extra_postargs, pp_opts):
+            if src.endswith('.c'):
+                extra_postargs = [
+                    a for a in extra_postargs if not a.startswith('-std=c++')
+                ]
+            return original_compile(obj, src, ext, cc_args, extra_postargs, pp_opts)
+
+        self.compiler._compile = filtered_compile
+        super().build_extensions()
 
     def run(self):
-        global microarch
-        microarch = self.microarch
+        if not discover_static_libs():
+            run_conan_install(self.microarch, self.currency)
+        libs = discover_static_libs()
+        if not libs:
+            raise RuntimeError(
+                f"No static libs found under {KTH_LIB}. "
+                "Did `conan install` run successfully?"
+            )
+        # On GNU ld (Linux) we wrap the static libs in --start-group/
+        # --end-group so the linker resolves circular dependencies between
+        # kth/boost/etc. without caring about alphabetical order. macOS
+        # ld64 doesn't support --start-group (and doesn't need it: it
+        # always re-scans archives until no progress is made), and on
+        # other platforms we just pass the libs raw.
+        if sys.platform.startswith('linux'):
+            link_libs = ['-Wl,--start-group', *libs, '-Wl,--end-group']
+        else:
+            link_libs = list(libs)
+        for ext in self.extensions:
+            ext.extra_link_args = (ext.extra_link_args or []) + link_libs
+        build_ext.run(self)
 
-        global currency
-        currency = self.currency
 
-        print('--------------------------------------- BuildCommand run microarch currency')
-        print(microarch)
-        print(currency)
-
-        do_build_stuff(microarch, currency)
-        build.run(self)
-
-# ------------------------------------------------
-
-microarch = ''
-
-print('platform --------------------------')
-print(platform)
-print('platform --------------------------')
+_CURRENCY = os.environ.get('KTH_CURRENCY', 'BCH').upper()
+if _CURRENCY not in ('BCH', 'BTC', 'LTC'):
+    raise SystemExit(
+        f"setup.py: unsupported KTH_CURRENCY={_CURRENCY!r} "
+        "(expected one of: BCH, BTC, LTC)"
+    )
 
 extensions = [
-	Extension('kth_native',
-        define_macros = [
+    Extension(
+        'kth_native',
+        define_macros=[
             ('KTH_LIB_STATIC', None),
-            ('KTH_DB_NEW_FULL', None),
+            ('KTH_DB_DYNAMIC', None),
             ('KTH_LOG_LIBRARY_SPDLOG', None),
-            ('KTH_CURRENCY_BCH', None),
+            # Stays in lockstep with the currency option passed to
+            # `conan install` (see conanfile.py::configure). Both
+            # branches read KTH_CURRENCY from the env so they can't
+            # disagree.
+            (f'KTH_CURRENCY_{_CURRENCY}', None),
         ],
-
-        # 'binary.cpp'
-        # 'chain/word_list.cpp',
-
-    	sources = [
+        sources=[
             'src/utils.cpp',
             'src/chain/header.cpp',
             'src/chain/block.cpp',
@@ -302,121 +200,36 @@ extensions = [
             'src/chain/stealth_compact.cpp',
             'src/chain/stealth_compact_list.cpp',
             'src/p2p/p2p.cpp',
-
             'src/config/database_settings.cpp',
             'src/config/node_settings.cpp',
-
             'src/module.c',
         ],
-
-        include_dirs=['kth/include', 'include'],
-        # library_dirs=['kth/lib'],
-
-
-        extra_objects = [
-            'kth/lib/libkth-c-api.a',
-            'kth/lib/libkth-node.a',
-            'kth/lib/libkth-blockchain.a',
-            'kth/lib/libkth-network.a',
-            'kth/lib/libkth-consensus.a',
-            'kth/lib/libkth-database.a',
-            'kth/lib/libkth-domain.a',
-            'kth/lib/libkth-infrastructure.a',
-            'kth/lib/libboost_atomic.a',
-            'kth/lib/libboost_chrono.a',
-            'kth/lib/libboost_date_time.a',
-            'kth/lib/libboost_filesystem.a',
-            'kth/lib/libboost_iostreams.a',
-            'kth/lib/libboost_locale.a',
-            'kth/lib/libboost_log.a',
-            'kth/lib/libboost_log_setup.a',
-            'kth/lib/libboost_program_options.a',
-            'kth/lib/libboost_random.a',
-            'kth/lib/libboost_regex.a',
-            'kth/lib/libboost_system.a',
-            'kth/lib/libboost_unit_test_framework.a',
-            'kth/lib/libboost_prg_exec_monitor.a',
-            'kth/lib/libboost_test_exec_monitor.a',
-            'kth/lib/libboost_thread.a',
-            'kth/lib/libboost_timer.a',
-            'kth/lib/libsecp256k1.a',
-            'kth/lib/libgmp.a',
-            'kth/lib/liblmdb.a'
-        ],
-
-        language='c++17',
+        include_dirs=[KTH_INCLUDE, 'include'],
+        language='c++',
+        # We require a toolchain new enough for C++23. Supported in:
+        #   - GCC >= 13     (manylinux_2_34 ships GCC 14)
+        #   - Apple Clang >= 16 (Xcode 16, default on macos-latest)
+        # MSVC is not a supported target — Windows is intentionally
+        # out of the build matrix; revisit when py-native gains a
+        # Windows wheel job. The .c file in `sources` is filtered out
+        # of this flag by BuildExtCommand.build_extensions() above.
+        extra_compile_args=['-std=c++23'],
+        extra_link_args=['-lstdc++'],
     ),
 ]
 
-if platform == "darwin":
-    # extensions[0].extra_link_args = ["-stdlib=libc++", "-mmacosx-version-min=13"]
-    extensions[0].extra_link_args = ["-stdlib=libc++", "-mmacosx-version-min=12"]
+if sys.platform == 'darwin':
+    extensions[0].extra_link_args = ['-stdlib=libc++', '-mmacosx-version-min=14']
 
-
-# print("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-")
-# print(open("README.md").read())
-# print("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-")
-
-exec(open('./version.py').read())
+# Almost all metadata lives in pyproject.toml (PEP 621). This setup.py
+# only exists to declare the C extension and to drive the conan + custom
+# build_ext path that staticly links the Knuth C-API into the .so.
 setup(
-    name=PKG_NAME,
-    version=__version__,
-
-    python_requires=">=3.6",
-
-    # description='Knuth Project',
-    # long_description='Knuth Project',
-    # long_description="""# Markdown supported!\n\n* Cheer\n* Celebrate\n""",
-
-    long_description=open("README.md").read(),
-    long_description_content_type='text/markdown',
-
-    url='https://github.com/k-nuth/py-native',
-
-    # Author details
-    author='Knuth Project',
-    author_email='info@kth.cash',
-    license='MIT',
-
-    # See https://pypi.python.org/pypi?%3Aaction=list_classifiers
-    classifiers=[
-        # How mature is this project? Common values are
-        #   3 - Alpha
-        #   4 - Beta
-        #   5 - Production/Stable
-        'Development Status :: 3 - Alpha',
-
-        # Indicate who your project is intended for
-        'Intended Audience :: Developers',
-        'Topic :: Software Development :: Build Tools',
-
-        # Pick your license as you wish (should match "license" above)
-        'License :: OSI Approved :: MIT License',
-
-        'Programming Language :: C++',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
-        'Programming Language :: Python :: 3.9',
-        'Programming Language :: Python :: 3.10',
-    ],
-
-    # What does your project relate to?
-    keywords='bitcoin cash bch money knuth kth',
-
-    extras_require={
-        'dev': ['check-manifest'],
-        'test': ['coverage'],
-    },
-
-    ext_modules = extensions,
-
+    ext_modules=extensions,
     cmdclass={
         'build': BuildCommand,
         'install': InstallCommand,
         'develop': DevelopCommand,
-        # 'egg_info': EggInfoCommand,
-
+        'build_ext': BuildExtCommand,
     },
-
 )

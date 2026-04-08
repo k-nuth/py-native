@@ -1,0 +1,289 @@
+# Copyright (c) 2016-present Knuth Project developers.
+# Distributed under the MIT software license, see the accompanying
+# file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
+name: 🛠️ CI
+
+on:
+  push:
+    branches: [master]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+# Cancel superseded runs on the same ref to save minutes.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+# Default permissions: read-only. Jobs that need more (publish, OIDC)
+# elevate them locally.
+permissions:
+  contents: read
+
+env:
+  # ──────────────────────────────────────────────────────────────────
+  # Knuth build flavor pinned for every wheel CI produces. Override
+  # here (and only here) when bumping the upstream node version.
+  # ──────────────────────────────────────────────────────────────────
+  KTH_MARCH_ID: ZLm9Pjh
+  KTH_CURRENCY: BCH
+
+  # CPython versions we ship wheels for.
+  CIBW_BUILD: "cp39-* cp310-* cp311-* cp312-* cp313-*"
+  # No PyPy, no musllinux, no 32-bit, no Windows (yet).
+  CIBW_SKIP: "pp* *-musllinux_* *-manylinux_i686 *-win32"
+  # Boost's bundled b2 binary requires glibc >= 2.34. The default
+  # cibuildwheel image is manylinux_2_28 (glibc 2.28), too old. Bump
+  # to manylinux_2_34 which ships glibc 2.34.
+  CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_34
+  # setup.py links with -mmacosx-version-min=14 (Sonoma — the oldest
+  # macOS still receiving Apple security updates). delocate-wheel
+  # verifies the wheel against this env var, so it has to match.
+  MACOSX_DEPLOYMENT_TARGET: '14.0'
+
+jobs:
+  # ══════════════════════════════════════════════════════════════════
+  # 📦 sdist — built once on Linux, fed into the publish jobs and
+  #            uploaded as a release artifact.
+  # ══════════════════════════════════════════════════════════════════
+  sdist:
+    name: 📦 Build sdist
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout
+        uses: actions/checkout@v5
+        with:
+          # setuptools-scm needs the full git history (and tags) to
+          # derive the version from the latest tag.
+          fetch-depth: 0
+
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+
+      - name: 🔧 Install build tooling
+        run: python -m pip install --upgrade pip build
+
+      - name: 📦 Build source distribution
+        run: python -m build --sdist
+
+      - name: 📋 Summary
+        run: |
+          {
+            echo "### 📦 Source distribution"
+            echo
+            echo '```'
+            ls -lh dist/
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: ⬆️ Upload sdist artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: sdist
+          path: dist/*.tar.gz
+          if-no-files-found: error
+          retention-days: 14
+
+  # ══════════════════════════════════════════════════════════════════
+  # 🛞 wheels — cibuildwheel matrix.
+  #             Linux x86_64 (manylinux_2_28 container) and macOS
+  #             arm64 (Apple Silicon, default for macos-latest now).
+  # ══════════════════════════════════════════════════════════════════
+  wheels:
+    name: 🛞 ${{ matrix.label }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            label: Wheels · Linux x86_64
+            cache_key: linux-x64
+          - os: macos-latest
+            label: Wheels · macOS arm64
+            cache_key: macos-arm64
+
+    steps:
+      - name: ⬇️ Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0  # setuptools-scm needs tags
+
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+
+      # Conan downloads ~hundreds of MB of pre-built deps from the kth
+      # remote. Persisting the cache between runs cuts cold-build time
+      # dramatically. Key on the conanfile so a recipe bump invalidates.
+      - name: 💾 Cache Conan packages
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.conan2
+          key: conan-${{ matrix.cache_key }}-${{ hashFiles('conanfile.py') }}
+          restore-keys: |
+            conan-${{ matrix.cache_key }}-
+
+      - name: 🛞 Build wheels with cibuildwheel
+        uses: pypa/cibuildwheel@v3.4.1
+        env:
+          # ──── Conan setup, runs once inside each manylinux container
+          # (Linux) or once on the macOS host before any wheel build.
+          CIBW_BEFORE_ALL_LINUX: |
+            python3 -m pip install --upgrade pip conan kthbuild
+            conan profile detect --force
+            # kth/0.78.0 requires C++23. The auto-detected profile picks
+            # the toolchain default (gnu17 on most distros), so override.
+            conan profile path default
+            sed -i 's/compiler.cppstd=.*/compiler.cppstd=23/' "$(conan profile path default)" || \
+              echo 'compiler.cppstd=23' >> "$(conan profile path default)"
+            conan remote add kth https://packages.kth.cash/api/ --force
+          CIBW_BEFORE_ALL_MACOS: |
+            python3 -m pip install --upgrade pip conan kthbuild
+            conan profile detect --force
+            # macOS sed needs the empty backup arg.
+            sed -i '' 's/compiler.cppstd=.*/compiler.cppstd=23/' "$(conan profile path default)" || \
+              echo 'compiler.cppstd=23' >> "$(conan profile path default)"
+            conan remote add kth https://packages.kth.cash/api/ --force
+
+          # Our setup.py shells out to `conan` from the build env, so
+          # disable pip's PEP 517 build isolation and pre-install the
+          # build deps in the target Python before each wheel build.
+          CIBW_BUILD_FRONTEND: "pip; args: --no-build-isolation"
+          CIBW_BEFORE_BUILD: |
+            pip install --upgrade pip setuptools setuptools-scm wheel conan kthbuild
+
+          # Pass our build-flavor envs through to the cibuildwheel
+          # container/host so setup.py picks them up.
+          CIBW_ENVIRONMENT: >-
+            KTH_MARCH_ID=${{ env.KTH_MARCH_ID }}
+            KTH_CURRENCY=${{ env.KTH_CURRENCY }}
+
+          # Smoke test inside each freshly built wheel: import the
+          # extension and run pytest. {package} is the project root
+          # that cibuildwheel passes in.
+          CIBW_TEST_REQUIRES: pytest
+          CIBW_TEST_COMMAND: >-
+            python -c "import kth_native; print(f'symbols: {len(dir(kth_native))}')"
+            && pytest {package}/tests/test_config.py -v
+
+      - name: 📋 Summary
+        if: always()
+        run: |
+          {
+            echo "### 🛞 ${{ matrix.label }}"
+            echo
+            if [ -d ./wheelhouse ] && ls ./wheelhouse/*.whl >/dev/null 2>&1; then
+              echo '```'
+              ls -lh ./wheelhouse/
+              echo '```'
+            else
+              echo "_No wheels produced._"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: ⬆️ Upload wheel artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: wheels-${{ matrix.cache_key }}
+          path: ./wheelhouse/*.whl
+          if-no-files-found: error
+          retention-days: 14
+
+  # ══════════════════════════════════════════════════════════════════
+  # 🧪 publish-testpypi — every push to master that successfully built
+  #     all wheels uploads them to TestPyPI. Useful for downstream
+  #     testers to do `pip install --index-url https://test.pypi.org`
+  #     without polluting the real index.
+  # ══════════════════════════════════════════════════════════════════
+  publish-testpypi:
+    name: 🧪 Publish to TestPyPI
+    needs: [sdist, wheels]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    environment:
+      name: testpypi
+      url: https://test.pypi.org/p/kth-py-native
+    permissions:
+      id-token: write  # Trusted Publishing (OIDC)
+    steps:
+      - name: ⬇️ Download all artifacts
+        uses: actions/download-artifact@v8
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: 📋 Show what we're about to upload
+        run: ls -lh dist/
+
+      - name: 🧪 Publish to TestPyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
+          # `skip-existing` so re-running master doesn't fail when the
+          # same dev version (setuptools-scm dirty/post number) is
+          # already there.
+          skip-existing: true
+
+  # ══════════════════════════════════════════════════════════════════
+  # 🚀 publish — PyPI release on tag pushes only.
+  #              Uses Trusted Publishing (OIDC) — configure on
+  #              pypi.org under "Manage > Publishing > Add a new
+  #              pending publisher" before the first tag is pushed.
+  # ══════════════════════════════════════════════════════════════════
+  publish:
+    name: 🚀 Publish to PyPI
+    needs: [sdist, wheels]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    environment:
+      name: pypi
+      url: https://pypi.org/p/kth-py-native
+    permissions:
+      id-token: write  # Trusted Publishing (OIDC)
+      contents: write  # GitHub Release creation
+    steps:
+      - name: ⬇️ Download all artifacts
+        uses: actions/download-artifact@v8
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: 📋 Show what we're about to publish
+        run: ls -lh dist/
+
+      - name: 🚀 Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+
+      - name: 🏷️ Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: dist/*
+
+  # ══════════════════════════════════════════════════════════════════
+  # ✅ ci — single status check that gates branch protection. Add
+  #         this one to required checks instead of the matrix legs,
+  #         so the protection rule survives matrix changes.
+  # ══════════════════════════════════════════════════════════════════
+  ci:
+    name: ✅ CI
+    needs: [sdist, wheels]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: 🎯 Aggregate result
+        run: |
+          if [ "${{ needs.sdist.result }}" != "success" ] || \
+             [ "${{ needs.wheels.result }}" != "success" ]; then
+            echo "One or more jobs failed."
+            echo "  sdist: ${{ needs.sdist.result }}"
+            echo "  wheels: ${{ needs.wheels.result }}"
+            exit 1
+          fi
+          echo "🎉 All required jobs succeeded."

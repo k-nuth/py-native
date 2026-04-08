@@ -18,7 +18,7 @@ PyObject* kth_py_native_wallet_payment_address_destruct(PyObject* self, PyObject
 
 }
 
-PyObject* kth_py_native_wallet_payment_address_encoded(PyObject* self, PyObject* args){
+PyObject* kth_py_native_wallet_payment_address_encoded_legacy(PyObject* self, PyObject* args){
     PyObject* py_payment_address;
 
     if ( ! PyArg_ParseTuple(args, "O", &py_payment_address)) {
@@ -26,9 +26,36 @@ PyObject* kth_py_native_wallet_payment_address_encoded(PyObject* self, PyObject*
     }
 
     kth_payment_address_t payment_address = (kth_payment_address_t)get_ptr(py_payment_address);
-    char const* res = kth_wallet_payment_address_encoded(payment_address);
+    char* res = kth_wallet_payment_address_encoded_legacy(payment_address);
     return Py_BuildValue("s", res);
 }
+
+#if defined(KTH_CURRENCY_BCH)
+PyObject* kth_py_native_wallet_payment_address_encoded_cashaddr(PyObject* self, PyObject* args){
+    PyObject* py_payment_address;
+    int py_token_aware;
+
+    if ( ! PyArg_ParseTuple(args, "Op", &py_payment_address, &py_token_aware)) {
+        return NULL;
+    }
+
+    kth_payment_address_t payment_address = (kth_payment_address_t)get_ptr(py_payment_address);
+    char* res = kth_wallet_payment_address_encoded_cashaddr(payment_address, (kth_bool_t)py_token_aware);
+    return Py_BuildValue("s", res);
+}
+
+PyObject* kth_py_native_wallet_payment_address_encoded_token(PyObject* self, PyObject* args){
+    PyObject* py_payment_address;
+
+    if ( ! PyArg_ParseTuple(args, "O", &py_payment_address)) {
+        return NULL;
+    }
+
+    kth_payment_address_t payment_address = (kth_payment_address_t)get_ptr(py_payment_address);
+    char* res = kth_wallet_payment_address_encoded_token(payment_address);
+    return Py_BuildValue("s", res);
+}
+#endif // KTH_CURRENCY_BCH
 
 
 PyObject* kth_py_native_wallet_payment_address_version(PyObject* self, PyObject* args){
