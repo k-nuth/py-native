@@ -1,4 +1,4 @@
-#include <kth/py-native/chain/payment_address.h>
+#include <kth/py-native/wallet/payment_address.h>
 
 #include <kth/capi.h>
 #include <kth/py-native/utils.h>

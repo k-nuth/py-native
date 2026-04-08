@@ -28,7 +28,7 @@
 #include <kth/py-native/chain/script.h>
 #include <kth/py-native/chain/output_point.h>
 #include <kth/py-native/chain/compact_block.h>
-#include <kth/py-native/chain/payment_address.h>
+#include <kth/py-native/wallet/payment_address.h>
 #include <kth/py-native/chain/block_list.h>
 #include <kth/py-native/chain/transaction_list.h>
 #include <kth/py-native/chain/stealth_compact.h>
