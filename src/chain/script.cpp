@@ -7,17 +7,17 @@
 extern "C" {
 #endif
 
-// kth_script_t kth_chain_script_construct(uint8_t* encoded, kth_size_t n, kth_bool_t prefix);
-PyObject* kth_py_native_chain_script_construct(PyObject* self, PyObject* args){
+// Renamed in C-API: kth_chain_script_construct -> kth_chain_script_construct_from_bytes
+PyObject* kth_py_native_chain_script_construct_from_bytes(PyObject* self, PyObject* args){
     char* py_encoded;
-    int py_n;
+    Py_ssize_t py_n;
     int py_prefix;
 
-    if ( ! PyArg_ParseTuple(args, "y#i", &py_encoded, &py_n, &py_prefix)) {
+    if ( ! PyArg_ParseTuple(args, "y#p", &py_encoded, &py_n, &py_prefix)) {
         return NULL;
     }
 
-    kth_script_t res = kth_chain_script_construct((uint8_t*)py_encoded, py_n, py_prefix);
+    kth_script_t res = kth_chain_script_construct_from_bytes((uint8_t*)py_encoded, (kth_size_t)py_n, (kth_bool_t)py_prefix);
     return to_py_obj(res);
 }
 

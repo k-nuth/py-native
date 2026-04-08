@@ -1,0 +1,135 @@
+# Copyright (c) 2016-present Knuth Project developers.
+# Distributed under the MIT software license, see the accompanying
+# file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
+[build-system]
+requires = [
+    "setuptools>=64",
+    "setuptools-scm>=8",
+    "wheel",
+    # Knuth-specific build deps. setup.py shells out to `conan` to stage
+    # the static libs and headers, and the kth/* recipes are based on
+    # kthbuild, so it must be importable from the conan host Python.
+    "conan>=2.0",
+    "kthbuild",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kth-py-native"
+description = "Bitcoin Cash full node Python bindings (CPython extension on top of the Knuth C-API)"
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+license-files = ["LICENSE*", "COPYING*"]
+authors = [
+    { name = "Knuth Project", email = "info@kth.cash" },
+]
+keywords = ["bitcoin", "cash", "bch", "money", "knuth", "kth"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries",
+    "Programming Language :: C++",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS :: MacOS X",
+]
+# Version is provided by setuptools-scm at build time from the latest
+# git tag (vX.Y.Z). Untagged builds get a dev/local version automatically.
+dynamic = ["version"]
+
+[project.urls]
+Homepage = "https://kth.cash"
+Repository = "https://github.com/k-nuth/py-native"
+Issues = "https://github.com/k-nuth/py-native/issues"
+
+[project.optional-dependencies]
+dev = ["pytest", "mypy", "ruff"]
+test = ["pytest"]
+
+# ─────────────────────────────────────────────────────────────────────
+# setuptools — what to ship in the sdist alongside the C extension
+# ─────────────────────────────────────────────────────────────────────
+[tool.setuptools]
+# `kth_native` is a top-level C extension (a single .so), not a Python
+# package, so there's nothing to discover here. The Extension itself
+# is declared in setup.py.
+py-modules = []
+
+[tool.setuptools.package-data]
+# Inline type stubs and PEP 561 marker. Since the extension is a
+# single top-level .so they live at the project root and ship in the
+# sdist via the include below.
+"*" = ["kth_native.pyi", "py.typed"]
+
+# ─────────────────────────────────────────────────────────────────────
+# setuptools-scm: derive the version from git. Single source of truth.
+# ─────────────────────────────────────────────────────────────────────
+[tool.setuptools_scm]
+# Tags look like `v0.11.0`; strip the leading `v`.
+tag_regex = "^v(?P<version>[^-]+)$"
+# When building from a sdist (no git history), fall back to the value
+# embedded by setuptools-scm at sdist creation time.
+fallback_version = "0.0.0+unknown"
+# Write a generated _version.py inside the source tree at build time.
+# Not committed (it's gitignored). Lets `setup.py` and tooling read the
+# resolved version without spawning git.
+version_file = "_version.py"
+
+# ─────────────────────────────────────────────────────────────────────
+# pytest
+# ─────────────────────────────────────────────────────────────────────
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+
+# ─────────────────────────────────────────────────────────────────────
+# mypy — type-checks the Python side against kth_native.pyi
+# ─────────────────────────────────────────────────────────────────────
+[tool.mypy]
+python_version = "3.9"
+strict = true
+files = ["tests", "examples"]
+# kth_native is a C extension; the .pyi at repo root is found via the
+# MYPYPATH below.
+mypy_path = "."
+
+[[tool.mypy.overrides]]
+# Examples are intentionally informal — relax a few flags so they
+# don't drown the signal in noise.
+module = "examples.*"
+disallow_untyped_defs = false
+
+# ─────────────────────────────────────────────────────────────────────
+# ruff — lint + format
+# ─────────────────────────────────────────────────────────────────────
+[tool.ruff]
+target-version = "py39"
+line-length = 100
+extend-exclude = ["kth/", "build/", ".venv/", "_version.py"]
+
+[tool.ruff.lint]
+select = [
+    "E",     # pycodestyle errors
+    "W",     # pycodestyle warnings
+    "F",     # pyflakes
+    "I",     # isort
+    "B",     # bugbear
+    "UP",    # pyupgrade — flag legacy Python idioms
+    "C4",    # comprehensions
+    "SIM",   # simplifications
+    "RUF",   # ruff-specific rules
+]
+ignore = [
+    "E501",  # line length is enforced by the formatter, not the linter
+]
+
+[tool.ruff.format]
+quote-style = "double"

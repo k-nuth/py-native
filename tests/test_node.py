@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2022 Knuth Project developers.
+# Copyright (c) 2016-present Knuth Project developers.
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -36,7 +36,7 @@ def test_retrieves_the_right_chain_height():
     # await sleep(1000);
     time.sleep(1)
 
-    chain = nat.node_get_chain(node_)
+    chain = nat.node_chain(node_)
     nat.chain_fetch_last_height(chain, lambda err, h: chain_fetch_last_height_handler(err, h))
 
     assert last_height == 0

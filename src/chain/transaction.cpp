@@ -45,16 +45,14 @@ PyObject* kth_py_native_chain_transaction_construct(PyObject* self, PyObject* ar
 // }
 
 PyObject* kth_py_native_chain_transaction_factory_from_data(PyObject* self, PyObject* args){
-    uint32_t py_version;
-    // uint8_t* py_seed;
     char* py_data;
-    int py_n;
+    Py_ssize_t py_n;
 
-    if ( ! PyArg_ParseTuple(args, "Iy#", &py_version, &py_data, &py_n)) {
+    if ( ! PyArg_ParseTuple(args, "y#", &py_data, &py_n)) {
         return NULL;
     }
 
-    kth_transaction_t res = kth_chain_transaction_factory_from_data(py_version, (uint8_t*)py_data, py_n);
+    kth_transaction_t res = kth_chain_transaction_factory_from_data((uint8_t*)py_data, (kth_size_t)py_n);
     return to_py_obj(res);
 }
 
@@ -93,19 +91,6 @@ PyObject* kth_py_native_chain_transaction_hash(PyObject* self, PyObject* args){
     kth_transaction_t transaction = (kth_transaction_t)get_ptr(py_transaction);
      kth_hash_t res = kth_chain_transaction_hash(transaction);
     return PyByteArray_FromStringAndSize((char const*)res.hash, 32);
-}
-
-PyObject* kth_py_native_chain_transaction_hash_sighash_type(PyObject* self, PyObject* args){
-    PyObject* py_transaction;
-    uint32_t py_sighash_type;
-    if ( ! PyArg_ParseTuple(args, "OI", &py_transaction, &py_sighash_type)) {
-        return NULL;
-    }
-
-    kth_transaction_t transaction = (kth_transaction_t)get_ptr(py_transaction);
-     kth_hash_t res = kth_chain_transaction_hash_sighash_type(transaction, py_sighash_type);
-    return PyByteArray_FromStringAndSize((char const*)res.hash, 32);
-
 }
 
 PyObject* kth_py_native_chain_transaction_locktime(PyObject* self, PyObject* args){

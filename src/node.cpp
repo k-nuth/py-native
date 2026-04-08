@@ -1,4 +1,4 @@
-// Copyright (c) 2016-2022 Knuth Project developers.
+// Copyright (c) 2016-present Knuth Project developers.
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -9,6 +9,7 @@
 #include <kth/py-native/utils.h>
 
 #include <kth/capi.h>
+#include <kth/capi/node_info.h>
 #include <kth/py-native/config/settings.h>
 
 #include <atomic>

@@ -14,9 +14,7 @@ extern "C" {
 typedef struct {
     PyObject_HEAD
     PyObject* directory;
-    kth_bool_t flush_writes;
-    uint16_t file_growth_rate;
-    uint32_t index_start_height;
+    int db_mode;            // kth_db_mode_t enum
     uint32_t reorg_pool_limit;
     uint64_t db_max_size;
     kth_bool_t safe_mode;
@@ -25,9 +23,7 @@ typedef struct {
 
 static PyMemberDef DatabaseSettings_members[] = {
     {"directory", T_OBJECT_EX, offsetof(DatabaseSettings, directory), 0, "directory"},
-    {"flush_writes", T_INT, offsetof(DatabaseSettings, flush_writes), 0, "flush_writes"},
-    {"file_growth_rate", T_UINT, offsetof(DatabaseSettings, file_growth_rate), 0, "file_growth_rate"},
-    {"index_start_height", T_UINT, offsetof(DatabaseSettings, index_start_height), 0, "index_start_height"},
+    {"db_mode", T_INT, offsetof(DatabaseSettings, db_mode), 0, "db_mode (0=pruned, 1=normal, 2=full_indexed)"},
     {"reorg_pool_limit", T_UINT, offsetof(DatabaseSettings, reorg_pool_limit), 0, "reorg_pool_limit"},
     {"db_max_size", T_ULONGLONG, offsetof(DatabaseSettings, db_max_size), 0, "db_max_size"},
     {"safe_mode", T_INT, offsetof(DatabaseSettings, safe_mode), 0, "safe_mode"},
@@ -42,9 +38,7 @@ kth_database_settings kth_py_native_config_database_settings_to_c(PyObject* sett
     kth_database_settings res;
 
     KTH_PY_GETATTR(res, setts, directory, "s");
-    KTH_PY_GETATTR(res, setts, flush_writes, "i");
-    KTH_PY_GETATTR(res, setts, file_growth_rate, "I");
-    KTH_PY_GETATTR(res, setts, index_start_height, "I");
+    KTH_PY_GETATTR(res, setts, db_mode, "i");
     KTH_PY_GETATTR(res, setts, reorg_pool_limit, "I");
     KTH_PY_GETATTR(res, setts, db_max_size, "K");
     KTH_PY_GETATTR(res, setts, safe_mode, "i");

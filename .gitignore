@@ -30,3 +30,21 @@ kth_py_native.egg-info/
 kth_native.cpython*.so
 wheelhouse/kth_py_native*.whl
 version.pyc
+
+# Conan 2 generated env files
+conanbuild.sh
+conanrun.sh
+conanbuildenv-*.sh
+conanrunenv-*.sh
+deactivate_conanbuild.sh
+deactivate_conanrun.sh
+
+# Python venv / pytest cache
+.venv/
+.pytest_cache/
+
+# setuptools-scm generated version file
+_version.py
+
+# Local working notes
+TODO.md

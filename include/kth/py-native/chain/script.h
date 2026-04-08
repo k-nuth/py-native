@@ -8,7 +8,7 @@
 extern "C" {
 #endif
 
-PyObject* kth_py_native_chain_script_construct(PyObject* self, PyObject* args);
+PyObject* kth_py_native_chain_script_construct_from_bytes(PyObject* self, PyObject* args);
 PyObject* kth_py_native_chain_script_to_data(PyObject* self, PyObject* args);
 PyObject* kth_py_native_chain_script_destruct(PyObject* self, PyObject* args);
 PyObject* kth_py_native_chain_script_is_valid(PyObject* self, PyObject* args);
