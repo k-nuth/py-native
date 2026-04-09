@@ -1,199 +1,359 @@
+// Copyright (c) 2016-present Knuth Project developers.
+// Distributed under the MIT software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
 #include <kth/py-native/chain/input.h>
 
+#include <string.h>
 #include <kth/capi.h>
+#include <kth/py-native/capsule_names.h>
 #include <kth/py-native/utils.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-// kth_input_t kth_chain_input_factory_from_data(uint8_t* data, uint64_t n);
-PyObject* kth_py_native_chain_input_factory_from_data(PyObject* self, PyObject* args){
-    char* py_data;
-    int py_n;
-
-    if ( ! PyArg_ParseTuple(args, "y#", &py_data, &py_n)) {
-        return NULL;
-    }
-
-    kth_input_t res = kth_chain_input_factory_from_data((uint8_t*)py_data, py_n);
-    return to_py_obj(res);
+// PyCapsule destructor — released by GC when the capsule is
+// collected. Explicit `destruct` calls set the capsule name to
+// "kth.destroyed", so PyCapsule_IsValid returns false and this
+// destructor becomes a no-op (no double-free).
+void kth_py_native_chain_input_capsule_dtor(PyObject* capsule) {
+    if ( ! PyCapsule_IsValid(capsule, KTH_PY_CAPSULE_CHAIN_INPUT)) return;
+    kth_input_mut_t handle = (kth_input_mut_t)PyCapsule_GetPointer(capsule, KTH_PY_CAPSULE_CHAIN_INPUT);
+    if (handle != NULL) kth_chain_input_destruct(handle);
 }
 
-// kth_input_t kth_chain_input_construct(kth_outputpoint_t previous_output,
-// kth_script_t script,
-// uint32_t sequence);
-PyObject* kth_py_native_chain_input_construct(PyObject* self, PyObject* args){
-    PyObject* py_previous_output;
-    PyObject* py_script;
-    uint32_t py_sequence;
-
-    if ( ! PyArg_ParseTuple(args, "OOI", &py_previous_output, &py_script, &py_sequence)) {
+PyObject*
+kth_py_native_chain_input_construct_default(PyObject* self, PyObject* Py_UNUSED(args)) {
+    auto result = kth_chain_input_construct_default();
+    if (result == NULL) {
+        PyErr_SetString(PyExc_MemoryError, "kth: allocation failed");
         return NULL;
     }
-
-    kth_outputpoint_t previous_output = (kth_outputpoint_t)get_ptr(py_previous_output);
-    kth_script_t script = (kth_script_t)get_ptr(py_script);
-
-    kth_input_t res = kth_chain_input_construct(previous_output, script, py_sequence);
-    return to_py_obj(res);
+    return PyCapsule_New((void*)result, KTH_PY_CAPSULE_CHAIN_INPUT, kth_py_native_chain_input_capsule_dtor);
 }
 
-PyObject* kth_py_native_chain_input_is_valid(PyObject* self, PyObject* args){
-    PyObject* py_input;
-
-    if ( ! PyArg_ParseTuple(args, "O", &py_input)) {
+PyObject*
+kth_py_native_chain_input_construct_from_data(PyObject* self, PyObject* args, PyObject* kwds) {
+    static char* kwlist[] = {(char*)"reader", (char*)"wire", NULL};
+    char const* reader_buf = NULL;
+    Py_ssize_t reader_size = 0;
+    int wire = 0;
+    if ( ! PyArg_ParseTupleAndKeywords(args, kwds, "y#p", kwlist, &reader_buf, &reader_size, &wire)) {
         return NULL;
     }
-
-    kth_input_t input = (kth_input_t)get_ptr(py_input);
-    int res = kth_chain_input_is_valid(input);
-    return Py_BuildValue("i", res);
+    kth_input_mut_t out = NULL;
+    kth_error_code_t result = kth_chain_input_construct_from_data((uint8_t const*)reader_buf, (kth_size_t)reader_size, (kth_bool_t)wire, &out);
+    if (result != kth_ec_success) {
+        PyErr_Format(PyExc_RuntimeError, "kth error code %d", (int)result);
+        return NULL;
+    }
+    return PyCapsule_New((void*)out, KTH_PY_CAPSULE_CHAIN_INPUT, kth_py_native_chain_input_capsule_dtor);
 }
 
-PyObject* kth_py_native_chain_input_is_final(PyObject* self, PyObject* args){
-    PyObject* py_input;
-
-    if ( ! PyArg_ParseTuple(args, "O", &py_input)) {
+PyObject*
+kth_py_native_chain_input_construct(PyObject* self, PyObject* args, PyObject* kwds) {
+    static char* kwlist[] = {(char*)"previous_output", (char*)"script", (char*)"sequence", NULL};
+    PyObject* py_previous_output = NULL;
+    PyObject* py_script = NULL;
+    unsigned int sequence = 0;
+    if ( ! PyArg_ParseTupleAndKeywords(args, kwds, "OOI", kwlist, &py_previous_output, &py_script, &sequence)) {
         return NULL;
     }
-
-    kth_input_t input = (kth_input_t)get_ptr(py_input);
-    int res = kth_chain_input_is_final(input);
-    return Py_BuildValue("i", res);
+    kth_output_point_const_t previous_output_handle = (kth_output_point_const_t)PyCapsule_GetPointer(py_previous_output, KTH_PY_CAPSULE_CHAIN_OUTPUT_POINT);
+    if (previous_output_handle == NULL) return NULL;
+    kth_script_const_t script_handle = (kth_script_const_t)PyCapsule_GetPointer(py_script, KTH_PY_CAPSULE_CHAIN_SCRIPT);
+    if (script_handle == NULL) return NULL;
+    auto result = kth_chain_input_construct(previous_output_handle, script_handle, (uint32_t)sequence);
+    if (result == NULL) {
+        PyErr_SetString(PyExc_MemoryError, "kth: allocation failed");
+        return NULL;
+    }
+    return PyCapsule_New((void*)result, KTH_PY_CAPSULE_CHAIN_INPUT, kth_py_native_chain_input_capsule_dtor);
 }
 
-PyObject* kth_py_native_chain_input_serialized_size(PyObject* self, PyObject* args){
-    PyObject* py_input;
-    int py_wire;
-
-    if ( ! PyArg_ParseTuple(args, "Oi", &py_input, &py_wire)) {
+PyObject*
+kth_py_native_chain_input_copy(PyObject* self, PyObject* py_arg0) {
+    PyObject* py_self = py_arg0;
+    kth_input_const_t self_handle = (kth_input_const_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_CHAIN_INPUT);
+    if (self_handle == NULL) return NULL;
+    auto result = kth_chain_input_copy(self_handle);
+    if (result == NULL) {
+        PyErr_SetString(PyExc_MemoryError, "kth: allocation failed");
         return NULL;
     }
-
-    kth_input_t input = (kth_input_t)get_ptr(py_input);
-    uint64_t res = kth_chain_input_serialized_size(input, py_wire);
-    return Py_BuildValue("K", res);
+    return PyCapsule_New((void*)result, KTH_PY_CAPSULE_CHAIN_INPUT, kth_py_native_chain_input_capsule_dtor);
 }
 
-PyObject* kth_py_native_chain_input_sequence(PyObject* self, PyObject* args){
-    PyObject* py_input;
-
-    if ( ! PyArg_ParseTuple(args, "O", &py_input)) {
-        return NULL;
-    }
-
-    kth_input_t input = (kth_input_t)get_ptr(py_input);
-    uint32_t res = kth_chain_input_sequence(input);
-    return Py_BuildValue("I", res);
-}
-
-PyObject* kth_py_native_chain_input_signature_operations(PyObject* self, PyObject* args){
-    PyObject* py_input;
-    int py_bip16_active;
-
-    if ( ! PyArg_ParseTuple(args, "Oi", &py_input, &py_bip16_active)) {
-        return NULL;
-    }
-
-    kth_input_t input = (kth_input_t)get_ptr(py_input);
-    uint64_t res = kth_chain_input_signature_operations(input, py_bip16_active);
-    return Py_BuildValue("K", res);
-}
-
-PyObject* kth_py_native_chain_input_destruct(PyObject* self, PyObject* args){
-    PyObject* py_input;
-
-    if ( ! PyArg_ParseTuple(args, "O", &py_input)) {
-        return NULL;
-    }
-
-    kth_input_t input = (kth_input_t)get_ptr(py_input);
-    kth_chain_input_destruct(input);
+PyObject*
+kth_py_native_chain_input_destruct(PyObject* self, PyObject* py_arg0) {
+    PyObject* py_self = py_arg0;
+    kth_input_mut_t self_handle = (kth_input_mut_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_CHAIN_INPUT);
+    if (self_handle == NULL) return NULL;
+    kth_chain_input_destruct(self_handle);
+    PyCapsule_SetName(py_self, "kth.destroyed");
     Py_RETURN_NONE;
 }
 
-
-PyObject* kth_py_native_chain_input_script(PyObject* self, PyObject* args){
-    PyObject* py_input;
-
-    if ( ! PyArg_ParseTuple(args, "O", &py_input)) {
+PyObject*
+kth_py_native_chain_input_set_script(PyObject* self, PyObject* args, PyObject* kwds) {
+    static char* kwlist[] = {(char*)"self", (char*)"value", NULL};
+    PyObject* py_self = NULL;
+    PyObject* py_value = NULL;
+    if ( ! PyArg_ParseTupleAndKeywords(args, kwds, "OO", kwlist, &py_self, &py_value)) {
         return NULL;
     }
-
-    kth_input_t input = (kth_input_t)get_ptr(py_input);
-    kth_script_t script = kth_chain_input_script(input);
-    return to_py_obj(script);
+    kth_input_mut_t self_handle = (kth_input_mut_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_CHAIN_INPUT);
+    if (self_handle == NULL) return NULL;
+    kth_script_const_t value_handle = (kth_script_const_t)PyCapsule_GetPointer(py_value, KTH_PY_CAPSULE_CHAIN_SCRIPT);
+    if (value_handle == NULL) return NULL;
+    kth_chain_input_set_script(self_handle, value_handle);
+    Py_RETURN_NONE;
 }
 
-PyObject* kth_py_native_chain_input_previous_output(PyObject* self, PyObject* args){
-    PyObject* py_input;
-
-    if ( ! PyArg_ParseTuple(args, "O", &py_input)) {
+PyObject*
+kth_py_native_chain_input_address(PyObject* self, PyObject* py_arg0) {
+    PyObject* py_self = py_arg0;
+    kth_input_const_t self_handle = (kth_input_const_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_CHAIN_INPUT);
+    if (self_handle == NULL) return NULL;
+    auto result = kth_chain_input_address(self_handle);
+    if (result == NULL) {
+        PyErr_SetString(PyExc_RuntimeError, "kth: NULL handle returned");
         return NULL;
     }
-
-    kth_input_t input = (kth_input_t)get_ptr(py_input);
-    kth_outputpoint_t res = kth_chain_input_previous_output(input);
-    return to_py_obj(res);
+    return PyCapsule_New((void*)result, KTH_PY_CAPSULE_WALLET_PAYMENT_ADDRESS, NULL);
 }
 
-/*
-PyObject* kth_py_native_chain_input_hash(PyObject* self, PyObject* args){
-    PyObject* py_input;
-
-    if ( ! PyArg_ParseTuple(args, "O", &py_input)) {
+PyObject*
+kth_py_native_chain_input_addresses(PyObject* self, PyObject* py_arg0) {
+    PyObject* py_self = py_arg0;
+    kth_input_const_t self_handle = (kth_input_const_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_CHAIN_INPUT);
+    if (self_handle == NULL) return NULL;
+    auto result = kth_chain_input_addresses(self_handle);
+    if (result == NULL) {
+        PyErr_SetString(PyExc_RuntimeError, "kth: NULL list returned");
         return NULL;
     }
-
-    kth_input_t input = (kth_input_t)get_ptr(py_input);
-     kth_hash_t res = kth_chain_input_hash(input);
-    return PyByteArray_FromStringAndSize(res.hash, 32);
-
+    return PyCapsule_New((void*)result, KTH_PY_CAPSULE_WALLET_PAYMENT_ADDRESS_LIST, NULL);
 }
-*/
 
-/*
-PyObject* kth_py_native_chain_input_index(PyObject* self, PyObject* args){
-    PyObject* py_input;
+PyObject*
+kth_py_native_chain_input_reset(PyObject* self, PyObject* py_arg0) {
+    PyObject* py_self = py_arg0;
+    kth_input_mut_t self_handle = (kth_input_mut_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_CHAIN_INPUT);
+    if (self_handle == NULL) return NULL;
+    kth_chain_input_reset(self_handle);
+    Py_RETURN_NONE;
+}
 
-    if ( ! PyArg_ParseTuple(args, "O", &py_input)) {
+PyObject*
+kth_py_native_chain_input_equals(PyObject* self, PyObject* args, PyObject* kwds) {
+    static char* kwlist[] = {(char*)"self", (char*)"other", NULL};
+    PyObject* py_self = NULL;
+    PyObject* py_other = NULL;
+    if ( ! PyArg_ParseTupleAndKeywords(args, kwds, "OO", kwlist, &py_self, &py_other)) {
         return NULL;
     }
-
-    kth_input_t input = (kth_input_t)get_ptr(py_input);
-    uint32_t res = kth_chain_input_index(input);
-    return Py_BuildValue("L", res);
-
+    kth_input_const_t self_handle = (kth_input_const_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_CHAIN_INPUT);
+    if (self_handle == NULL) return NULL;
+    kth_input_const_t other_handle = (kth_input_const_t)PyCapsule_GetPointer(py_other, KTH_PY_CAPSULE_CHAIN_INPUT);
+    if (other_handle == NULL) return NULL;
+    auto result = kth_chain_input_equals(self_handle, other_handle);
+    return PyBool_FromLong((long)result);
 }
-*/
 
+PyObject*
+kth_py_native_chain_input_is_valid(PyObject* self, PyObject* py_arg0) {
+    PyObject* py_self = py_arg0;
+    kth_input_const_t self_handle = (kth_input_const_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_CHAIN_INPUT);
+    if (self_handle == NULL) return NULL;
+    auto result = kth_chain_input_is_valid(self_handle);
+    return PyBool_FromLong((long)result);
+}
 
-
-// uint8_t const* kth_chain_input_to_data(kth_input_t input, kth_bool_t wire, kth_size_t* out_size) {
-//     auto input_data = kth_chain_input_const_cpp(input).to_data(wire);
-//     auto* ret = (uint8_t*)malloc((input_data.size()) * sizeof(uint8_t)); // NOLINT
-//     std::copy_n(input_data.begin(), input_data.size(), ret);
-//     *out_size = input_data.size();
-//     return ret;
-// }
-
-PyObject* kth_py_native_chain_input_to_data(PyObject* self, PyObject* args) {
-    PyObject* py_input;
-    int py_wire;
-
-    if ( ! PyArg_ParseTuple(args, "Oi", &py_input, &py_wire)) {
+PyObject*
+kth_py_native_chain_input_to_data(PyObject* self, PyObject* args, PyObject* kwds) {
+    static char* kwlist[] = {(char*)"self", (char*)"wire", NULL};
+    PyObject* py_self = NULL;
+    int wire = 0;
+    if ( ! PyArg_ParseTupleAndKeywords(args, kwds, "Op", kwlist, &py_self, &wire)) {
         return NULL;
     }
-
-    kth_input_t input = (kth_input_t)get_ptr(py_input);
-    kth_size_t out_n;
-    uint8_t* data = (uint8_t*)kth_chain_input_to_data(input, py_wire, &out_n);
-
-    return Py_BuildValue("y#", data, out_n);
+    kth_input_const_t self_handle = (kth_input_const_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_CHAIN_INPUT);
+    if (self_handle == NULL) return NULL;
+    kth_size_t out_size = 0;
+    auto result = kth_chain_input_to_data(self_handle, (kth_bool_t)wire, &out_size);
+    if (result == NULL) {
+        PyErr_SetString(PyExc_RuntimeError, "kth: serialization failed");
+        return NULL;
+    }
+    PyObject* py_result = Py_BuildValue("y#", result, (Py_ssize_t)out_size);
+    kth_core_destruct_array(result);
+    return py_result;
 }
 
+PyObject*
+kth_py_native_chain_input_serialized_size(PyObject* self, PyObject* args, PyObject* kwds) {
+    static char* kwlist[] = {(char*)"self", (char*)"wire", NULL};
+    PyObject* py_self = NULL;
+    int wire = 0;
+    if ( ! PyArg_ParseTupleAndKeywords(args, kwds, "Op", kwlist, &py_self, &wire)) {
+        return NULL;
+    }
+    kth_input_const_t self_handle = (kth_input_const_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_CHAIN_INPUT);
+    if (self_handle == NULL) return NULL;
+    auto result = kth_chain_input_serialized_size(self_handle, (kth_bool_t)wire);
+    return PyLong_FromSize_t((size_t)result);
+}
+
+PyObject*
+kth_py_native_chain_input_previous_output(PyObject* self, PyObject* py_arg0) {
+    PyObject* py_self = py_arg0;
+    kth_input_const_t self_handle = (kth_input_const_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_CHAIN_INPUT);
+    if (self_handle == NULL) return NULL;
+    auto result = kth_chain_input_previous_output(self_handle);
+    if (result == NULL) {
+        PyErr_SetString(PyExc_RuntimeError, "kth: NULL handle returned");
+        return NULL;
+    }
+    return PyCapsule_New((void*)result, KTH_PY_CAPSULE_CHAIN_OUTPUT_POINT, NULL);
+}
+
+PyObject*
+kth_py_native_chain_input_set_previous_output(PyObject* self, PyObject* args, PyObject* kwds) {
+    static char* kwlist[] = {(char*)"self", (char*)"value", NULL};
+    PyObject* py_self = NULL;
+    PyObject* py_value = NULL;
+    if ( ! PyArg_ParseTupleAndKeywords(args, kwds, "OO", kwlist, &py_self, &py_value)) {
+        return NULL;
+    }
+    kth_input_mut_t self_handle = (kth_input_mut_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_CHAIN_INPUT);
+    if (self_handle == NULL) return NULL;
+    kth_output_point_const_t value_handle = (kth_output_point_const_t)PyCapsule_GetPointer(py_value, KTH_PY_CAPSULE_CHAIN_OUTPUT_POINT);
+    if (value_handle == NULL) return NULL;
+    kth_chain_input_set_previous_output(self_handle, value_handle);
+    Py_RETURN_NONE;
+}
+
+PyObject*
+kth_py_native_chain_input_script(PyObject* self, PyObject* py_arg0) {
+    PyObject* py_self = py_arg0;
+    kth_input_const_t self_handle = (kth_input_const_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_CHAIN_INPUT);
+    if (self_handle == NULL) return NULL;
+    auto result = kth_chain_input_script(self_handle);
+    if (result == NULL) {
+        PyErr_SetString(PyExc_RuntimeError, "kth: NULL handle returned");
+        return NULL;
+    }
+    return PyCapsule_New((void*)result, KTH_PY_CAPSULE_CHAIN_SCRIPT, NULL);
+}
+
+PyObject*
+kth_py_native_chain_input_sequence(PyObject* self, PyObject* py_arg0) {
+    PyObject* py_self = py_arg0;
+    kth_input_const_t self_handle = (kth_input_const_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_CHAIN_INPUT);
+    if (self_handle == NULL) return NULL;
+    auto result = kth_chain_input_sequence(self_handle);
+    return PyLong_FromUnsignedLongLong((unsigned long long)result);
+}
+
+PyObject*
+kth_py_native_chain_input_set_sequence(PyObject* self, PyObject* args, PyObject* kwds) {
+    static char* kwlist[] = {(char*)"self", (char*)"value", NULL};
+    PyObject* py_self = NULL;
+    unsigned int value = 0;
+    if ( ! PyArg_ParseTupleAndKeywords(args, kwds, "OI", kwlist, &py_self, &value)) {
+        return NULL;
+    }
+    kth_input_mut_t self_handle = (kth_input_mut_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_CHAIN_INPUT);
+    if (self_handle == NULL) return NULL;
+    kth_chain_input_set_sequence(self_handle, (uint32_t)value);
+    Py_RETURN_NONE;
+}
+
+PyObject*
+kth_py_native_chain_input_is_final(PyObject* self, PyObject* py_arg0) {
+    PyObject* py_self = py_arg0;
+    kth_input_const_t self_handle = (kth_input_const_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_CHAIN_INPUT);
+    if (self_handle == NULL) return NULL;
+    auto result = kth_chain_input_is_final(self_handle);
+    return PyBool_FromLong((long)result);
+}
+
+PyObject*
+kth_py_native_chain_input_is_locked(PyObject* self, PyObject* args, PyObject* kwds) {
+    static char* kwlist[] = {(char*)"self", (char*)"block_height", (char*)"median_time_past", NULL};
+    PyObject* py_self = NULL;
+    Py_ssize_t block_height = 0;
+    unsigned int median_time_past = 0;
+    if ( ! PyArg_ParseTupleAndKeywords(args, kwds, "OnI", kwlist, &py_self, &block_height, &median_time_past)) {
+        return NULL;
+    }
+    kth_input_const_t self_handle = (kth_input_const_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_CHAIN_INPUT);
+    if (self_handle == NULL) return NULL;
+    if (block_height < 0) {
+        PyErr_Format(PyExc_ValueError, "block_height must be non-negative, got %zd", block_height);
+        return NULL;
+    }
+    auto result = kth_chain_input_is_locked(self_handle, (kth_size_t)block_height, (uint32_t)median_time_past);
+    return PyBool_FromLong((long)result);
+}
+
+PyObject*
+kth_py_native_chain_input_signature_operations(PyObject* self, PyObject* args, PyObject* kwds) {
+    static char* kwlist[] = {(char*)"self", (char*)"bip16", (char*)"bip141", NULL};
+    PyObject* py_self = NULL;
+    int bip16 = 0;
+    int bip141 = 0;
+    if ( ! PyArg_ParseTupleAndKeywords(args, kwds, "Opp", kwlist, &py_self, &bip16, &bip141)) {
+        return NULL;
+    }
+    kth_input_const_t self_handle = (kth_input_const_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_CHAIN_INPUT);
+    if (self_handle == NULL) return NULL;
+    auto result = kth_chain_input_signature_operations(self_handle, (kth_bool_t)bip16, (kth_bool_t)bip141);
+    return PyLong_FromSize_t((size_t)result);
+}
+
+PyObject*
+kth_py_native_chain_input_extract_embedded_script(PyObject* self, PyObject* py_arg0) {
+    PyObject* py_self = py_arg0;
+    kth_input_const_t self_handle = (kth_input_const_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_CHAIN_INPUT);
+    if (self_handle == NULL) return NULL;
+    kth_script_mut_t out = NULL;
+    kth_error_code_t result = kth_chain_input_extract_embedded_script(self_handle, &out);
+    if (result != kth_ec_success) {
+        PyErr_Format(PyExc_RuntimeError, "kth error code %d", (int)result);
+        return NULL;
+    }
+    return PyCapsule_New((void*)out, KTH_PY_CAPSULE_CHAIN_SCRIPT, kth_py_native_chain_script_capsule_dtor);
+}
+
+PyMethodDef kth_py_native_chain_input_methods[] = {
+    {"chain_input_construct_default", (PyCFunction)kth_py_native_chain_input_construct_default, METH_NOARGS, NULL},
+    {"chain_input_construct_from_data", (PyCFunction)kth_py_native_chain_input_construct_from_data, METH_VARARGS | METH_KEYWORDS, NULL},
+    {"chain_input_construct", (PyCFunction)kth_py_native_chain_input_construct, METH_VARARGS | METH_KEYWORDS, NULL},
+    {"chain_input_copy", (PyCFunction)kth_py_native_chain_input_copy, METH_O, NULL},
+    {"chain_input_destruct", (PyCFunction)kth_py_native_chain_input_destruct, METH_O, NULL},
+    {"chain_input_set_script", (PyCFunction)kth_py_native_chain_input_set_script, METH_VARARGS | METH_KEYWORDS, NULL},
+    {"chain_input_address", (PyCFunction)kth_py_native_chain_input_address, METH_O, NULL},
+    {"chain_input_addresses", (PyCFunction)kth_py_native_chain_input_addresses, METH_O, NULL},
+    {"chain_input_reset", (PyCFunction)kth_py_native_chain_input_reset, METH_O, NULL},
+    {"chain_input_equals", (PyCFunction)kth_py_native_chain_input_equals, METH_VARARGS | METH_KEYWORDS, NULL},
+    {"chain_input_is_valid", (PyCFunction)kth_py_native_chain_input_is_valid, METH_O, NULL},
+    {"chain_input_to_data", (PyCFunction)kth_py_native_chain_input_to_data, METH_VARARGS | METH_KEYWORDS, NULL},
+    {"chain_input_serialized_size", (PyCFunction)kth_py_native_chain_input_serialized_size, METH_VARARGS | METH_KEYWORDS, NULL},
+    {"chain_input_previous_output", (PyCFunction)kth_py_native_chain_input_previous_output, METH_O, NULL},
+    {"chain_input_set_previous_output", (PyCFunction)kth_py_native_chain_input_set_previous_output, METH_VARARGS | METH_KEYWORDS, NULL},
+    {"chain_input_script", (PyCFunction)kth_py_native_chain_input_script, METH_O, NULL},
+    {"chain_input_sequence", (PyCFunction)kth_py_native_chain_input_sequence, METH_O, NULL},
+    {"chain_input_set_sequence", (PyCFunction)kth_py_native_chain_input_set_sequence, METH_VARARGS | METH_KEYWORDS, NULL},
+    {"chain_input_is_final", (PyCFunction)kth_py_native_chain_input_is_final, METH_O, NULL},
+    {"chain_input_is_locked", (PyCFunction)kth_py_native_chain_input_is_locked, METH_VARARGS | METH_KEYWORDS, NULL},
+    {"chain_input_signature_operations", (PyCFunction)kth_py_native_chain_input_signature_operations, METH_VARARGS | METH_KEYWORDS, NULL},
+    {"chain_input_extract_embedded_script", (PyCFunction)kth_py_native_chain_input_extract_embedded_script, METH_O, NULL},
+    {NULL, NULL, 0, NULL}  // sentinel
+};
 
 #ifdef __cplusplus
-} //extern "C"
+} // extern "C"
 #endif

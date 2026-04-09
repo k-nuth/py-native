@@ -88,7 +88,7 @@ PyObject* kth_py_native_history_compact_point(PyObject* self, PyObject* args) {
 
     kth_history_compact_t hist = (kth_history_compact_t)get_ptr(py_history_compact);
 
-    kth_point_t p = kth_chain_history_compact_get_point(hist);
+    kth_point_mut_t p = kth_chain_history_compact_get_point(hist);
 
     PyObject* py_p = to_py_obj(p);
     return Py_BuildValue("O", py_p);
