@@ -192,7 +192,7 @@ extensions = [
             'src/chain/input.cpp',
             'src/chain/input_list.cpp',
             'src/chain/script.cpp',
-            'src/chain/payment_address.cpp',
+            'src/wallet/payment_address.cpp',
             'src/chain/compact_block.cpp',
             'src/chain/output_point.cpp',
             'src/chain/block_list.cpp',
