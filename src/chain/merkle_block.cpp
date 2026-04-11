@@ -19,7 +19,7 @@ PyObject* kth_py_native_chain_merkle_block_header(PyObject* self, PyObject* args
     }
 
     kth_merkleblock_t merkle_block = (kth_merkleblock_t)get_ptr(py_merkle);
-    kth_header_t header = kth_chain_merkle_block_header(merkle_block);
+    kth_header_mut_t header = kth_chain_merkle_block_header(merkle_block);
 
     return to_py_obj(header);//TODO: Está bien esto? O tiene que ser un BuildValue????
 

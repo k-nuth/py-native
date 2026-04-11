@@ -17,9 +17,9 @@ extern "C" {
 // fetch_block
 // -------------------------------------------------------------------
 
-// typedef void (*kth_block_fetch_handler_t)(kth_chain_t, void*, kth_error_code_t, kth_block_t, kth_size_t);
+// typedef void (*kth_block_fetch_handler_t)(kth_chain_t, void*, kth_error_code_t, kth_block_mut_t, kth_size_t);
 
-void chain_fetch_block_handler(kth_chain_t chain, void* ctx, kth_error_code_t error , kth_block_t block, kth_size_t h) {
+void chain_fetch_block_handler(kth_chain_t chain, void* ctx, kth_error_code_t error , kth_block_mut_t block, kth_size_t h) {
     PyGILState_STATE gstate;
     gstate = PyGILState_Ensure();
 
@@ -148,7 +148,7 @@ PyObject* kth_py_native_chain_fetch_merkle_block_by_hash(PyObject* self, PyObjec
 // fetch block header
 // -------------------------------------------------------------------
 
-void chain_fetch_block_header_handler(kth_chain_t chain, void* ctx, kth_error_code_t error , kth_header_t header, kth_size_t h) {
+void chain_fetch_block_header_handler(kth_chain_t chain, void* ctx, kth_error_code_t error , kth_header_mut_t header, kth_size_t h) {
     PyObject* py_callback = (PyObject*)ctx;
 
     PyObject* py_header = to_py_obj(header);
@@ -368,7 +368,7 @@ void chain_stealth_fetch_handler(kth_chain_t chain, void* ctx, kth_error_code_t 
 //     Py_RETURN_NONE;
 // }
 
-void chain_fetch_transaction_handler(kth_chain_t chain, void* ctx, kth_error_code_t error, kth_transaction_t transaction, uint64_t index, uint64_t height) {
+void chain_fetch_transaction_handler(kth_chain_t chain, void* ctx, kth_error_code_t error, kth_transaction_mut_t transaction, uint64_t index, uint64_t height) {
     PyGILState_STATE gstate;
     gstate = PyGILState_Ensure();
 
@@ -411,7 +411,7 @@ PyObject* kth_py_native_chain_fetch_transaction(PyObject* self, PyObject* args) 
 
 
 // Note: Removed on 3.3.0
-// void chain_fetch_output_handler(kth_chain_t chain, void* ctx, kth_error_code_t error, kth_output_t output) {
+// void chain_fetch_output_handler(kth_chain_t chain, void* ctx, kth_error_code_t error, kth_output_mut_t output) {
 //     PyObject* py_callback = (PyObject*)ctx;
 //     PyObject* py_output = to_py_obj(output);
 
@@ -505,11 +505,11 @@ PyObject* kth_py_native_chain_organize_block(PyObject* self, PyObject* args){
     }
 
     kth_chain_t chain = (kth_chain_t)get_ptr(py_chain);
-    kth_block_t block = (kth_block_t)get_ptr(py_block);
+    kth_block_mut_t block = (kth_block_mut_t)get_ptr(py_block);
 
     Py_XINCREF(py_callback);
 
-    // void kth_chain_async_organize_block(kth_chain_t chain, void* ctx, kth_block_t block, kth_result_handler_t handler);
+    // void kth_chain_async_organize_block(kth_chain_t chain, void* ctx, kth_block_mut_t block, kth_result_handler_t handler);
     kth_chain_async_organize_block(chain, py_callback, block, chain_organize_handler);
     Py_RETURN_NONE;
 }
@@ -529,7 +529,7 @@ PyObject* kth_py_native_chain_organize_transaction(PyObject* self, PyObject* arg
     }
 
     kth_chain_t chain = (kth_chain_t)get_ptr(py_chain);
-    kth_transaction_t transaction = (kth_transaction_t)get_ptr(py_transaction);
+    kth_transaction_mut_t transaction = (kth_transaction_mut_t)get_ptr(py_transaction);
 
     Py_XINCREF(py_callback);
     kth_chain_async_organize_transaction(chain, py_callback, transaction, chain_organize_handler);
@@ -559,7 +559,7 @@ PyObject* kth_py_native_chain_validate_tx(PyObject* self, PyObject* args){
     }
 
     kth_chain_t chain = (kth_chain_t)get_ptr(py_chain);
-    kth_transaction_t transaction = (kth_transaction_t)get_ptr(py_transaction);
+    kth_transaction_mut_t transaction = (kth_transaction_mut_t)get_ptr(py_transaction);
 
     Py_XINCREF(py_callback);
     kth_chain_transaction_validate(chain, py_callback, transaction, chain_validate_tx_handler);
@@ -625,7 +625,7 @@ PyObject* kth_py_native_chain_fetch_compact_block_by_hash(PyObject* self, PyObje
 }
 
 
-void chain_fetch_spend_handler(kth_chain_t chain, void* ctx, kth_error_code_t error , kth_point_t point) {
+void chain_fetch_spend_handler(kth_chain_t chain, void* ctx, kth_error_code_t error , kth_point_mut_t point) {
     PyObject* py_callback = (PyObject*)ctx;
     PyObject* py_point = to_py_obj(point);
 
@@ -650,13 +650,13 @@ PyObject* kth_py_native_chain_fetch_spend(PyObject* self, PyObject* args){
     }
 
     kth_chain_t chain = (kth_chain_t)get_ptr(py_chain);
-    kth_outputpoint_t output_point = (kth_outputpoint_t)get_ptr(py_output_point);
+    kth_output_point_mut_t output_point = (kth_output_point_mut_t)get_ptr(py_output_point);
     Py_XINCREF(py_callback);         /* Add a reference to new callback */
     kth_chain_async_spend(chain, py_callback, output_point, chain_fetch_spend_handler);
     Py_RETURN_NONE;
 }
 
-int chain_subscribe_blockchain_handler(kth_node_t node, kth_chain_t chain, void* ctx, kth_error_code_t error, uint64_t fork_height, kth_block_list_t blocks_incoming, kth_block_list_t blocks_replaced) {
+int chain_subscribe_blockchain_handler(kth_node_t node, kth_chain_t chain, void* ctx, kth_error_code_t error, uint64_t fork_height, kth_block_list_mut_t blocks_incoming, kth_block_list_mut_t blocks_replaced) {
 
     //TODO(fernando): hardcoded error code, libbitcoin::error::service_stopped
     // if (node->actual.stopped() || error == 1) {
@@ -712,7 +712,7 @@ PyObject* kth_py_native_chain_subscribe_blockchain(PyObject* self, PyObject* arg
     Py_RETURN_NONE;
 }
 
-int chain_subscribe_transaction_handler(kth_node_t node, kth_chain_t chain, void* ctx, kth_error_code_t error, kth_transaction_t tx) {
+int chain_subscribe_transaction_handler(kth_node_t node, kth_chain_t chain, void* ctx, kth_error_code_t error, kth_transaction_mut_t tx) {
 
     //TODO(fernando): hardcoded error code, libbitcoin::error::service_stopped
     // if (node->actual.stopped() || error == 1) {

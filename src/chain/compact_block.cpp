@@ -12,7 +12,7 @@ PyObject* kth_py_native_chain_compact_block_header(PyObject* self, PyObject* arg
     }
 
     kth_compact_block_t compact_block = (kth_compact_block_t)get_ptr(py_compact_block);
-    kth_header_t header = (kth_header_t)kth_chain_compact_block_header(compact_block);
+    kth_header_mut_t header = (kth_header_mut_t)kth_chain_compact_block_header(compact_block);
     return to_py_obj(header);
 }
 
@@ -62,7 +62,7 @@ PyObject* kth_py_native_chain_compact_block_transaction_nth(PyObject* self, PyOb
     }
 
     kth_compact_block_t compact_block = (kth_compact_block_t)get_ptr(py_compact_block);
-    kth_transaction_t res = kth_chain_compact_block_transaction_nth(compact_block, py_n);
+    kth_transaction_mut_t res = kth_chain_compact_block_transaction_nth(compact_block, py_n);
     return to_py_obj(res);
 }
 

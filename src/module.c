@@ -17,7 +17,22 @@
 #include <kth/py-native/chain/history.h>
 #include <kth/py-native/chain/chain.h>
 #include <kth/py-native/chain/block.h>
+// ── AUTO-GENERATED INCLUDES START ─────────────────────────────────────
+#include <kth/py-native/chain/block.h>
+#include <kth/py-native/chain/block_list.h>
 #include <kth/py-native/chain/header.h>
+#include <kth/py-native/chain/point.h>
+#include <kth/py-native/chain/point_list.h>
+#include <kth/py-native/chain/output_point.h>
+#include <kth/py-native/chain/output_point_list.h>
+#include <kth/py-native/chain/script.h>
+#include <kth/py-native/chain/output.h>
+#include <kth/py-native/chain/output_list.h>
+#include <kth/py-native/chain/input.h>
+#include <kth/py-native/chain/input_list.h>
+#include <kth/py-native/chain/transaction.h>
+#include <kth/py-native/chain/transaction_list.h>
+// ── AUTO-GENERATED INCLUDES END ───────────────────────────────────────
 #include <kth/py-native/chain/merkle_block.h>
 #include <kth/py-native/chain/word_list.h>
 #include <kth/py-native/chain/transaction.h>
@@ -113,68 +128,11 @@ PyMethodDef KnuthNativeMethods[] = {
     {"chain_unsubscribe",  kth_py_native_chain_unsubscribe, METH_VARARGS, "..."},
 
 
-    {"chain_transaction_is_valid",  kth_py_native_chain_transaction_is_valid, METH_VARARGS, "..."},
-    {"chain_transaction_construct",  kth_py_native_chain_transaction_construct, METH_VARARGS, "..."},
-    {"chain_transaction_destruct",  kth_py_native_chain_transaction_destruct, METH_VARARGS, "..."},
-    {"chain_transaction_factory_from_data",  kth_py_native_chain_transaction_factory_from_data, METH_VARARGS, "..."},
-    {"chain_transaction_version",  kth_py_native_chain_transaction_version, METH_VARARGS, "..."},
-    {"chain_transaction_set_version",  kth_py_native_chain_transaction_set_version, METH_VARARGS, "..."},
-    {"chain_transaction_hash",  kth_py_native_chain_transaction_hash, METH_VARARGS, "..."},
-    {"chain_transaction_locktime",  kth_py_native_chain_transaction_locktime, METH_VARARGS, "..."},
-    {"chain_transaction_serialized_size",  kth_py_native_chain_transaction_serialized_size, METH_VARARGS, "..."},
-    {"chain_transaction_fees",  kth_py_native_chain_transaction_fees, METH_VARARGS, "..."},
-    {"chain_transaction_signature_operations",  kth_py_native_chain_transaction_signature_operations, METH_VARARGS, "..."},
-    {"chain_transaction_signature_operations_bip16_active",  kth_py_native_chain_transaction_signature_operations_bip16_active, METH_VARARGS, "..."},
-    {"chain_transaction_total_input_value",  kth_py_native_chain_transaction_total_input_value, METH_VARARGS, "..."},
-    {"chain_transaction_total_output_value",  kth_py_native_chain_transaction_total_output_value, METH_VARARGS, "..."},
-    {"chain_transaction_is_coinbase",  kth_py_native_chain_transaction_is_coinbase, METH_VARARGS, "..."},
-    {"chain_transaction_is_null_non_coinbase",  kth_py_native_chain_transaction_is_null_non_coinbase, METH_VARARGS, "..."},
-    {"chain_transaction_is_oversized_coinbase",  kth_py_native_chain_transaction_is_oversized_coinbase, METH_VARARGS, "..."},
-    {"chain_transaction_is_mature",  kth_py_native_chain_transaction_is_mature, METH_VARARGS, "..."},
-    {"chain_transaction_is_overspent",  kth_py_native_chain_transaction_is_overspent, METH_VARARGS, "..."},
-    {"chain_transaction_is_double_spend",  kth_py_native_chain_transaction_is_double_spend, METH_VARARGS, "..."},
-    {"chain_transaction_is_missing_previous_outputs",  kth_py_native_chain_transaction_is_missing_previous_outputs, METH_VARARGS, "..."},
-    {"chain_transaction_is_final",  kth_py_native_chain_transaction_is_final, METH_VARARGS, "..."},
-    {"chain_transaction_is_locktime_conflict",  kth_py_native_chain_transaction_is_locktime_conflict, METH_VARARGS, "..."},
-    {"chain_transaction_outputs",  kth_py_native_chain_transaction_outputs, METH_VARARGS, "..."},
-    {"chain_transaction_inputs",  kth_py_native_chain_transaction_inputs, METH_VARARGS, "..."},
-    {"chain_transaction_to_data",  kth_py_native_chain_transaction_to_data, METH_VARARGS, "..."},
-
-    {"chain_input_factory_from_data",  kth_py_native_chain_input_factory_from_data, METH_VARARGS, "..."},
-    {"chain_input_construct",  kth_py_native_chain_input_construct, METH_VARARGS, "..."},
-    {"chain_input_destruct",  kth_py_native_chain_input_destruct, METH_VARARGS, "..."},
-    {"chain_input_is_valid",  kth_py_native_chain_input_is_valid, METH_VARARGS, "..."},
-    {"chain_input_is_final",  kth_py_native_chain_input_is_final, METH_VARARGS, "..."},
-    {"chain_input_serialized_size",  kth_py_native_chain_input_serialized_size, METH_VARARGS, "..."},
-    {"chain_input_sequence",  kth_py_native_chain_input_sequence, METH_VARARGS, "..."},
-    {"chain_input_signature_operations",  kth_py_native_chain_input_signature_operations, METH_VARARGS, "..."},
-    {"chain_input_script",  kth_py_native_chain_input_script, METH_VARARGS, "..."},
-    {"chain_input_previous_output",  kth_py_native_chain_input_previous_output, METH_VARARGS, "..."},
-    //{"chain_input_hash",  kth_py_native_chain_input_hash, METH_VARARGS, "..."},
-    //{"chain_input_index",  kth_py_native_chain_input_index, METH_VARARGS, "..."},
-    {"chain_input_to_data",  kth_py_native_chain_input_to_data, METH_VARARGS, "..."},
-
-    {"chain_input_list_construct_default",  kth_py_native_chain_input_list_construct_default, METH_VARARGS, "..."},
-    {"chain_input_list_push_back",  kth_py_native_input_list_push_back, METH_VARARGS, "..."},
-    {"chain_input_list_count",  kth_py_native_input_list_count, METH_VARARGS, "..."},
-    {"chain_input_list_nth",  kth_py_native_input_list_nth, METH_VARARGS, "..."},
-
-    {"chain_output_construct",  kth_py_native_chain_output_construct, METH_VARARGS, "..."},
-    {"chain_output_factory_from_data",  kth_py_native_chain_output_factory_from_data, METH_VARARGS, "..."},
-    {"chain_output_destruct",  kth_py_native_chain_output_destruct, METH_VARARGS, "..."},
-    {"chain_output_is_valid",  kth_py_native_chain_output_is_valid, METH_VARARGS, "..."},
-    {"chain_output_serialized_size",  kth_py_native_chain_output_serialized_size, METH_VARARGS, "..."},
-    {"chain_output_value",  kth_py_native_chain_output_value, METH_VARARGS, "..."},
-    {"chain_output_signature_operations",  kth_py_native_chain_output_signature_operations, METH_VARARGS, "..."},
-    {"chain_output_script",  kth_py_native_chain_output_script, METH_VARARGS, "..."},
-    //{"chain_output_hash",  kth_py_native_chain_output_hash, METH_VARARGS, "..."},
-    //{"chain_output_index",  kth_py_native_chain_output_index, METH_VARARGS, "..."},
-    {"chain_output_to_data",  kth_py_native_chain_output_to_data, METH_VARARGS, "..."},
-
-    {"chain_output_list_construct_default",  kth_py_native_chain_output_list_construct_default, METH_VARARGS, "..."},
-    {"chain_output_list_push_back",  kth_py_native_output_list_push_back, METH_VARARGS, "..."},
-    {"chain_output_list_count",  kth_py_native_output_list_count, METH_VARARGS, "..."},
-    {"chain_output_list_nth",  kth_py_native_output_list_nth, METH_VARARGS, "..."},
+    // chain_transaction / chain_input / chain_output / chain_*_list methods
+    // are auto-generated and registered separately through per-class
+    // PyMethodDef[] tables emitted by the v2 generator. Registration happens
+    // in PyInit_kth_native via PyModule_AddFunctions inside the
+    // AUTO-GENERATED block below.
 
     {"chain_merkle_block_destruct",  kth_py_native_chain_merkle_block_destruct, METH_VARARGS, "..."},
     {"chain_merkle_block_header",  kth_py_native_chain_merkle_block_header, METH_VARARGS, "..."},
@@ -185,55 +143,10 @@ PyMethodDef KnuthNativeMethods[] = {
     {"chain_merkle_block_reset",  kth_py_native_chain_merkle_block_reset, METH_VARARGS, "..."},
 
 
-    {"chain_block_to_data",  kth_py_native_chain_block_to_data, METH_VARARGS, "..."},
-    {"chain_block_construct",  kth_py_native_chain_block_construct, METH_VARARGS, "..."},
-    {"chain_block_factory_from_data",  kth_py_native_chain_block_factory_from_data, METH_VARARGS, "..."},
-    {"chain_block_destruct",  kth_py_native_chain_block_destruct, METH_VARARGS, "..."},
-    {"chain_block_transactions",  kth_py_native_chain_block_transactions, METH_VARARGS, "..."},
-
-    {"chain_block_header",  kth_py_native_chain_block_header, METH_VARARGS, "..."},
-    {"chain_block_hash",  kth_py_native_chain_block_hash, METH_VARARGS, "..."},
-
-    //TODO(KNUTH-NEW): implement
-    // {"block_transaction_count",  kth_py_native_chain_block_transaction_count, METH_VARARGS, "..."},
-    // {"block_transaction_nth",  kth_py_native_chain_block_transaction_nth, METH_VARARGS, "..."},
-
-    {"chain_block_serialized_size",  kth_py_native_chain_block_serialized_size, METH_VARARGS, "..."},
-    {"chain_block_fees",  kth_py_native_chain_block_fees, METH_VARARGS, "..."},
-    {"chain_block_claim",  kth_py_native_chain_block_claim, METH_VARARGS, "..."},
-    {"chain_block_reward",  kth_py_native_chain_block_reward, METH_VARARGS, "..."},
-    {"chain_block_generate_merkle_root",  kth_py_native_chain_block_generate_merkle_root, METH_VARARGS, "..."},
-
-    {"chain_block_is_valid",  kth_py_native_chain_block_is_valid, METH_VARARGS, "..."},
-    {"chain_block_signature_operations",  kth_py_native_chain_block_signature_operations, METH_VARARGS, "..."},
-    {"chain_block_signature_operations_bip16_active",  kth_py_native_chain_block_signature_operations_bip16_active, METH_VARARGS, "..."},
-    {"chain_block_total_inputs",  kth_py_native_chain_block_total_inputs, METH_VARARGS, "..."},
-    {"chain_block_is_extra_coinbases",  kth_py_native_chain_block_is_extra_coinbases, METH_VARARGS, "..."},
-    {"chain_block_is_final",  kth_py_native_chain_block_is_final, METH_VARARGS, "..."},
-    {"chain_block_is_distinct_transaction_set",  kth_py_native_chain_block_is_distinct_transaction_set, METH_VARARGS, "..."},
-    {"chain_block_is_valid_coinbase_claim",  kth_py_native_chain_block_is_valid_coinbase_claim, METH_VARARGS, "..."},
-    {"chain_block_is_valid_coinbase_script",  kth_py_native_chain_block_is_valid_coinbase_script, METH_VARARGS, "..."},
-    {"chain_block_is_internal_double_spend",  kth_py_native_chain_block_is_internal_double_spend, METH_VARARGS, "..."},
-    {"chain_block_is_valid_merkle_root",  kth_py_native_chain_block_is_valid_merkle_root, METH_VARARGS, "..."},
-
-    {"chain_header_to_data",  kth_py_native_chain_header_to_data, METH_VARARGS, "..."},
-    {"chain_header_construct",  kth_py_native_chain_header_construct, METH_VARARGS, "..."},
-    {"chain_header_is_valid",  kth_py_native_chain_header_is_valid, METH_VARARGS, "..."},
-    {"chain_header_factory_from_data",  kth_py_native_chain_header_factory_from_data, METH_VARARGS, "..."},
-    {"chain_header_destruct",  kth_py_native_chain_header_destruct, METH_VARARGS, "..."},
-    {"chain_header_version",  kth_py_native_chain_header_version, METH_VARARGS, "..."},
-    {"chain_header_set_version",  kth_py_native_chain_header_set_version, METH_VARARGS, "..."},
-    {"chain_header_previous_block_hash",  kth_py_native_chain_header_previous_block_hash, METH_VARARGS, "..."},
-    //{"chain_header_set_previous_block_hash",  kth_py_native_chain_header_set_previous_block_hash, METH_VARARGS, "..."},
-    {"chain_header_merkle",  kth_py_native_chain_header_merkle, METH_VARARGS, "..."},
-    //{"chain_header_set_merkle",  kth_py_native_chain_header_set_merkle, METH_VARARGS, "..."},
-    {"chain_header_hash",  kth_py_native_chain_header_hash, METH_VARARGS, "..."},
-    {"chain_header_timestamp",  kth_py_native_chain_header_timestamp, METH_VARARGS, "..."},
-    {"chain_header_set_timestamp",  kth_py_native_chain_header_set_timestamp, METH_VARARGS, "..."},
-    {"chain_header_bits",  kth_py_native_chain_header_bits, METH_VARARGS, "..."},
-    {"chain_header_set_bits",  kth_py_native_chain_header_set_bits, METH_VARARGS, "..."},
-    {"chain_header_nonce",  kth_py_native_chain_header_nonce, METH_VARARGS, "..."},
-    {"chain_header_set_nonce",  kth_py_native_chain_header_set_nonce, METH_VARARGS, "..."},
+    // chain_block / chain_header methods are auto-generated and registered
+    // separately through per-class PyMethodDef[] tables emitted by the v2
+    // generator. Registration happens in PyInit_kth_native via
+    // PyModule_AddFunctions inside the AUTO-GENERATED block below.
 
     {"chain_history_compact_list_destruct",  kth_py_native_history_compact_list_destruct, METH_VARARGS, "..."},
     {"chain_history_compact_list_count",  kth_py_native_history_compact_list_count, METH_VARARGS, "..."},
@@ -243,29 +156,7 @@ PyMethodDef KnuthNativeMethods[] = {
     {"chain_history_compact_height",  kth_py_native_history_compact_height, METH_VARARGS, "..."},
     {"chain_history_compact_value_or_previous_checksum",  kth_py_native_history_compact_value_or_previous_checksum, METH_VARARGS, "..."},
 
-    {"chain_point_hash",  kth_py_native_point_hash, METH_VARARGS, "..."},
-    {"chain_point_is_valid",  kth_py_native_point_is_valid, METH_VARARGS, "..."},
-    {"chain_point_index",  kth_py_native_point_index, METH_VARARGS, "..."},
-    {"chain_point_checksum",  kth_py_native_point_checksum, METH_VARARGS, "..."},
-
-    {"chain_script_construct_from_bytes",  kth_py_native_chain_script_construct_from_bytes, METH_VARARGS, "..."},
-    {"chain_script_to_data",  kth_py_native_chain_script_to_data, METH_VARARGS, "..."},
-    {"chain_script_destruct",  kth_py_native_chain_script_destruct, METH_VARARGS, "..."},
-    {"chain_script_is_valid",  kth_py_native_chain_script_is_valid, METH_VARARGS, "..."},
-    {"chain_script_is_valid_operations",  kth_py_native_chain_script_is_valid_operations, METH_VARARGS, "..."},
-    {"chain_script_satoshi_content_size",  kth_py_native_chain_script_satoshi_content_size, METH_VARARGS, "..."},
-    {"chain_script_serialized_size",  kth_py_native_chain_script_serialized_size, METH_VARARGS, "..."},
-    {"chain_script_to_string",  kth_py_native_chain_script_to_string, METH_VARARGS, "..."},
-    {"chain_script_sigops",  kth_py_native_chain_script_sigops, METH_VARARGS, "..."},
-    // {"chain_script_sigops",  kth_py_native_chain_script_sigops, METH_VARARGS, "..."},
-
-    {"chain_output_point_hash",  kth_py_native_chain_output_point_hash, METH_VARARGS, "..."},
-    //{"chain_point_is_valid",  kth_py_native_point_is_valid, METH_VARARGS, "..."},
-    {"chain_output_point_index",  kth_py_native_chain_output_point_index, METH_VARARGS, "..."},
-    {"chain_output_point_construct",  kth_py_native_chain_output_point_construct, METH_VARARGS, "..."},
-    {"chain_output_point_construct_from_hash_index",  kth_py_native_chain_output_point_construct_from_hash_index, METH_VARARGS, "..."},
-    {"chain_output_point_destruct",  kth_py_native_chain_output_point_destruct, METH_VARARGS, "..."},
-    //{"chain_point_checksum",  kth_py_native_point_checksum, METH_VARARGS, "..."},
+    // chain_point / chain_script / chain_output_point are auto-generated.
 
     {"chain_compact_block_header",  kth_py_native_chain_compact_block_header, METH_VARARGS, "..."},
     {"chain_compact_block_is_valid",  kth_py_native_chain_compact_block_is_valid, METH_VARARGS, "..."},
@@ -276,17 +167,7 @@ PyMethodDef KnuthNativeMethods[] = {
     {"chain_compact_block_destruct",  kth_py_native_chain_compact_block_destruct, METH_VARARGS, "..."},
     {"chain_compact_block_reset",  kth_py_native_chain_compact_block_reset, METH_VARARGS, "..."},
 
-    {"chain_block_list_construct_default",  kth_py_native_chain_block_list_construct_default, METH_VARARGS, "..."},
-    {"chain_block_list_push_back",  kth_py_native_chain_block_list_push_back, METH_VARARGS, "..."},
-    {"chain_block_list_destruct",  kth_py_native_chain_block_list_destruct, METH_VARARGS, "..."},
-    {"chain_block_list_count",  kth_py_native_chain_block_list_count, METH_VARARGS, "..."},
-    {"chain_block_list_nth",  kth_py_native_chain_block_list_nth, METH_VARARGS, "..."},
-
-    {"chain_transaction_list_construct_default",  kth_py_native_chain_transaction_list_construct_default, METH_VARARGS, "..."},
-    {"chain_transaction_list_push_back",  kth_py_native_chain_transaction_list_push_back, METH_VARARGS, "..."},
-    {"chain_transaction_list_destruct",  kth_py_native_chain_transaction_list_destruct, METH_VARARGS, "..."},
-    {"chain_transaction_list_count",  kth_py_native_chain_transaction_list_count, METH_VARARGS, "..."},
-    {"chain_transaction_list_nth",  kth_py_native_chain_transaction_list_nth, METH_VARARGS, "..."},
+    // chain_*_list methods are auto-generated.
 
     {"chain_stealth_compact_ephemeral_public_key_hash",  kth_py_native_stealth_compact_ephemeral_public_key_hash, METH_VARARGS, "..."},
     {"chain_stealth_compact_transaction_hash",  kth_py_native_stealth_compact_transaction_hash, METH_VARARGS, "..."},
@@ -1029,6 +910,65 @@ PyInit_kth_native(void) {
     if (module == NULL) {
         INITERROR;
     }
+
+    // ── AUTO-GENERATED REGISTER START ─────────────────────────────────
+    if (PyModule_AddFunctions(module, kth_py_native_chain_block_methods) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (PyModule_AddFunctions(module, kth_py_native_chain_block_list_methods) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (PyModule_AddFunctions(module, kth_py_native_chain_header_methods) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (PyModule_AddFunctions(module, kth_py_native_chain_point_methods) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (PyModule_AddFunctions(module, kth_py_native_chain_point_list_methods) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (PyModule_AddFunctions(module, kth_py_native_chain_output_point_methods) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (PyModule_AddFunctions(module, kth_py_native_chain_output_point_list_methods) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (PyModule_AddFunctions(module, kth_py_native_chain_script_methods) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (PyModule_AddFunctions(module, kth_py_native_chain_output_methods) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (PyModule_AddFunctions(module, kth_py_native_chain_output_list_methods) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (PyModule_AddFunctions(module, kth_py_native_chain_input_methods) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (PyModule_AddFunctions(module, kth_py_native_chain_input_list_methods) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (PyModule_AddFunctions(module, kth_py_native_chain_transaction_methods) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (PyModule_AddFunctions(module, kth_py_native_chain_transaction_list_methods) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    // ── AUTO-GENERATED REGISTER END ───────────────────────────────────
 
     Py_INCREF(&NodeSettingsType);
     if (PyModule_AddObject(module, "NodeSettings", (PyObject*) &NodeSettingsType) < 0) {
