@@ -20,12 +20,17 @@ void kth_py_native_chain_input_list_capsule_dtor(PyObject* capsule) {
 }
 
 PyObject* kth_py_native_chain_input_list_construct_default(PyObject* self, PyObject* Py_UNUSED(args)) {
-    auto result = kth_chain_input_list_construct_default();
+    auto const result = kth_chain_input_list_construct_default();
     if (result == NULL) {
         PyErr_SetString(PyExc_MemoryError, "kth: allocation failed");
         return NULL;
     }
-    return PyCapsule_New((void*)result, KTH_PY_CAPSULE_CHAIN_INPUT_LIST, kth_py_native_chain_input_list_capsule_dtor);
+    PyObject* capsule = PyCapsule_New((void*)result, KTH_PY_CAPSULE_CHAIN_INPUT_LIST, kth_py_native_chain_input_list_capsule_dtor);
+    if (capsule == NULL) {
+        kth_chain_input_list_destruct(result);
+        return NULL;
+    }
+    return capsule;
 }
 
 PyObject* kth_py_native_chain_input_list_push_back(PyObject* self, PyObject* args, PyObject* kwds) {
@@ -54,7 +59,7 @@ PyObject* kth_py_native_chain_input_list_destruct(PyObject* self, PyObject* py_a
 PyObject* kth_py_native_chain_input_list_count(PyObject* self, PyObject* py_arg0) {
     kth_input_list_const_t list_handle = (kth_input_list_const_t)PyCapsule_GetPointer(py_arg0, KTH_PY_CAPSULE_CHAIN_INPUT_LIST);
     if (list_handle == NULL) return NULL;
-    auto result = kth_chain_input_list_count(list_handle);
+    auto const result = kth_chain_input_list_count(list_handle);
     return PyLong_FromUnsignedLongLong((unsigned long long)result);
 }
 
@@ -67,8 +72,25 @@ PyObject* kth_py_native_chain_input_list_nth(PyObject* self, PyObject* args, PyO
     }
     kth_input_list_const_t list_handle = (kth_input_list_const_t)PyCapsule_GetPointer(py_list, KTH_PY_CAPSULE_CHAIN_INPUT_LIST);
     if (list_handle == NULL) return NULL;
-    auto result = kth_chain_input_list_nth(list_handle, (kth_size_t)index);
-    return PyCapsule_New((void*)result, KTH_PY_CAPSULE_CHAIN_INPUT, NULL);
+    kth_size_t const count = kth_chain_input_list_count(list_handle);
+    if ((kth_size_t)index >= count) {
+        PyErr_Format(PyExc_IndexError, "list index %llu out of range (size %llu)", index, (unsigned long long)count);
+        return NULL;
+    }
+    auto const result = kth_chain_input_list_nth(list_handle, (kth_size_t)index);
+    if (result == NULL) {
+        PyErr_SetString(PyExc_RuntimeError, "kth: NULL handle returned from list nth");
+        return NULL;
+    }
+    PyObject* capsule = PyCapsule_New((void*)result, KTH_PY_CAPSULE_CHAIN_INPUT, kth_py_native_borrowed_parent_dtor);
+    if (capsule == NULL) return NULL;
+    Py_INCREF(py_list);
+    if (PyCapsule_SetContext(capsule, py_list) != 0) {
+        Py_DECREF(py_list);
+        Py_DECREF(capsule);
+        return NULL;
+    }
+    return capsule;
 }
 
 PyObject* kth_py_native_chain_input_list_assign_at(PyObject* self, PyObject* args, PyObject* kwds) {
@@ -81,6 +103,11 @@ PyObject* kth_py_native_chain_input_list_assign_at(PyObject* self, PyObject* arg
     }
     kth_input_list_mut_t list_handle = (kth_input_list_mut_t)PyCapsule_GetPointer(py_list, KTH_PY_CAPSULE_CHAIN_INPUT_LIST);
     if (list_handle == NULL) return NULL;
+    kth_size_t const count = kth_chain_input_list_count(list_handle);
+    if ((kth_size_t)index >= count) {
+        PyErr_Format(PyExc_IndexError, "list index %llu out of range (size %llu)", index, (unsigned long long)count);
+        return NULL;
+    }
     kth_input_const_t elem_handle = (kth_input_const_t)PyCapsule_GetPointer(py_elem, KTH_PY_CAPSULE_CHAIN_INPUT);
     if (elem_handle == NULL) return NULL;
     kth_chain_input_list_assign_at(list_handle, (kth_size_t)index, elem_handle);
@@ -96,6 +123,11 @@ PyObject* kth_py_native_chain_input_list_erase(PyObject* self, PyObject* args, P
     }
     kth_input_list_mut_t list_handle = (kth_input_list_mut_t)PyCapsule_GetPointer(py_list, KTH_PY_CAPSULE_CHAIN_INPUT_LIST);
     if (list_handle == NULL) return NULL;
+    kth_size_t const count = kth_chain_input_list_count(list_handle);
+    if ((kth_size_t)index >= count) {
+        PyErr_Format(PyExc_IndexError, "list index %llu out of range (size %llu)", index, (unsigned long long)count);
+        return NULL;
+    }
     kth_chain_input_list_erase(list_handle, (kth_size_t)index);
     Py_RETURN_NONE;
 }

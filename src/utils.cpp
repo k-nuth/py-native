@@ -43,6 +43,17 @@ PyObject* to_py_str(char const* str) {
     return Py_BuildValue("s", str);
 }
 
+void kth_py_native_borrowed_parent_dtor(PyObject* capsule) {
+    // The child capsule holds a strong reference to its parent in the
+    // PyCapsule context (not the pointer — that's the borrowed handle).
+    // Release the parent reference on GC so the parent can finally be
+    // collected once every child view of it is gone. Borrowed children
+    // never own the native payload, so there's nothing to `destruct()`
+    // on the capsule pointer itself.
+    PyObject* parent = (PyObject*)PyCapsule_GetContext(capsule);
+    Py_XDECREF(parent);
+}
+
 #ifdef __cplusplus
 } //extern "C"
 #endif
