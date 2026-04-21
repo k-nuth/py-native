@@ -21,6 +21,20 @@ PyObject* to_py_str(char const* str);
 
 // return Py_BuildValue("s#", blocks, out_n);
 
+// PyCapsule destructor for *borrowed* child capsules that point into a
+// parent's internal storage (e.g. `script.operations()`,
+// `block.transaction_nth(i)`, `history_compact.point()`, ...).
+//
+// The child capsule keeps a strong reference to the parent capsule in
+// its PyCapsule context; this destructor decrements that reference
+// when Python GC's the child so the parent is free to go. The combo
+// prevents the classic dangling-borrow: a caller that released the
+// parent while still holding a borrowed child used to get a
+// use-after-free on the next access. Generator-driven wrappers that
+// return a borrowed view set this destructor and stash the parent
+// `py_self` via `PyCapsule_SetContext`.
+void kth_py_native_borrowed_parent_dtor(PyObject* capsule);
+
 #ifdef __cplusplus
 } //extern "C"
 #endif

@@ -1,3 +1,7 @@
+// Copyright (c) 2016-present Knuth Project developers.
+// Distributed under the MIT software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
 #ifndef KTH_PY_NATIVE_CHAIN_STEALTH_COMPACT_LIST_H_
 #define KTH_PY_NATIVE_CHAIN_STEALTH_COMPACT_LIST_H_
 
@@ -8,14 +12,18 @@
 extern "C" {
 #endif
 
-//PyObject* kth_py_native_chain_stealth_compact_list_construct_default(PyObject* self, PyObject* args);
-//PyObject* kth_py_native_chain_stealth_compact_list_push_back(PyObject* self, PyObject* args);
-PyObject* kth_py_native_chain_stealth_compact_list_destruct(PyObject* self, PyObject* args);
-PyObject* kth_py_native_chain_stealth_compact_list_count(PyObject* self, PyObject* args);
-PyObject* kth_py_native_chain_stealth_compact_list_nth(PyObject* self, PyObject* args);
+PyObject* kth_py_native_chain_stealth_compact_list_construct_default(PyObject* self, PyObject* args);
+PyObject* kth_py_native_chain_stealth_compact_list_push_back(PyObject* self, PyObject* args, PyObject* kwds);
+PyObject* kth_py_native_chain_stealth_compact_list_destruct(PyObject* self, PyObject* arg);
+PyObject* kth_py_native_chain_stealth_compact_list_count(PyObject* self, PyObject* arg);
+PyObject* kth_py_native_chain_stealth_compact_list_nth(PyObject* self, PyObject* args, PyObject* kwds);
+PyObject* kth_py_native_chain_stealth_compact_list_assign_at(PyObject* self, PyObject* args, PyObject* kwds);
+PyObject* kth_py_native_chain_stealth_compact_list_erase(PyObject* self, PyObject* args, PyObject* kwds);
+
+extern PyMethodDef kth_py_native_chain_stealth_compact_list_methods[];
 
 #ifdef __cplusplus
-} //extern "C"
+} // extern "C"
 #endif
 
-#endif
+#endif // KTH_PY_NATIVE_CHAIN_STEALTH_COMPACT_LIST_H_

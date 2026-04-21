@@ -32,6 +32,31 @@
 #include <kth/py-native/chain/input_list.h>
 #include <kth/py-native/chain/transaction.h>
 #include <kth/py-native/chain/transaction_list.h>
+#include <kth/py-native/binary.h>
+#include <kth/py-native/chain/get_blocks.h>
+#include <kth/py-native/chain/get_headers.h>
+#include <kth/py-native/chain/merkle_block.h>
+#include <kth/py-native/chain/prefilled_transaction.h>
+#include <kth/py-native/chain/prefilled_transaction_list.h>
+#include <kth/py-native/chain/compact_block.h>
+#include <kth/py-native/wallet/payment_address.h>
+#include <kth/py-native/wallet/payment_address_list.h>
+#include <kth/py-native/wallet/ec_public.h>
+#include <kth/py-native/wallet/ec_private.h>
+#include <kth/py-native/chain/operation.h>
+#include <kth/py-native/chain/operation_list.h>
+#include <kth/py-native/wallet/hd_public.h>
+#include <kth/py-native/wallet/hd_private.h>
+#include <kth/py-native/chain/stealth_compact.h>
+#include <kth/py-native/chain/stealth_compact_list.h>
+#include <kth/py-native/chain/history_compact.h>
+#include <kth/py-native/chain/history_compact_list.h>
+#include <kth/py-native/chain/double_spend_proof.h>
+#include <kth/py-native/chain/double_spend_proof_spender.h>
+#include <kth/py-native/chain/token_data.h>
+#include <kth/py-native/chain/utxo.h>
+#include <kth/py-native/chain/utxo_list.h>
+#include <kth/py-native/wallet/wallet_data.h>
 // ── AUTO-GENERATED INCLUDES END ───────────────────────────────────────
 #include <kth/py-native/chain/merkle_block.h>
 #include <kth/py-native/chain/word_list.h>
@@ -128,62 +153,12 @@ PyMethodDef KnuthNativeMethods[] = {
     {"chain_unsubscribe",  kth_py_native_chain_unsubscribe, METH_VARARGS, "..."},
 
 
-    // chain_transaction / chain_input / chain_output / chain_*_list methods
-    // are auto-generated and registered separately through per-class
-    // PyMethodDef[] tables emitted by the v2 generator. Registration happens
-    // in PyInit_kth_native via PyModule_AddFunctions inside the
-    // AUTO-GENERATED block below.
-
-    {"chain_merkle_block_destruct",  kth_py_native_chain_merkle_block_destruct, METH_VARARGS, "..."},
-    {"chain_merkle_block_header",  kth_py_native_chain_merkle_block_header, METH_VARARGS, "..."},
-    {"chain_merkle_block_is_valid",  kth_py_native_chain_merkle_block_is_valid, METH_VARARGS, "..."},
-    {"chain_merkle_block_hash_count",  kth_py_native_chain_merkle_block_hash_count, METH_VARARGS, "..."},
-    {"chain_merkle_block_serialized_size",  kth_py_native_chain_merkle_block_serialized_size, METH_VARARGS, "..."},
-    {"chain_merkle_block_total_transaction_count",  kth_py_native_chain_merkle_block_total_transaction_count, METH_VARARGS, "..."},
-    {"chain_merkle_block_reset",  kth_py_native_chain_merkle_block_reset, METH_VARARGS, "..."},
-
-
-    // chain_block / chain_header methods are auto-generated and registered
-    // separately through per-class PyMethodDef[] tables emitted by the v2
+    // chain_* / wallet_payment_address / wallet_payment_address_list /
+    // chain_merkle_block / chain_history_compact{,_list} / chain_compact_block /
+    // chain_stealth_compact{,_list} methods are all auto-generated and
+    // registered through per-class PyMethodDef[] tables emitted by the v2
     // generator. Registration happens in PyInit_kth_native via
     // PyModule_AddFunctions inside the AUTO-GENERATED block below.
-
-    {"chain_history_compact_list_destruct",  kth_py_native_history_compact_list_destruct, METH_VARARGS, "..."},
-    {"chain_history_compact_list_count",  kth_py_native_history_compact_list_count, METH_VARARGS, "..."},
-    {"chain_history_compact_list_nth",  kth_py_native_history_compact_list_nth, METH_VARARGS, "..."},
-    {"chain_history_compact_point_kind",  kth_py_native_history_compact_point_kind, METH_VARARGS, "..."},
-    {"chain_history_compact_point",  kth_py_native_history_compact_point, METH_VARARGS, "..."},
-    {"chain_history_compact_height",  kth_py_native_history_compact_height, METH_VARARGS, "..."},
-    {"chain_history_compact_value_or_previous_checksum",  kth_py_native_history_compact_value_or_previous_checksum, METH_VARARGS, "..."},
-
-    // chain_point / chain_script / chain_output_point are auto-generated.
-
-    {"chain_compact_block_header",  kth_py_native_chain_compact_block_header, METH_VARARGS, "..."},
-    {"chain_compact_block_is_valid",  kth_py_native_chain_compact_block_is_valid, METH_VARARGS, "..."},
-    {"chain_compact_block_serialized_size",  kth_py_native_chain_compact_block_serialized_size, METH_VARARGS, "..."},
-    {"chain_compact_block_transaction_count",  kth_py_native_chain_compact_block_transaction_count, METH_VARARGS, "..."},
-    {"chain_compact_block_transaction_nth",  kth_py_native_chain_compact_block_transaction_nth, METH_VARARGS, "..."},
-    {"chain_compact_block_nonce",  kth_py_native_chain_compact_block_nonce, METH_VARARGS, "..."},
-    {"chain_compact_block_destruct",  kth_py_native_chain_compact_block_destruct, METH_VARARGS, "..."},
-    {"chain_compact_block_reset",  kth_py_native_chain_compact_block_reset, METH_VARARGS, "..."},
-
-    // chain_*_list methods are auto-generated.
-
-    {"chain_stealth_compact_ephemeral_public_key_hash",  kth_py_native_stealth_compact_ephemeral_public_key_hash, METH_VARARGS, "..."},
-    {"chain_stealth_compact_transaction_hash",  kth_py_native_stealth_compact_transaction_hash, METH_VARARGS, "..."},
-    {"chain_stealth_compact_public_key_hash",  kth_py_native_stealth_compact_public_key_hash, METH_VARARGS, "..."},
-    {"chain_stealth_compact_list_destruct",  kth_py_native_chain_stealth_compact_list_destruct, METH_VARARGS, "..."},
-    {"chain_stealth_compact_list_count",  kth_py_native_chain_stealth_compact_list_count, METH_VARARGS, "..."},
-    {"chain_stealth_compact_list_nth",  kth_py_native_chain_stealth_compact_list_nth, METH_VARARGS, "..."},
-
-    {"wallet_payment_address_destruct",  kth_py_native_wallet_payment_address_destruct, METH_VARARGS, "..."},
-    {"wallet_payment_address_encoded_legacy",  kth_py_native_wallet_payment_address_encoded_legacy, METH_VARARGS, "..."},
-#if defined(KTH_CURRENCY_BCH)
-    {"wallet_payment_address_encoded_cashaddr",  kth_py_native_wallet_payment_address_encoded_cashaddr, METH_VARARGS, "..."},
-    {"wallet_payment_address_encoded_token",  kth_py_native_wallet_payment_address_encoded_token, METH_VARARGS, "..."},
-#endif
-    {"wallet_payment_address_version",  kth_py_native_wallet_payment_address_version, METH_VARARGS, "..."},
-    {"wallet_payment_address_construct_from_string",  kth_py_native_wallet_payment_address_construct_from_string, METH_VARARGS, "..."},
 
     {"config_blockchain_settings_default",  kth_py_native_config_blockchain_settings_default, METH_VARARGS, "..."},
     {"config_database_settings_default",  kth_py_native_config_database_settings_default, METH_VARARGS, "..."},
@@ -965,6 +940,106 @@ PyInit_kth_native(void) {
         return NULL;
     }
     if (PyModule_AddFunctions(module, kth_py_native_chain_transaction_list_methods) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (PyModule_AddFunctions(module, kth_py_native_core_binary_methods) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (PyModule_AddFunctions(module, kth_py_native_chain_get_blocks_methods) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (PyModule_AddFunctions(module, kth_py_native_chain_get_headers_methods) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (PyModule_AddFunctions(module, kth_py_native_chain_merkle_block_methods) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (PyModule_AddFunctions(module, kth_py_native_chain_prefilled_transaction_methods) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (PyModule_AddFunctions(module, kth_py_native_chain_prefilled_transaction_list_methods) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (PyModule_AddFunctions(module, kth_py_native_chain_compact_block_methods) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (PyModule_AddFunctions(module, kth_py_native_wallet_payment_address_methods) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (PyModule_AddFunctions(module, kth_py_native_wallet_payment_address_list_methods) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (PyModule_AddFunctions(module, kth_py_native_wallet_ec_public_methods) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (PyModule_AddFunctions(module, kth_py_native_wallet_ec_private_methods) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (PyModule_AddFunctions(module, kth_py_native_chain_operation_methods) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (PyModule_AddFunctions(module, kth_py_native_chain_operation_list_methods) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (PyModule_AddFunctions(module, kth_py_native_wallet_hd_public_methods) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (PyModule_AddFunctions(module, kth_py_native_wallet_hd_private_methods) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (PyModule_AddFunctions(module, kth_py_native_chain_stealth_compact_methods) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (PyModule_AddFunctions(module, kth_py_native_chain_stealth_compact_list_methods) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (PyModule_AddFunctions(module, kth_py_native_chain_history_compact_methods) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (PyModule_AddFunctions(module, kth_py_native_chain_history_compact_list_methods) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (PyModule_AddFunctions(module, kth_py_native_chain_double_spend_proof_methods) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (PyModule_AddFunctions(module, kth_py_native_chain_double_spend_proof_spender_methods) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (PyModule_AddFunctions(module, kth_py_native_chain_token_data_methods) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (PyModule_AddFunctions(module, kth_py_native_chain_utxo_methods) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (PyModule_AddFunctions(module, kth_py_native_chain_utxo_list_methods) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (PyModule_AddFunctions(module, kth_py_native_wallet_wallet_data_methods) < 0) {
         Py_DECREF(module);
         return NULL;
     }

@@ -179,6 +179,7 @@ extensions = [
         ],
         sources=[
             'src/utils.cpp',
+            'src/binary.cpp',
             # Auto-generated chain class wrappers (v2 generator).
             'src/chain/header.cpp',
             'src/chain/block.cpp',
@@ -194,14 +195,36 @@ extensions = [
             'src/chain/input_list.cpp',
             'src/chain/transaction.cpp',
             'src/chain/transaction_list.cpp',
-            # Hand-written wrappers still pending migration.
-            'src/chain/merkle_block.cpp',
-            'src/chain/chain.cpp',
-            'src/chain/history.cpp',
+            # Auto-generated (v2 generator) — chain extensions landed in the
+            # 0.80.0 sync.
             'src/chain/compact_block.cpp',
+            'src/chain/merkle_block.cpp',
             'src/chain/stealth_compact.cpp',
             'src/chain/stealth_compact_list.cpp',
+            'src/chain/history_compact.cpp',
+            'src/chain/history_compact_list.cpp',
+            'src/chain/double_spend_proof.cpp',
+            'src/chain/double_spend_proof_spender.cpp',
+            'src/chain/get_blocks.cpp',
+            'src/chain/get_headers.cpp',
+            'src/chain/operation.cpp',
+            'src/chain/operation_list.cpp',
+            'src/chain/prefilled_transaction.cpp',
+            'src/chain/prefilled_transaction_list.cpp',
+            'src/chain/token_data.cpp',
+            'src/chain/utxo.cpp',
+            'src/chain/utxo_list.cpp',
+            # Auto-generated (v2 generator) — wallet classes.
             'src/wallet/payment_address.cpp',
+            'src/wallet/payment_address_list.cpp',
+            'src/wallet/ec_private.cpp',
+            'src/wallet/ec_public.cpp',
+            'src/wallet/hd_private.cpp',
+            'src/wallet/hd_public.cpp',
+            'src/wallet/wallet_data.cpp',
+            # Hand-written async-callback bridge to safe_chain; not
+            # generator-driven because the shape doesn't fit ClassConfig.
+            'src/chain/chain.cpp',
             'src/node.cpp',
             'src/p2p/p2p.cpp',
             'src/config/database_settings.cpp',

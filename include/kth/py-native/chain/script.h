@@ -28,8 +28,10 @@ PyObject* kth_py_native_chain_script_empty(PyObject* self, PyObject* arg);
 PyObject* kth_py_native_chain_script_size(PyObject* self, PyObject* arg);
 PyObject* kth_py_native_chain_script_front(PyObject* self, PyObject* arg);
 PyObject* kth_py_native_chain_script_back(PyObject* self, PyObject* arg);
+PyObject* kth_py_native_chain_script_at(PyObject* self, PyObject* args, PyObject* kwds);
 PyObject* kth_py_native_chain_script_operations(PyObject* self, PyObject* arg);
 PyObject* kth_py_native_chain_script_first_operation(PyObject* self, PyObject* arg);
+PyObject* kth_py_native_chain_script_create_endorsement(PyObject* self, PyObject* args, PyObject* kwds);
 PyObject* kth_py_native_chain_script_is_push_only(PyObject* self, PyObject* arg);
 PyObject* kth_py_native_chain_script_is_relaxed_push(PyObject* self, PyObject* arg);
 PyObject* kth_py_native_chain_script_is_coinbase_pattern(PyObject* self, PyObject* args, PyObject* kwds);
@@ -46,6 +48,7 @@ PyObject* kth_py_native_chain_script_is_sign_script_hash_pattern(PyObject* self,
 PyObject* kth_py_native_chain_script_to_null_data_pattern(PyObject* self, PyObject* args, PyObject* kwds);
 PyObject* kth_py_native_chain_script_to_pay_public_key_pattern(PyObject* self, PyObject* args, PyObject* kwds);
 PyObject* kth_py_native_chain_script_to_pay_public_key_hash_pattern(PyObject* self, PyObject* args, PyObject* kwds);
+PyObject* kth_py_native_chain_script_to_pay_public_key_hash_pattern_unlocking(PyObject* self, PyObject* args, PyObject* kwds);
 PyObject* kth_py_native_chain_script_to_pay_public_key_hash_pattern_unlocking_placeholder(PyObject* self, PyObject* args, PyObject* kwds);
 PyObject* kth_py_native_chain_script_to_pay_script_hash_pattern_unlocking_placeholder(PyObject* self, PyObject* args, PyObject* kwds);
 PyObject* kth_py_native_chain_script_to_pay_script_hash_pattern(PyObject* self, PyObject* args, PyObject* kwds);
@@ -53,7 +56,8 @@ PyObject* kth_py_native_chain_script_to_pay_script_hash_32_pattern(PyObject* sel
 PyObject* kth_py_native_chain_script_to_pay_multisig_pattern_ec_compressed_list(PyObject* self, PyObject* args, PyObject* kwds);
 PyObject* kth_py_native_chain_script_to_pay_multisig_pattern_data_stack(PyObject* self, PyObject* args, PyObject* kwds);
 PyObject* kth_py_native_chain_script_pattern(PyObject* self, PyObject* arg);
-PyObject* kth_py_native_chain_script_output_pattern(PyObject* self, PyObject* arg);
+PyObject* kth_py_native_chain_script_output_pattern_simple(PyObject* self, PyObject* arg);
+PyObject* kth_py_native_chain_script_output_pattern(PyObject* self, PyObject* args, PyObject* kwds);
 PyObject* kth_py_native_chain_script_input_pattern(PyObject* self, PyObject* arg);
 PyObject* kth_py_native_chain_script_sigops(PyObject* self, PyObject* args, PyObject* kwds);
 PyObject* kth_py_native_chain_script_is_unspendable(PyObject* self, PyObject* arg);
