@@ -63,7 +63,8 @@ PyObject* kth_py_native_chain_transaction_is_final(PyObject* self, PyObject* arg
 PyObject* kth_py_native_chain_transaction_is_locked(PyObject* self, PyObject* args, PyObject* kwds);
 PyObject* kth_py_native_chain_transaction_is_locktime_conflict(PyObject* self, PyObject* arg);
 PyObject* kth_py_native_chain_transaction_min_tx_size(PyObject* self, PyObject* args, PyObject* kwds);
-PyObject* kth_py_native_chain_transaction_is_standard(PyObject* self, PyObject* arg);
+PyObject* kth_py_native_chain_transaction_is_standard_simple(PyObject* self, PyObject* arg);
+PyObject* kth_py_native_chain_transaction_is_standard(PyObject* self, PyObject* args, PyObject* kwds);
 
 extern PyMethodDef kth_py_native_chain_transaction_methods[];
 

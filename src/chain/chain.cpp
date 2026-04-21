@@ -87,7 +87,7 @@ PyObject* kth_py_native_chain_fetch_block_by_hash(PyObject* self, PyObject* args
 // fetch_merkle_block
 // -------------------------------------------------------------------
 
-void chain_fetch_merkle_block_handler(kth_chain_t chain, void* ctx, kth_error_code_t error, kth_merkleblock_t merkle, kth_size_t h) {
+void chain_fetch_merkle_block_handler(kth_chain_t chain, void* ctx, kth_error_code_t error, kth_merkle_block_mut_t merkle, kth_size_t h) {
     PyObject* py_callback = (PyObject*)ctx;
 
     PyObject* py_merkle = to_py_obj(merkle);
@@ -247,7 +247,7 @@ PyObject* kth_py_native_chain_fetch_last_height(PyObject* self, PyObject* args) 
 // chain_fetch_history
 // ---------------------------------------------------------
 
-void chain_fetch_history_handler(kth_chain_t chain, void* ctx, kth_error_code_t error, kth_history_compact_list_t history_list) {
+void chain_fetch_history_handler(kth_chain_t chain, void* ctx, kth_error_code_t error, kth_history_compact_list_mut_t history_list) {
 
     PyObject* py_callback = (PyObject*)ctx;
     PyObject* py_history_list = to_py_obj(history_list);
@@ -282,7 +282,7 @@ PyObject* kth_py_native_chain_fetch_history(PyObject* self, PyObject* args) {
 
     Py_XINCREF(py_callback);         /* Add a reference to new callback */
 
-    kth_payment_address_t pa = kth_wallet_payment_address_construct_from_string(address_str);
+    kth_payment_address_mut_t pa = kth_wallet_payment_address_construct_from_address(address_str);
     kth_chain_async_history(chain, py_callback, pa, py_limit, py_from_height, chain_fetch_history_handler);
     // payment_address_destruct(pa); //TODO!
 
@@ -333,7 +333,7 @@ PyObject* kth_py_native_chain_fetch_block_height(PyObject* self, PyObject* args)
 // stealth_history
 // ---------------------------------------------------------
 
-void chain_stealth_fetch_handler(kth_chain_t chain, void* ctx, kth_error_code_t error, kth_stealth_compact_list_t stealth_list) {
+void chain_stealth_fetch_handler(kth_chain_t chain, void* ctx, kth_error_code_t error, kth_stealth_compact_list_mut_t stealth_list) {
     PyObject* py_callback = (PyObject*)ctx;
 
     PyObject* py_stealth_list = to_py_obj(stealth_list);
@@ -568,7 +568,7 @@ PyObject* kth_py_native_chain_validate_tx(PyObject* self, PyObject* args){
 }
 
 
-void chain_fetch_compact_block_handler(kth_chain_t chain, void* ctx, kth_error_code_t error , kth_compact_block_t compact, kth_size_t h) {
+void chain_fetch_compact_block_handler(kth_chain_t chain, void* ctx, kth_error_code_t error , kth_compact_block_mut_t compact, kth_size_t h) {
     PyObject* py_callback = (PyObject*)ctx;
     PyObject* py_compact = to_py_obj(compact);
 

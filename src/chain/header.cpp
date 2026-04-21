@@ -25,12 +25,17 @@ void kth_py_native_chain_header_capsule_dtor(PyObject* capsule) {
 
 PyObject*
 kth_py_native_chain_header_construct_default(PyObject* self, PyObject* Py_UNUSED(args)) {
-    auto result = kth_chain_header_construct_default();
+    auto const result = kth_chain_header_construct_default();
     if (result == NULL) {
         PyErr_SetString(PyExc_MemoryError, "kth: allocation failed");
         return NULL;
     }
-    return PyCapsule_New((void*)result, KTH_PY_CAPSULE_CHAIN_HEADER, kth_py_native_chain_header_capsule_dtor);
+    PyObject* capsule = PyCapsule_New((void*)result, KTH_PY_CAPSULE_CHAIN_HEADER, kth_py_native_chain_header_capsule_dtor);
+    if (capsule == NULL) {
+        kth_chain_header_destruct(result);
+        return NULL;
+    }
+    return capsule;
 }
 
 PyObject*
@@ -48,7 +53,12 @@ kth_py_native_chain_header_construct_from_data(PyObject* self, PyObject* args, P
         PyErr_Format(PyExc_RuntimeError, "kth error code %d", (int)result);
         return NULL;
     }
-    return PyCapsule_New((void*)out, KTH_PY_CAPSULE_CHAIN_HEADER, kth_py_native_chain_header_capsule_dtor);
+    PyObject* capsule = PyCapsule_New((void*)out, KTH_PY_CAPSULE_CHAIN_HEADER, kth_py_native_chain_header_capsule_dtor);
+    if (capsule == NULL) {
+        kth_chain_header_destruct(out);
+        return NULL;
+    }
+    return capsule;
 }
 
 PyObject*
@@ -77,12 +87,17 @@ kth_py_native_chain_header_construct(PyObject* self, PyObject* args, PyObject* k
     }
     kth_hash_t merkle;
     memcpy(merkle.hash, merkle_buf, (size_t)KTH_BITCOIN_HASH_SIZE);
-    auto result = kth_chain_header_construct((uint32_t)version, previous_block_hash, merkle, (uint32_t)timestamp, (uint32_t)bits, (uint32_t)nonce);
+    auto const result = kth_chain_header_construct((uint32_t)version, previous_block_hash, merkle, (uint32_t)timestamp, (uint32_t)bits, (uint32_t)nonce);
     if (result == NULL) {
         PyErr_SetString(PyExc_MemoryError, "kth: allocation failed");
         return NULL;
     }
-    return PyCapsule_New((void*)result, KTH_PY_CAPSULE_CHAIN_HEADER, kth_py_native_chain_header_capsule_dtor);
+    PyObject* capsule = PyCapsule_New((void*)result, KTH_PY_CAPSULE_CHAIN_HEADER, kth_py_native_chain_header_capsule_dtor);
+    if (capsule == NULL) {
+        kth_chain_header_destruct(result);
+        return NULL;
+    }
+    return capsule;
 }
 
 PyObject*
@@ -90,12 +105,17 @@ kth_py_native_chain_header_copy(PyObject* self, PyObject* py_arg0) {
     PyObject* py_self = py_arg0;
     kth_header_const_t self_handle = (kth_header_const_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_CHAIN_HEADER);
     if (self_handle == NULL) return NULL;
-    auto result = kth_chain_header_copy(self_handle);
+    auto const result = kth_chain_header_copy(self_handle);
     if (result == NULL) {
         PyErr_SetString(PyExc_MemoryError, "kth: allocation failed");
         return NULL;
     }
-    return PyCapsule_New((void*)result, KTH_PY_CAPSULE_CHAIN_HEADER, kth_py_native_chain_header_capsule_dtor);
+    PyObject* capsule = PyCapsule_New((void*)result, KTH_PY_CAPSULE_CHAIN_HEADER, kth_py_native_chain_header_capsule_dtor);
+    if (capsule == NULL) {
+        kth_chain_header_destruct(result);
+        return NULL;
+    }
+    return capsule;
 }
 
 PyObject*
@@ -119,7 +139,7 @@ kth_py_native_chain_header_to_data(PyObject* self, PyObject* args, PyObject* kwd
     kth_header_const_t self_handle = (kth_header_const_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_CHAIN_HEADER);
     if (self_handle == NULL) return NULL;
     kth_size_t out_size = 0;
-    auto result = kth_chain_header_to_data(self_handle, (kth_bool_t)wire, &out_size);
+    auto const result = kth_chain_header_to_data(self_handle, (kth_bool_t)wire, &out_size);
     if (result == NULL) {
         PyErr_SetString(PyExc_RuntimeError, "kth: serialization failed");
         return NULL;
@@ -139,7 +159,7 @@ kth_py_native_chain_header_serialized_size(PyObject* self, PyObject* args, PyObj
     }
     kth_header_const_t self_handle = (kth_header_const_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_CHAIN_HEADER);
     if (self_handle == NULL) return NULL;
-    auto result = kth_chain_header_serialized_size(self_handle, (kth_bool_t)wire);
+    auto const result = kth_chain_header_serialized_size(self_handle, (kth_bool_t)wire);
     return PyLong_FromSize_t((size_t)result);
 }
 
@@ -246,7 +266,7 @@ kth_py_native_chain_header_hash_pow(PyObject* self, PyObject* py_arg0) {
     PyObject* py_self = py_arg0;
     kth_header_const_t self_handle = (kth_header_const_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_CHAIN_HEADER);
     if (self_handle == NULL) return NULL;
-    auto result = kth_chain_header_hash_pow(self_handle);
+    auto const result = kth_chain_header_hash_pow(self_handle);
     return Py_BuildValue("y#", result.hash, (Py_ssize_t)KTH_BITCOIN_HASH_SIZE);
 }
 
@@ -260,7 +280,7 @@ kth_py_native_chain_header_is_valid_proof_of_work(PyObject* self, PyObject* args
     }
     kth_header_const_t self_handle = (kth_header_const_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_CHAIN_HEADER);
     if (self_handle == NULL) return NULL;
-    auto result = kth_chain_header_is_valid_proof_of_work(self_handle, (kth_bool_t)retarget);
+    auto const result = kth_chain_header_is_valid_proof_of_work(self_handle, (kth_bool_t)retarget);
     return PyBool_FromLong((long)result);
 }
 
@@ -274,7 +294,7 @@ kth_py_native_chain_header_check(PyObject* self, PyObject* args, PyObject* kwds)
     }
     kth_header_const_t self_handle = (kth_header_const_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_CHAIN_HEADER);
     if (self_handle == NULL) return NULL;
-    auto result = kth_chain_header_check(self_handle, (kth_bool_t)retarget);
+    auto const result = kth_chain_header_check(self_handle, (kth_bool_t)retarget);
     return PyLong_FromLong((long)result);
 }
 
@@ -290,7 +310,7 @@ kth_py_native_chain_header_accept(PyObject* self, PyObject* args, PyObject* kwds
     if (self_handle == NULL) return NULL;
     kth_chain_state_const_t state_handle = (kth_chain_state_const_t)PyCapsule_GetPointer(py_state, KTH_PY_CAPSULE_CHAIN_CHAIN_STATE);
     if (state_handle == NULL) return NULL;
-    auto result = kth_chain_header_accept(self_handle, state_handle);
+    auto const result = kth_chain_header_accept(self_handle, state_handle);
     return PyLong_FromLong((long)result);
 }
 
@@ -315,7 +335,7 @@ kth_py_native_chain_header_equals(PyObject* self, PyObject* args, PyObject* kwds
     if (self_handle == NULL) return NULL;
     kth_header_const_t other_handle = (kth_header_const_t)PyCapsule_GetPointer(py_other, KTH_PY_CAPSULE_CHAIN_HEADER);
     if (other_handle == NULL) return NULL;
-    auto result = kth_chain_header_equals(self_handle, other_handle);
+    auto const result = kth_chain_header_equals(self_handle, other_handle);
     return PyBool_FromLong((long)result);
 }
 
@@ -324,13 +344,13 @@ kth_py_native_chain_header_is_valid(PyObject* self, PyObject* py_arg0) {
     PyObject* py_self = py_arg0;
     kth_header_const_t self_handle = (kth_header_const_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_CHAIN_HEADER);
     if (self_handle == NULL) return NULL;
-    auto result = kth_chain_header_is_valid(self_handle);
+    auto const result = kth_chain_header_is_valid(self_handle);
     return PyBool_FromLong((long)result);
 }
 
 PyObject*
 kth_py_native_chain_header_satoshi_fixed_size(PyObject* self, PyObject* Py_UNUSED(args)) {
-    auto result = kth_chain_header_satoshi_fixed_size();
+    auto const result = kth_chain_header_satoshi_fixed_size();
     return PyLong_FromSize_t((size_t)result);
 }
 
@@ -339,7 +359,7 @@ kth_py_native_chain_header_version(PyObject* self, PyObject* py_arg0) {
     PyObject* py_self = py_arg0;
     kth_header_const_t self_handle = (kth_header_const_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_CHAIN_HEADER);
     if (self_handle == NULL) return NULL;
-    auto result = kth_chain_header_version(self_handle);
+    auto const result = kth_chain_header_version(self_handle);
     return PyLong_FromUnsignedLongLong((unsigned long long)result);
 }
 
@@ -348,7 +368,7 @@ kth_py_native_chain_header_previous_block_hash(PyObject* self, PyObject* py_arg0
     PyObject* py_self = py_arg0;
     kth_header_const_t self_handle = (kth_header_const_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_CHAIN_HEADER);
     if (self_handle == NULL) return NULL;
-    auto result = kth_chain_header_previous_block_hash(self_handle);
+    auto const result = kth_chain_header_previous_block_hash(self_handle);
     return Py_BuildValue("y#", result.hash, (Py_ssize_t)KTH_BITCOIN_HASH_SIZE);
 }
 
@@ -357,7 +377,7 @@ kth_py_native_chain_header_merkle(PyObject* self, PyObject* py_arg0) {
     PyObject* py_self = py_arg0;
     kth_header_const_t self_handle = (kth_header_const_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_CHAIN_HEADER);
     if (self_handle == NULL) return NULL;
-    auto result = kth_chain_header_merkle(self_handle);
+    auto const result = kth_chain_header_merkle(self_handle);
     return Py_BuildValue("y#", result.hash, (Py_ssize_t)KTH_BITCOIN_HASH_SIZE);
 }
 
@@ -366,7 +386,7 @@ kth_py_native_chain_header_timestamp(PyObject* self, PyObject* py_arg0) {
     PyObject* py_self = py_arg0;
     kth_header_const_t self_handle = (kth_header_const_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_CHAIN_HEADER);
     if (self_handle == NULL) return NULL;
-    auto result = kth_chain_header_timestamp(self_handle);
+    auto const result = kth_chain_header_timestamp(self_handle);
     return PyLong_FromUnsignedLongLong((unsigned long long)result);
 }
 
@@ -375,7 +395,7 @@ kth_py_native_chain_header_bits(PyObject* self, PyObject* py_arg0) {
     PyObject* py_self = py_arg0;
     kth_header_const_t self_handle = (kth_header_const_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_CHAIN_HEADER);
     if (self_handle == NULL) return NULL;
-    auto result = kth_chain_header_bits(self_handle);
+    auto const result = kth_chain_header_bits(self_handle);
     return PyLong_FromUnsignedLongLong((unsigned long long)result);
 }
 
@@ -384,7 +404,7 @@ kth_py_native_chain_header_nonce(PyObject* self, PyObject* py_arg0) {
     PyObject* py_self = py_arg0;
     kth_header_const_t self_handle = (kth_header_const_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_CHAIN_HEADER);
     if (self_handle == NULL) return NULL;
-    auto result = kth_chain_header_nonce(self_handle);
+    auto const result = kth_chain_header_nonce(self_handle);
     return PyLong_FromUnsignedLongLong((unsigned long long)result);
 }
 
@@ -393,7 +413,7 @@ kth_py_native_chain_header_is_valid_timestamp(PyObject* self, PyObject* py_arg0)
     PyObject* py_self = py_arg0;
     kth_header_const_t self_handle = (kth_header_const_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_CHAIN_HEADER);
     if (self_handle == NULL) return NULL;
-    auto result = kth_chain_header_is_valid_timestamp(self_handle);
+    auto const result = kth_chain_header_is_valid_timestamp(self_handle);
     return PyBool_FromLong((long)result);
 }
 
