@@ -78,7 +78,7 @@ kth_py_native_chain_get_blocks_construct(PyObject* self, PyObject* args, PyObjec
     }
     kth_hash_t stop;
     memcpy(stop.hash, stop_buf, (size_t)KTH_BITCOIN_HASH_SIZE);
-    auto const result = kth_chain_get_blocks_construct(start_handle, stop);
+    auto const result = kth_chain_get_blocks_construct(start_handle, &stop);
     if (result == NULL) {
         PyErr_SetString(PyExc_MemoryError, "kth: allocation failed");
         return NULL;
@@ -198,7 +198,7 @@ kth_py_native_chain_get_blocks_set_stop_hash(PyObject* self, PyObject* args, PyO
     }
     kth_hash_t value;
     memcpy(value.hash, value_buf, (size_t)KTH_BITCOIN_HASH_SIZE);
-    kth_chain_get_blocks_set_stop_hash(self_handle, value);
+    kth_chain_get_blocks_set_stop_hash(self_handle, &value);
     Py_RETURN_NONE;
 }
 

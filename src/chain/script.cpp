@@ -377,7 +377,8 @@ kth_py_native_chain_script_create_endorsement(PyObject* self, PyObject* args, Py
     if (tx_handle == NULL) return NULL;
     uint8_t* out = NULL;
     kth_size_t out_size = 0;
-    kth_error_code_t result = kth_chain_script_create_endorsement(secret, prevout_script_handle, tx_handle, (uint32_t)input_index, (uint8_t)sighash_type, (kth_script_flags_t)active_flags, (uint64_t)value, (kth_endorsement_type_t)type, &out, &out_size);
+    kth_error_code_t result = kth_chain_script_create_endorsement(&secret, prevout_script_handle, tx_handle, (uint32_t)input_index, (uint8_t)sighash_type, (kth_script_flags_t)active_flags, (uint64_t)value, (kth_endorsement_type_t)type, &out, &out_size);
+    kth_core_secure_zero((void*)&secret, sizeof(kth_hash_t));
     if (result != kth_ec_success) {
         PyErr_Format(PyExc_RuntimeError, "kth error code %d", (int)result);
         return NULL;
@@ -569,7 +570,7 @@ kth_py_native_chain_script_to_pay_public_key_hash_pattern(PyObject* self, PyObje
     }
     kth_shorthash_t hash;
     memcpy(hash.hash, hash_buf, (size_t)KTH_BITCOIN_SHORT_HASH_SIZE);
-    auto const result = kth_chain_script_to_pay_public_key_hash_pattern(hash);
+    auto const result = kth_chain_script_to_pay_public_key_hash_pattern(&hash);
     if (result == NULL) {
         PyErr_SetString(PyExc_RuntimeError, "kth: NULL list returned");
         return NULL;
@@ -674,7 +675,7 @@ kth_py_native_chain_script_to_pay_script_hash_pattern(PyObject* self, PyObject* 
     }
     kth_shorthash_t hash;
     memcpy(hash.hash, hash_buf, (size_t)KTH_BITCOIN_SHORT_HASH_SIZE);
-    auto const result = kth_chain_script_to_pay_script_hash_pattern(hash);
+    auto const result = kth_chain_script_to_pay_script_hash_pattern(&hash);
     if (result == NULL) {
         PyErr_SetString(PyExc_RuntimeError, "kth: NULL list returned");
         return NULL;
@@ -701,7 +702,7 @@ kth_py_native_chain_script_to_pay_script_hash_32_pattern(PyObject* self, PyObjec
     }
     kth_hash_t hash;
     memcpy(hash.hash, hash_buf, (size_t)KTH_BITCOIN_HASH_SIZE);
-    auto const result = kth_chain_script_to_pay_script_hash_32_pattern(hash);
+    auto const result = kth_chain_script_to_pay_script_hash_32_pattern(&hash);
     if (result == NULL) {
         PyErr_SetString(PyExc_RuntimeError, "kth: NULL list returned");
         return NULL;

@@ -52,7 +52,7 @@ kth_py_native_wallet_hd_public_construct_from_public_key(PyObject* self, PyObjec
     }
     kth_hd_key_t public_key;
     memcpy(public_key.data, public_key_buf, (size_t)KTH_HD_KEY_SIZE);
-    auto const result = kth_wallet_hd_public_construct_from_public_key(public_key);
+    auto const result = kth_wallet_hd_public_construct_from_public_key(&public_key);
     if (result == NULL) {
         PyErr_SetString(PyExc_MemoryError, "kth: allocation failed");
         return NULL;
@@ -80,7 +80,7 @@ kth_py_native_wallet_hd_public_construct_from_public_key_prefix(PyObject* self, 
     }
     kth_hd_key_t public_key;
     memcpy(public_key.data, public_key_buf, (size_t)KTH_HD_KEY_SIZE);
-    auto const result = kth_wallet_hd_public_construct_from_public_key_prefix(public_key, (uint32_t)prefix);
+    auto const result = kth_wallet_hd_public_construct_from_public_key_prefix(&public_key, (uint32_t)prefix);
     if (result == NULL) {
         PyErr_SetString(PyExc_MemoryError, "kth: allocation failed");
         return NULL;

@@ -52,7 +52,7 @@ kth_py_native_wallet_payment_address_construct_from_decoded(PyObject* self, PyOb
     }
     kth_payment_t decoded;
     memcpy(decoded.hash, decoded_buf, (size_t)KTH_BITCOIN_PAYMENT_SIZE);
-    auto const result = kth_wallet_payment_address_construct_from_decoded(decoded);
+    auto const result = kth_wallet_payment_address_construct_from_decoded(&decoded);
     if (result == NULL) {
         PyErr_SetString(PyExc_MemoryError, "kth: allocation failed");
         return NULL;
@@ -139,7 +139,7 @@ kth_py_native_wallet_payment_address_construct_from_short_hash_version(PyObject*
     }
     kth_shorthash_t short_hash;
     memcpy(short_hash.hash, short_hash_buf, (size_t)KTH_BITCOIN_SHORT_HASH_SIZE);
-    auto const result = kth_wallet_payment_address_construct_from_short_hash_version(short_hash, (uint8_t)version);
+    auto const result = kth_wallet_payment_address_construct_from_short_hash_version(&short_hash, (uint8_t)version);
     if (result == NULL) {
         PyErr_SetString(PyExc_MemoryError, "kth: allocation failed");
         return NULL;
@@ -167,7 +167,7 @@ kth_py_native_wallet_payment_address_construct_from_hash_version(PyObject* self,
     }
     kth_hash_t hash;
     memcpy(hash.hash, hash_buf, (size_t)KTH_BITCOIN_HASH_SIZE);
-    auto const result = kth_wallet_payment_address_construct_from_hash_version(hash, (uint8_t)version);
+    auto const result = kth_wallet_payment_address_construct_from_hash_version(&hash, (uint8_t)version);
     if (result == NULL) {
         PyErr_SetString(PyExc_MemoryError, "kth: allocation failed");
         return NULL;

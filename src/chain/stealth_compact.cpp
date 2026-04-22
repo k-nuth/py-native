@@ -77,7 +77,7 @@ kth_py_native_chain_stealth_compact_set_ephemeral_public_key_hash(PyObject* self
     }
     kth_hash_t value;
     memcpy(value.hash, value_buf, (size_t)KTH_BITCOIN_HASH_SIZE);
-    kth_chain_stealth_compact_set_ephemeral_public_key_hash(self_handle, value);
+    kth_chain_stealth_compact_set_ephemeral_public_key_hash(self_handle, &value);
     Py_RETURN_NONE;
 }
 
@@ -107,7 +107,7 @@ kth_py_native_chain_stealth_compact_set_public_key_hash(PyObject* self, PyObject
     }
     kth_shorthash_t value;
     memcpy(value.hash, value_buf, (size_t)KTH_BITCOIN_SHORT_HASH_SIZE);
-    kth_chain_stealth_compact_set_public_key_hash(self_handle, value);
+    kth_chain_stealth_compact_set_public_key_hash(self_handle, &value);
     Py_RETURN_NONE;
 }
 
@@ -137,7 +137,7 @@ kth_py_native_chain_stealth_compact_set_transaction_hash(PyObject* self, PyObjec
     }
     kth_hash_t value;
     memcpy(value.hash, value_buf, (size_t)KTH_BITCOIN_HASH_SIZE);
-    kth_chain_stealth_compact_set_transaction_hash(self_handle, value);
+    kth_chain_stealth_compact_set_transaction_hash(self_handle, &value);
     Py_RETURN_NONE;
 }
 

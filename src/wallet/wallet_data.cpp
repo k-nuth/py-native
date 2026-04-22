@@ -130,8 +130,10 @@ kth_py_native_wallet_wallet_data_encrypted_seed(PyObject* self, PyObject* py_arg
     PyObject* py_self = py_arg0;
     kth_wallet_data_const_t self_handle = (kth_wallet_data_const_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_WALLET_WALLET_DATA);
     if (self_handle == NULL) return NULL;
-    auto const result = kth_wallet_wallet_data_encrypted_seed(self_handle);
-    return Py_BuildValue("y#", result.hash, (Py_ssize_t)KTH_BITCOIN_ENCRYPTED_SEED_SIZE);
+    auto result = kth_wallet_wallet_data_encrypted_seed(self_handle);
+    PyObject* py_result = Py_BuildValue("y#", result.hash, (Py_ssize_t)KTH_BITCOIN_ENCRYPTED_SEED_SIZE);
+    kth_core_secure_zero((void*)&result, sizeof(kth_encrypted_seed_t));
+    return py_result;
 }
 
 PyObject*
@@ -151,7 +153,8 @@ kth_py_native_wallet_wallet_data_set_encrypted_seed(PyObject* self, PyObject* ar
     }
     kth_encrypted_seed_t value;
     memcpy(value.hash, value_buf, (size_t)KTH_BITCOIN_ENCRYPTED_SEED_SIZE);
-    kth_wallet_wallet_data_set_encrypted_seed(self_handle, value);
+    kth_wallet_wallet_data_set_encrypted_seed(self_handle, &value);
+    kth_core_secure_zero((void*)&value, sizeof(kth_encrypted_seed_t));
     Py_RETURN_NONE;
 }
 

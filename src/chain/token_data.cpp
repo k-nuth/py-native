@@ -99,7 +99,7 @@ kth_py_native_chain_token_data_set_id(PyObject* self, PyObject* args, PyObject* 
     }
     kth_hash_t value;
     memcpy(value.hash, value_buf, (size_t)KTH_BITCOIN_HASH_SIZE);
-    kth_chain_token_data_set_id(self_handle, value);
+    kth_chain_token_data_set_id(self_handle, &value);
     Py_RETURN_NONE;
 }
 
@@ -134,7 +134,7 @@ kth_py_native_chain_token_data_make_fungible(PyObject* self, PyObject* args, PyO
     }
     kth_hash_t id;
     memcpy(id.hash, id_buf, (size_t)KTH_BITCOIN_HASH_SIZE);
-    auto const result = kth_chain_token_make_fungible(id, (uint64_t)amount);
+    auto const result = kth_chain_token_make_fungible(&id, (uint64_t)amount);
     if (result == NULL) {
         PyErr_SetString(PyExc_RuntimeError, "kth: NULL handle returned");
         return NULL;
@@ -164,7 +164,7 @@ kth_py_native_chain_token_data_make_non_fungible(PyObject* self, PyObject* args,
     }
     kth_hash_t id;
     memcpy(id.hash, id_buf, (size_t)KTH_BITCOIN_HASH_SIZE);
-    auto const result = kth_chain_token_make_non_fungible(id, (kth_token_capability_t)capability, (uint8_t const*)commitment_buf, (kth_size_t)commitment_size);
+    auto const result = kth_chain_token_make_non_fungible(&id, (kth_token_capability_t)capability, (uint8_t const*)commitment_buf, (kth_size_t)commitment_size);
     if (result == NULL) {
         PyErr_SetString(PyExc_RuntimeError, "kth: NULL handle returned");
         return NULL;
@@ -195,7 +195,7 @@ kth_py_native_chain_token_data_make_both(PyObject* self, PyObject* args, PyObjec
     }
     kth_hash_t id;
     memcpy(id.hash, id_buf, (size_t)KTH_BITCOIN_HASH_SIZE);
-    auto const result = kth_chain_token_make_both(id, (uint64_t)amount, (kth_token_capability_t)capability, (uint8_t const*)commitment_buf, (kth_size_t)commitment_size);
+    auto const result = kth_chain_token_make_both(&id, (uint64_t)amount, (kth_token_capability_t)capability, (uint8_t const*)commitment_buf, (kth_size_t)commitment_size);
     if (result == NULL) {
         PyErr_SetString(PyExc_RuntimeError, "kth: NULL handle returned");
         return NULL;

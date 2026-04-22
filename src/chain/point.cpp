@@ -76,7 +76,7 @@ kth_py_native_chain_point_construct(PyObject* self, PyObject* args, PyObject* kw
     }
     kth_hash_t hash;
     memcpy(hash.hash, hash_buf, (size_t)KTH_BITCOIN_HASH_SIZE);
-    auto const result = kth_chain_point_construct(hash, (uint32_t)index);
+    auto const result = kth_chain_point_construct(&hash, (uint32_t)index);
     if (result == NULL) {
         PyErr_SetString(PyExc_MemoryError, "kth: allocation failed");
         return NULL;
@@ -224,7 +224,7 @@ kth_py_native_chain_point_set_hash(PyObject* self, PyObject* args, PyObject* kwd
     }
     kth_hash_t value;
     memcpy(value.hash, value_buf, (size_t)KTH_BITCOIN_HASH_SIZE);
-    kth_chain_point_set_hash(self_handle, value);
+    kth_chain_point_set_hash(self_handle, &value);
     Py_RETURN_NONE;
 }
 
