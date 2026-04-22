@@ -6,6 +6,7 @@
 
 #include <string.h>
 #include <kth/capi.h>
+#include <kth/capi/chain/token_data.h>
 #include <kth/py-native/capsule_names.h>
 #include <kth/py-native/utils.h>
 

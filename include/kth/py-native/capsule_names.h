@@ -40,6 +40,7 @@ extern "C" {
 #define KTH_PY_CAPSULE_CHAIN_INPUT "kth.chain.input"
 #define KTH_PY_CAPSULE_CHAIN_INPUT_LIST "kth.chain.input_list"
 #define KTH_PY_CAPSULE_CHAIN_MERKLE_BLOCK "kth.chain.merkle_block"
+#define KTH_PY_CAPSULE_CHAIN_METRICS "kth.chain.metrics"
 #define KTH_PY_CAPSULE_CHAIN_OPERATION "kth.chain.operation"
 #define KTH_PY_CAPSULE_CHAIN_OPERATION_LIST "kth.chain.operation_list"
 #define KTH_PY_CAPSULE_CHAIN_OUTPUT "kth.chain.output"
@@ -59,9 +60,14 @@ extern "C" {
 #define KTH_PY_CAPSULE_CHAIN_UTXO "kth.chain.utxo"
 #define KTH_PY_CAPSULE_CHAIN_UTXO_LIST "kth.chain.utxo_list"
 #define KTH_PY_CAPSULE_CORE_BINARY "kth.core.binary"
+#define KTH_PY_CAPSULE_CORE_BOOL_LIST "kth.core.bool_list"
 #define KTH_PY_CAPSULE_CORE_HASH_LIST "kth.core.hash_list"
 #define KTH_PY_CAPSULE_CORE_STRING_LIST "kth.core.string_list"
 #define KTH_PY_CAPSULE_CORE_U64_LIST "kth.core.u64_list"
+#define KTH_PY_CAPSULE_VM_DEBUG_SNAPSHOT "kth.vm.debug_snapshot"
+#define KTH_PY_CAPSULE_VM_DEBUG_SNAPSHOT_LIST "kth.vm.debug_snapshot_list"
+#define KTH_PY_CAPSULE_VM_INTERPRETER "kth.vm.interpreter"
+#define KTH_PY_CAPSULE_VM_PROGRAM "kth.vm.program"
 #define KTH_PY_CAPSULE_WALLET_EC_COMPRESSED_LIST "kth.wallet.ec_compressed_list"
 #define KTH_PY_CAPSULE_WALLET_EC_PRIVATE "kth.wallet.ec_private"
 #define KTH_PY_CAPSULE_WALLET_EC_PUBLIC "kth.wallet.ec_public"
@@ -103,6 +109,9 @@ void kth_py_native_chain_transaction_list_capsule_dtor(PyObject* capsule);
 void kth_py_native_chain_utxo_capsule_dtor(PyObject* capsule);
 void kth_py_native_chain_utxo_list_capsule_dtor(PyObject* capsule);
 void kth_py_native_core_binary_capsule_dtor(PyObject* capsule);
+void kth_py_native_vm_debug_snapshot_capsule_dtor(PyObject* capsule);
+void kth_py_native_vm_debug_snapshot_list_capsule_dtor(PyObject* capsule);
+void kth_py_native_vm_program_capsule_dtor(PyObject* capsule);
 void kth_py_native_wallet_ec_private_capsule_dtor(PyObject* capsule);
 void kth_py_native_wallet_ec_public_capsule_dtor(PyObject* capsule);
 void kth_py_native_wallet_hd_private_capsule_dtor(PyObject* capsule);

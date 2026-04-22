@@ -222,6 +222,11 @@ extensions = [
             'src/wallet/hd_private.cpp',
             'src/wallet/hd_public.cpp',
             'src/wallet/wallet_data.cpp',
+            # Auto-generated (v2 generator) — VM classes.
+            'src/vm/program.cpp',
+            'src/vm/interpreter.cpp',
+            'src/vm/debug_snapshot.cpp',
+            'src/vm/debug_snapshot_list.cpp',
             # Hand-written async-callback bridge to safe_chain; not
             # generator-driven because the shape doesn't fit ClassConfig.
             'src/chain/chain.cpp',

@@ -5,6 +5,7 @@
 #include <kth/py-native/chain/operation_list.h>
 
 #include <kth/capi.h>
+#include <kth/capi/chain/operation_list.h>
 #include <kth/py-native/capsule_names.h>
 #include <kth/py-native/utils.h>
 
