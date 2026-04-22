@@ -112,7 +112,7 @@ kth_py_native_wallet_ec_public_construct_from_compressed_point_compress(PyObject
     }
     kth_ec_compressed_t compressed_point;
     memcpy(compressed_point.data, compressed_point_buf, (size_t)KTH_EC_COMPRESSED_SIZE);
-    auto const result = kth_wallet_ec_public_construct_from_compressed_point_compress(compressed_point, (kth_bool_t)compress);
+    auto const result = kth_wallet_ec_public_construct_from_compressed_point_compress(&compressed_point, (kth_bool_t)compress);
     if (result == NULL) {
         PyErr_SetString(PyExc_MemoryError, "kth: allocation failed");
         return NULL;
@@ -140,7 +140,7 @@ kth_py_native_wallet_ec_public_construct_from_uncompressed_point_compress(PyObje
     }
     kth_ec_uncompressed_t uncompressed_point;
     memcpy(uncompressed_point.data, uncompressed_point_buf, (size_t)KTH_BITCOIN_EC_UNCOMPRESSED_SIZE);
-    auto const result = kth_wallet_ec_public_construct_from_uncompressed_point_compress(uncompressed_point, (kth_bool_t)compress);
+    auto const result = kth_wallet_ec_public_construct_from_uncompressed_point_compress(&uncompressed_point, (kth_bool_t)compress);
     if (result == NULL) {
         PyErr_SetString(PyExc_MemoryError, "kth: allocation failed");
         return NULL;

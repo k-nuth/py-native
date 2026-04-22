@@ -87,7 +87,7 @@ kth_py_native_chain_header_construct(PyObject* self, PyObject* args, PyObject* k
     }
     kth_hash_t merkle;
     memcpy(merkle.hash, merkle_buf, (size_t)KTH_BITCOIN_HASH_SIZE);
-    auto const result = kth_chain_header_construct((uint32_t)version, previous_block_hash, merkle, (uint32_t)timestamp, (uint32_t)bits, (uint32_t)nonce);
+    auto const result = kth_chain_header_construct((uint32_t)version, &previous_block_hash, &merkle, (uint32_t)timestamp, (uint32_t)bits, (uint32_t)nonce);
     if (result == NULL) {
         PyErr_SetString(PyExc_MemoryError, "kth: allocation failed");
         return NULL;
@@ -194,7 +194,7 @@ kth_py_native_chain_header_set_previous_block_hash(PyObject* self, PyObject* arg
     }
     kth_hash_t value;
     memcpy(value.hash, value_buf, (size_t)KTH_BITCOIN_HASH_SIZE);
-    kth_chain_header_set_previous_block_hash(self_handle, value);
+    kth_chain_header_set_previous_block_hash(self_handle, &value);
     Py_RETURN_NONE;
 }
 
@@ -215,7 +215,7 @@ kth_py_native_chain_header_set_merkle(PyObject* self, PyObject* args, PyObject* 
     }
     kth_hash_t value;
     memcpy(value.hash, value_buf, (size_t)KTH_BITCOIN_HASH_SIZE);
-    kth_chain_header_set_merkle(self_handle, value);
+    kth_chain_header_set_merkle(self_handle, &value);
     Py_RETURN_NONE;
 }
 

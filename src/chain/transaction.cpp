@@ -105,7 +105,7 @@ kth_py_native_chain_transaction_construct_from_transaction_hash(PyObject* self, 
     }
     kth_hash_t hash;
     memcpy(hash.hash, hash_buf, (size_t)KTH_BITCOIN_HASH_SIZE);
-    auto const result = kth_chain_transaction_construct_from_transaction_hash(x_handle, hash);
+    auto const result = kth_chain_transaction_construct_from_transaction_hash(x_handle, &hash);
     if (result == NULL) {
         PyErr_SetString(PyExc_MemoryError, "kth: allocation failed");
         return NULL;

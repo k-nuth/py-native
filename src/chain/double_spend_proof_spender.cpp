@@ -169,7 +169,7 @@ kth_py_native_chain_double_spend_proof_spender_set_prev_outs_hash(PyObject* self
     }
     kth_hash_t value;
     memcpy(value.hash, value_buf, (size_t)KTH_BITCOIN_HASH_SIZE);
-    kth_chain_double_spend_proof_spender_set_prev_outs_hash(self_handle, value);
+    kth_chain_double_spend_proof_spender_set_prev_outs_hash(self_handle, &value);
     Py_RETURN_NONE;
 }
 
@@ -199,7 +199,7 @@ kth_py_native_chain_double_spend_proof_spender_set_sequence_hash(PyObject* self,
     }
     kth_hash_t value;
     memcpy(value.hash, value_buf, (size_t)KTH_BITCOIN_HASH_SIZE);
-    kth_chain_double_spend_proof_spender_set_sequence_hash(self_handle, value);
+    kth_chain_double_spend_proof_spender_set_sequence_hash(self_handle, &value);
     Py_RETURN_NONE;
 }
 
@@ -229,7 +229,7 @@ kth_py_native_chain_double_spend_proof_spender_set_outputs_hash(PyObject* self, 
     }
     kth_hash_t value;
     memcpy(value.hash, value_buf, (size_t)KTH_BITCOIN_HASH_SIZE);
-    kth_chain_double_spend_proof_spender_set_outputs_hash(self_handle, value);
+    kth_chain_double_spend_proof_spender_set_outputs_hash(self_handle, &value);
     Py_RETURN_NONE;
 }
 

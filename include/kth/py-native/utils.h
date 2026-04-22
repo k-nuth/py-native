@@ -35,6 +35,11 @@ PyObject* to_py_str(char const* str);
 // `py_self` via `PyCapsule_SetContext`.
 void kth_py_native_borrowed_parent_dtor(PyObject* capsule);
 
+// The wallet-wrapper stack-scrub helper now lives in the C-API as
+// `kth_core_secure_zero` (kth/capi/secure_memory.h). Every high-level
+// binding shares the same portable implementation; removing the
+// py-native copy avoids drift across bindings.
+
 #ifdef __cplusplus
 } //extern "C"
 #endif

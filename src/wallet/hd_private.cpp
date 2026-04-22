@@ -74,7 +74,8 @@ kth_py_native_wallet_hd_private_construct_from_private_key(PyObject* self, PyObj
     }
     kth_hd_key_t private_key;
     memcpy(private_key.data, private_key_buf, (size_t)KTH_HD_KEY_SIZE);
-    auto const result = kth_wallet_hd_private_construct_from_private_key(private_key);
+    auto const result = kth_wallet_hd_private_construct_from_private_key(&private_key);
+    kth_core_secure_zero((void*)&private_key, sizeof(kth_hd_key_t));
     if (result == NULL) {
         PyErr_SetString(PyExc_MemoryError, "kth: allocation failed");
         return NULL;
@@ -102,7 +103,8 @@ kth_py_native_wallet_hd_private_construct_from_private_key_prefixes(PyObject* se
     }
     kth_hd_key_t private_key;
     memcpy(private_key.data, private_key_buf, (size_t)KTH_HD_KEY_SIZE);
-    auto const result = kth_wallet_hd_private_construct_from_private_key_prefixes(private_key, (uint64_t)prefixes);
+    auto const result = kth_wallet_hd_private_construct_from_private_key_prefixes(&private_key, (uint64_t)prefixes);
+    kth_core_secure_zero((void*)&private_key, sizeof(kth_hd_key_t));
     if (result == NULL) {
         PyErr_SetString(PyExc_MemoryError, "kth: allocation failed");
         return NULL;
@@ -130,7 +132,8 @@ kth_py_native_wallet_hd_private_construct_from_private_key_prefix(PyObject* self
     }
     kth_hd_key_t private_key;
     memcpy(private_key.data, private_key_buf, (size_t)KTH_HD_KEY_SIZE);
-    auto const result = kth_wallet_hd_private_construct_from_private_key_prefix(private_key, (uint32_t)prefix);
+    auto const result = kth_wallet_hd_private_construct_from_private_key_prefix(&private_key, (uint32_t)prefix);
+    kth_core_secure_zero((void*)&private_key, sizeof(kth_hd_key_t));
     if (result == NULL) {
         PyErr_SetString(PyExc_MemoryError, "kth: allocation failed");
         return NULL;
@@ -293,8 +296,10 @@ kth_py_native_wallet_hd_private_secret(PyObject* self, PyObject* py_arg0) {
     PyObject* py_self = py_arg0;
     kth_hd_private_const_t self_handle = (kth_hd_private_const_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_WALLET_HD_PRIVATE);
     if (self_handle == NULL) return NULL;
-    auto const result = kth_wallet_hd_private_secret(self_handle);
-    return Py_BuildValue("y#", result.hash, (Py_ssize_t)KTH_BITCOIN_HASH_SIZE);
+    auto result = kth_wallet_hd_private_secret(self_handle);
+    PyObject* py_result = Py_BuildValue("y#", result.hash, (Py_ssize_t)KTH_BITCOIN_HASH_SIZE);
+    kth_core_secure_zero((void*)&result, sizeof(kth_hash_t));
+    return py_result;
 }
 
 PyObject*
@@ -302,8 +307,10 @@ kth_py_native_wallet_hd_private_to_hd_key(PyObject* self, PyObject* py_arg0) {
     PyObject* py_self = py_arg0;
     kth_hd_private_const_t self_handle = (kth_hd_private_const_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_WALLET_HD_PRIVATE);
     if (self_handle == NULL) return NULL;
-    auto const result = kth_wallet_hd_private_to_hd_key(self_handle);
-    return Py_BuildValue("y#", result.data, (Py_ssize_t)KTH_HD_KEY_SIZE);
+    auto result = kth_wallet_hd_private_to_hd_key(self_handle);
+    PyObject* py_result = Py_BuildValue("y#", result.data, (Py_ssize_t)KTH_HD_KEY_SIZE);
+    kth_core_secure_zero((void*)&result, sizeof(kth_hd_key_t));
+    return py_result;
 }
 
 PyObject*
@@ -384,8 +391,10 @@ kth_py_native_wallet_hd_private_chain_code(PyObject* self, PyObject* py_arg0) {
     PyObject* py_self = py_arg0;
     kth_hd_private_const_t self_handle = (kth_hd_private_const_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_WALLET_HD_PRIVATE);
     if (self_handle == NULL) return NULL;
-    auto const result = kth_wallet_hd_private_chain_code(self_handle);
-    return Py_BuildValue("y#", result.hash, (Py_ssize_t)KTH_BITCOIN_HASH_SIZE);
+    auto result = kth_wallet_hd_private_chain_code(self_handle);
+    PyObject* py_result = Py_BuildValue("y#", result.hash, (Py_ssize_t)KTH_BITCOIN_HASH_SIZE);
+    kth_core_secure_zero((void*)&result, sizeof(kth_hash_t));
+    return py_result;
 }
 
 PyObject*
@@ -402,8 +411,10 @@ kth_py_native_wallet_hd_private_point(PyObject* self, PyObject* py_arg0) {
     PyObject* py_self = py_arg0;
     kth_hd_private_const_t self_handle = (kth_hd_private_const_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_WALLET_HD_PRIVATE);
     if (self_handle == NULL) return NULL;
-    auto const result = kth_wallet_hd_private_point(self_handle);
-    return Py_BuildValue("y#", result.data, (Py_ssize_t)KTH_EC_COMPRESSED_SIZE);
+    auto result = kth_wallet_hd_private_point(self_handle);
+    PyObject* py_result = Py_BuildValue("y#", result.data, (Py_ssize_t)KTH_EC_COMPRESSED_SIZE);
+    kth_core_secure_zero((void*)&result, sizeof(kth_ec_compressed_t));
+    return py_result;
 }
 
 PyMethodDef kth_py_native_wallet_hd_private_methods[] = {

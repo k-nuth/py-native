@@ -74,7 +74,8 @@ kth_py_native_wallet_ec_private_construct_from_wif_compressed_version(PyObject* 
     }
     kth_wif_compressed_t wif_compressed;
     memcpy(wif_compressed.data, wif_compressed_buf, (size_t)KTH_WIF_COMPRESSED_SIZE);
-    auto const result = kth_wallet_ec_private_construct_from_wif_compressed_version(wif_compressed, (uint8_t)version);
+    auto const result = kth_wallet_ec_private_construct_from_wif_compressed_version(&wif_compressed, (uint8_t)version);
+    kth_core_secure_zero((void*)&wif_compressed, sizeof(kth_wif_compressed_t));
     if (result == NULL) {
         PyErr_SetString(PyExc_MemoryError, "kth: allocation failed");
         return NULL;
@@ -102,7 +103,8 @@ kth_py_native_wallet_ec_private_construct_from_wif_uncompressed_version(PyObject
     }
     kth_wif_uncompressed_t wif_uncompressed;
     memcpy(wif_uncompressed.data, wif_uncompressed_buf, (size_t)KTH_WIF_UNCOMPRESSED_SIZE);
-    auto const result = kth_wallet_ec_private_construct_from_wif_uncompressed_version(wif_uncompressed, (uint8_t)version);
+    auto const result = kth_wallet_ec_private_construct_from_wif_uncompressed_version(&wif_uncompressed, (uint8_t)version);
+    kth_core_secure_zero((void*)&wif_uncompressed, sizeof(kth_wif_uncompressed_t));
     if (result == NULL) {
         PyErr_SetString(PyExc_MemoryError, "kth: allocation failed");
         return NULL;
@@ -131,7 +133,8 @@ kth_py_native_wallet_ec_private_construct_from_secret_version_compress(PyObject*
     }
     kth_hash_t secret;
     memcpy(secret.hash, secret_buf, (size_t)KTH_BITCOIN_HASH_SIZE);
-    auto const result = kth_wallet_ec_private_construct_from_secret_version_compress(secret, (uint16_t)version, (kth_bool_t)compress);
+    auto const result = kth_wallet_ec_private_construct_from_secret_version_compress(&secret, (uint16_t)version, (kth_bool_t)compress);
+    kth_core_secure_zero((void*)&secret, sizeof(kth_hash_t));
     if (result == NULL) {
         PyErr_SetString(PyExc_MemoryError, "kth: allocation failed");
         return NULL;
@@ -264,8 +267,10 @@ kth_py_native_wallet_ec_private_secret(PyObject* self, PyObject* py_arg0) {
     PyObject* py_self = py_arg0;
     kth_ec_private_const_t self_handle = (kth_ec_private_const_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_WALLET_EC_PRIVATE);
     if (self_handle == NULL) return NULL;
-    auto const result = kth_wallet_ec_private_secret(self_handle);
-    return Py_BuildValue("y#", result.hash, (Py_ssize_t)KTH_BITCOIN_HASH_SIZE);
+    auto result = kth_wallet_ec_private_secret(self_handle);
+    PyObject* py_result = Py_BuildValue("y#", result.hash, (Py_ssize_t)KTH_BITCOIN_HASH_SIZE);
+    kth_core_secure_zero((void*)&result, sizeof(kth_hash_t));
+    return py_result;
 }
 
 PyObject*
