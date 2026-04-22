@@ -5,6 +5,7 @@
 #include <kth/py-native/chain/prefilled_transaction_list.h>
 
 #include <kth/capi.h>
+#include <kth/capi/chain/prefilled_transaction_list.h>
 #include <kth/py-native/capsule_names.h>
 #include <kth/py-native/utils.h>
 
