@@ -67,6 +67,7 @@ extern "C" {
 #define KTH_PY_CAPSULE_VM_DEBUG_SNAPSHOT "kth.vm.debug_snapshot"
 #define KTH_PY_CAPSULE_VM_DEBUG_SNAPSHOT_LIST "kth.vm.debug_snapshot_list"
 #define KTH_PY_CAPSULE_VM_INTERPRETER "kth.vm.interpreter"
+#define KTH_PY_CAPSULE_VM_METRICS "kth.vm.metrics"
 #define KTH_PY_CAPSULE_VM_PROGRAM "kth.vm.program"
 #define KTH_PY_CAPSULE_WALLET_EC_COMPRESSED_LIST "kth.wallet.ec_compressed_list"
 #define KTH_PY_CAPSULE_WALLET_EC_PRIVATE "kth.wallet.ec_private"
@@ -111,6 +112,7 @@ void kth_py_native_chain_utxo_list_capsule_dtor(PyObject* capsule);
 void kth_py_native_core_binary_capsule_dtor(PyObject* capsule);
 void kth_py_native_vm_debug_snapshot_capsule_dtor(PyObject* capsule);
 void kth_py_native_vm_debug_snapshot_list_capsule_dtor(PyObject* capsule);
+void kth_py_native_vm_metrics_capsule_dtor(PyObject* capsule);
 void kth_py_native_vm_program_capsule_dtor(PyObject* capsule);
 void kth_py_native_wallet_ec_private_capsule_dtor(PyObject* capsule);
 void kth_py_native_wallet_ec_public_capsule_dtor(PyObject* capsule);

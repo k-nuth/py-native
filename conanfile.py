@@ -40,7 +40,7 @@ class KnuthPyNative(ConanFile):
     # Single unified Knuth package; previously this used the standalone
     # c-api/<ver>@kth/stable recipe, which no longer exists.
     def requirements(self):
-        self.requires("kth/0.81.1", transitive_headers=True, transitive_libs=True)
+        self.requires("kth/0.82.0", transitive_headers=True, transitive_libs=True)
 
     def generate(self):
         # Stage headers and static libs from kth AND all its transitive
