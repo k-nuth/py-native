@@ -62,6 +62,7 @@
 #include <kth/py-native/vm/debug_snapshot.h>
 #include <kth/py-native/vm/debug_snapshot_list.h>
 #include <kth/py-native/vm/interpreter.h>
+#include <kth/py-native/vm/metrics.h>
 #include <kth/py-native/wallet/wallet_data.h>
 // ── AUTO-GENERATED INCLUDES END ───────────────────────────────────────
 // `word_list.h` is the only hand-written binding still here — every
@@ -935,6 +936,7 @@ PyInit_kth_native(void) {
     KTH_REGISTER_METHODS(kth_py_native_vm_debug_snapshot_methods);
     KTH_REGISTER_METHODS(kth_py_native_vm_debug_snapshot_list_methods);
     KTH_REGISTER_METHODS(kth_py_native_vm_interpreter_methods);
+    KTH_REGISTER_METHODS(kth_py_native_vm_metrics_methods);
     KTH_REGISTER_METHODS(kth_py_native_wallet_wallet_data_methods);
 
 #undef KTH_REGISTER_METHODS

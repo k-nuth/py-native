@@ -227,6 +227,7 @@ extensions = [
             'src/vm/interpreter.cpp',
             'src/vm/debug_snapshot.cpp',
             'src/vm/debug_snapshot_list.cpp',
+            'src/vm/metrics.cpp',
             # Hand-written async-callback bridge to safe_chain; not
             # generator-driven because the shape doesn't fit ClassConfig.
             'src/chain/chain.cpp',

@@ -205,7 +205,7 @@ kth_py_native_vm_program_get_metrics(PyObject* self, PyObject* py_arg0) {
         PyErr_SetString(PyExc_RuntimeError, "kth: NULL handle returned");
         return NULL;
     }
-    PyObject* capsule = PyCapsule_New((void*)result, KTH_PY_CAPSULE_CHAIN_METRICS, kth_py_native_borrowed_parent_dtor);
+    PyObject* capsule = PyCapsule_New((void*)result, KTH_PY_CAPSULE_VM_METRICS, kth_py_native_borrowed_parent_dtor);
     if (capsule == NULL) return NULL;
     Py_INCREF(py_self);
     if (PyCapsule_SetContext(capsule, py_self) != 0) {
