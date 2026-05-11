@@ -43,7 +43,11 @@ PyObject* kth_py_native_vm_program_push(PyObject* self, PyObject* args, PyObject
 PyObject* kth_py_native_vm_program_push_move(PyObject* self, PyObject* args, PyObject* kwds);
 PyObject* kth_py_native_vm_program_push_copy(PyObject* self, PyObject* args, PyObject* kwds);
 PyObject* kth_py_native_vm_program_drop(PyObject* self, PyObject* arg);
-PyObject* kth_py_native_vm_program_pop(PyObject* self, PyObject* arg);
+PyObject* kth_py_native_vm_program_pop_simple(PyObject* self, PyObject* arg);
+PyObject* kth_py_native_vm_program_pop_number(PyObject* self, PyObject* args, PyObject* kwds);
+PyObject* kth_py_native_vm_program_pop_ternary(PyObject* self, PyObject* arg);
+PyObject* kth_py_native_vm_program_pop_big_number(PyObject* self, PyObject* args, PyObject* kwds);
+PyObject* kth_py_native_vm_program_pop_big_ternary(PyObject* self, PyObject* arg);
 PyObject* kth_py_native_vm_program_duplicate(PyObject* self, PyObject* args, PyObject* kwds);
 PyObject* kth_py_native_vm_program_swap(PyObject* self, PyObject* args, PyObject* kwds);
 PyObject* kth_py_native_vm_program_empty(PyObject* self, PyObject* arg);
@@ -54,6 +58,8 @@ PyObject* kth_py_native_vm_program_is_stack_overflow(PyObject* self, PyObject* a
 PyObject* kth_py_native_vm_program_if_(PyObject* self, PyObject* args, PyObject* kwds);
 PyObject* kth_py_native_vm_program_item(PyObject* self, PyObject* args, PyObject* kwds);
 PyObject* kth_py_native_vm_program_top(PyObject* self, PyObject* arg);
+PyObject* kth_py_native_vm_program_top_number(PyObject* self, PyObject* args, PyObject* kwds);
+PyObject* kth_py_native_vm_program_top_big_number(PyObject* self, PyObject* args, PyObject* kwds);
 PyObject* kth_py_native_vm_program_subscript(PyObject* self, PyObject* arg);
 PyObject* kth_py_native_vm_program_size(PyObject* self, PyObject* arg);
 PyObject* kth_py_native_vm_program_conditional_stack_size(PyObject* self, PyObject* arg);

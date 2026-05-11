@@ -161,6 +161,31 @@ kth_py_native_wallet_wallet_data_set_encrypted_seed(PyObject* self, PyObject* ar
 
 PyObject*
 kth_py_native_wallet_wallet_data_create(PyObject* self, PyObject* args, PyObject* kwds) {
+    static char* kwlist[] = {(char*)"password", (char*)"normalized_passphrase", (char*)"lexicon", NULL};
+    char const* password = NULL;
+    char const* normalized_passphrase = NULL;
+    PyObject* py_lexicon = NULL;
+    if ( ! PyArg_ParseTupleAndKeywords(args, kwds, "ssO", kwlist, &password, &normalized_passphrase, &py_lexicon)) {
+        return NULL;
+    }
+    kth_dictionary_const_t lexicon_handle = (kth_dictionary_const_t)PyCapsule_GetPointer(py_lexicon, KTH_PY_CAPSULE_WALLET_DICTIONARY);
+    if (lexicon_handle == NULL) return NULL;
+    kth_wallet_data_mut_t out = NULL;
+    kth_error_code_t result = kth_wallet_create(password, normalized_passphrase, lexicon_handle, &out);
+    if (result != kth_ec_success) {
+        PyErr_Format(PyExc_RuntimeError, "kth error code %d", (int)result);
+        return NULL;
+    }
+    PyObject* capsule = PyCapsule_New((void*)out, KTH_PY_CAPSULE_WALLET_WALLET_DATA, kth_py_native_wallet_wallet_data_capsule_dtor);
+    if (capsule == NULL) {
+        kth_wallet_wallet_data_destruct(out);
+        return NULL;
+    }
+    return capsule;
+}
+
+PyObject*
+kth_py_native_wallet_wallet_data_create_simple(PyObject* self, PyObject* args, PyObject* kwds) {
     static char* kwlist[] = {(char*)"password", (char*)"normalized_passphrase", NULL};
     char const* password = NULL;
     char const* normalized_passphrase = NULL;
@@ -168,7 +193,7 @@ kth_py_native_wallet_wallet_data_create(PyObject* self, PyObject* args, PyObject
         return NULL;
     }
     kth_wallet_data_mut_t out = NULL;
-    kth_error_code_t result = kth_wallet_create(password, normalized_passphrase, &out);
+    kth_error_code_t result = kth_wallet_create_simple(password, normalized_passphrase, &out);
     if (result != kth_ec_success) {
         PyErr_Format(PyExc_RuntimeError, "kth error code %d", (int)result);
         return NULL;
@@ -191,6 +216,7 @@ PyMethodDef kth_py_native_wallet_wallet_data_methods[] = {
     {"wallet_wallet_data_encrypted_seed", (PyCFunction)kth_py_native_wallet_wallet_data_encrypted_seed, METH_O, NULL},
     {"wallet_wallet_data_set_encrypted_seed", (PyCFunction)kth_py_native_wallet_wallet_data_set_encrypted_seed, METH_VARARGS | METH_KEYWORDS, NULL},
     {"wallet_wallet_data_create", (PyCFunction)kth_py_native_wallet_wallet_data_create, METH_VARARGS | METH_KEYWORDS, NULL},
+    {"wallet_wallet_data_create_simple", (PyCFunction)kth_py_native_wallet_wallet_data_create_simple, METH_VARARGS | METH_KEYWORDS, NULL},
     {NULL, NULL, 0, NULL}  // sentinel
 };
 

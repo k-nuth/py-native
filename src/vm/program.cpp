@@ -484,18 +484,168 @@ kth_py_native_vm_program_drop(PyObject* self, PyObject* py_arg0) {
 }
 
 PyObject*
-kth_py_native_vm_program_pop(PyObject* self, PyObject* py_arg0) {
+kth_py_native_vm_program_pop_simple(PyObject* self, PyObject* py_arg0) {
     PyObject* py_self = py_arg0;
     kth_program_mut_t self_handle = (kth_program_mut_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_VM_PROGRAM);
     if (self_handle == NULL) return NULL;
     kth_size_t out_size = 0;
-    auto const result = kth_vm_program_pop(self_handle, &out_size);
+    auto const result = kth_vm_program_pop_simple(self_handle, &out_size);
     if (result == NULL) {
         PyErr_SetString(PyExc_RuntimeError, "kth: serialization failed");
         return NULL;
     }
     PyObject* py_result = Py_BuildValue("y#", result, (Py_ssize_t)out_size);
     kth_core_destruct_array(result);
+    return py_result;
+}
+
+PyObject*
+kth_py_native_vm_program_pop_number(PyObject* self, PyObject* args, PyObject* kwds) {
+    static char* kwlist[] = {(char*)"self", (char*)"maximum_size", NULL};
+    PyObject* py_self = NULL;
+    Py_ssize_t maximum_size = 0;
+    if ( ! PyArg_ParseTupleAndKeywords(args, kwds, "On", kwlist, &py_self, &maximum_size)) {
+        return NULL;
+    }
+    kth_program_mut_t self_handle = (kth_program_mut_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_VM_PROGRAM);
+    if (self_handle == NULL) return NULL;
+    if (maximum_size < 0) {
+        PyErr_Format(PyExc_ValueError, "maximum_size must be non-negative, got %zd", maximum_size);
+        return NULL;
+    }
+    kth_number_mut_t out = NULL;
+    kth_error_code_t result = kth_vm_program_pop_number(self_handle, (kth_size_t)maximum_size, &out);
+    if (result != kth_ec_success) {
+        PyErr_Format(PyExc_RuntimeError, "kth error code %d", (int)result);
+        return NULL;
+    }
+    PyObject* capsule = PyCapsule_New((void*)out, KTH_PY_CAPSULE_VM_NUMBER, kth_py_native_vm_number_capsule_dtor);
+    if (capsule == NULL) {
+        kth_vm_number_destruct(out);
+        return NULL;
+    }
+    return capsule;
+}
+
+PyObject*
+kth_py_native_vm_program_pop_ternary(PyObject* self, PyObject* py_arg0) {
+    PyObject* py_self = py_arg0;
+    kth_program_mut_t self_handle = (kth_program_mut_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_VM_PROGRAM);
+    if (self_handle == NULL) return NULL;
+    kth_number_mut_t out_0 = NULL;
+    kth_number_mut_t out_1 = NULL;
+    kth_number_mut_t out_2 = NULL;
+    kth_error_code_t result = kth_vm_program_pop_ternary(self_handle, &out_0, &out_1, &out_2);
+    if (result != kth_ec_success) {
+        PyErr_Format(PyExc_RuntimeError, "kth error code %d", (int)result);
+        return NULL;
+    }
+    PyObject* capsule_0 = PyCapsule_New((void*)out_0, KTH_PY_CAPSULE_VM_NUMBER, kth_py_native_vm_number_capsule_dtor);
+    PyObject* capsule_1 = PyCapsule_New((void*)out_1, KTH_PY_CAPSULE_VM_NUMBER, kth_py_native_vm_number_capsule_dtor);
+    PyObject* capsule_2 = PyCapsule_New((void*)out_2, KTH_PY_CAPSULE_VM_NUMBER, kth_py_native_vm_number_capsule_dtor);
+    if (capsule_0 == NULL) {
+        kth_vm_number_destruct(out_0);
+        kth_vm_number_destruct(out_1);
+        kth_vm_number_destruct(out_2);
+        return NULL;
+    }
+    if (capsule_1 == NULL) {
+        kth_vm_number_destruct(out_1);
+        Py_DECREF(capsule_0);
+        kth_vm_number_destruct(out_2);
+        return NULL;
+    }
+    if (capsule_2 == NULL) {
+        kth_vm_number_destruct(out_2);
+        Py_DECREF(capsule_0);
+        Py_DECREF(capsule_1);
+        return NULL;
+    }
+    PyObject* py_result = Py_BuildValue("(OOO)", capsule_0, capsule_1, capsule_2);
+    if (py_result == NULL) {
+        Py_DECREF(capsule_0);
+        Py_DECREF(capsule_1);
+        Py_DECREF(capsule_2);
+        return NULL;
+    }
+    Py_DECREF(capsule_0);
+    Py_DECREF(capsule_1);
+    Py_DECREF(capsule_2);
+    return py_result;
+}
+
+PyObject*
+kth_py_native_vm_program_pop_big_number(PyObject* self, PyObject* args, PyObject* kwds) {
+    static char* kwlist[] = {(char*)"self", (char*)"maximum_size", NULL};
+    PyObject* py_self = NULL;
+    Py_ssize_t maximum_size = 0;
+    if ( ! PyArg_ParseTupleAndKeywords(args, kwds, "On", kwlist, &py_self, &maximum_size)) {
+        return NULL;
+    }
+    kth_program_mut_t self_handle = (kth_program_mut_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_VM_PROGRAM);
+    if (self_handle == NULL) return NULL;
+    if (maximum_size < 0) {
+        PyErr_Format(PyExc_ValueError, "maximum_size must be non-negative, got %zd", maximum_size);
+        return NULL;
+    }
+    kth_big_number_mut_t out = NULL;
+    kth_error_code_t result = kth_vm_program_pop_big_number(self_handle, (kth_size_t)maximum_size, &out);
+    if (result != kth_ec_success) {
+        PyErr_Format(PyExc_RuntimeError, "kth error code %d", (int)result);
+        return NULL;
+    }
+    PyObject* capsule = PyCapsule_New((void*)out, KTH_PY_CAPSULE_VM_BIG_NUMBER, kth_py_native_vm_big_number_capsule_dtor);
+    if (capsule == NULL) {
+        kth_vm_big_number_destruct(out);
+        return NULL;
+    }
+    return capsule;
+}
+
+PyObject*
+kth_py_native_vm_program_pop_big_ternary(PyObject* self, PyObject* py_arg0) {
+    PyObject* py_self = py_arg0;
+    kth_program_mut_t self_handle = (kth_program_mut_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_VM_PROGRAM);
+    if (self_handle == NULL) return NULL;
+    kth_big_number_mut_t out_0 = NULL;
+    kth_big_number_mut_t out_1 = NULL;
+    kth_big_number_mut_t out_2 = NULL;
+    kth_error_code_t result = kth_vm_program_pop_big_ternary(self_handle, &out_0, &out_1, &out_2);
+    if (result != kth_ec_success) {
+        PyErr_Format(PyExc_RuntimeError, "kth error code %d", (int)result);
+        return NULL;
+    }
+    PyObject* capsule_0 = PyCapsule_New((void*)out_0, KTH_PY_CAPSULE_VM_BIG_NUMBER, kth_py_native_vm_big_number_capsule_dtor);
+    PyObject* capsule_1 = PyCapsule_New((void*)out_1, KTH_PY_CAPSULE_VM_BIG_NUMBER, kth_py_native_vm_big_number_capsule_dtor);
+    PyObject* capsule_2 = PyCapsule_New((void*)out_2, KTH_PY_CAPSULE_VM_BIG_NUMBER, kth_py_native_vm_big_number_capsule_dtor);
+    if (capsule_0 == NULL) {
+        kth_vm_big_number_destruct(out_0);
+        kth_vm_big_number_destruct(out_1);
+        kth_vm_big_number_destruct(out_2);
+        return NULL;
+    }
+    if (capsule_1 == NULL) {
+        kth_vm_big_number_destruct(out_1);
+        Py_DECREF(capsule_0);
+        kth_vm_big_number_destruct(out_2);
+        return NULL;
+    }
+    if (capsule_2 == NULL) {
+        kth_vm_big_number_destruct(out_2);
+        Py_DECREF(capsule_0);
+        Py_DECREF(capsule_1);
+        return NULL;
+    }
+    PyObject* py_result = Py_BuildValue("(OOO)", capsule_0, capsule_1, capsule_2);
+    if (py_result == NULL) {
+        Py_DECREF(capsule_0);
+        Py_DECREF(capsule_1);
+        Py_DECREF(capsule_2);
+        return NULL;
+    }
+    Py_DECREF(capsule_0);
+    Py_DECREF(capsule_1);
+    Py_DECREF(capsule_2);
     return py_result;
 }
 
@@ -662,6 +812,62 @@ kth_py_native_vm_program_top(PyObject* self, PyObject* py_arg0) {
 }
 
 PyObject*
+kth_py_native_vm_program_top_number(PyObject* self, PyObject* args, PyObject* kwds) {
+    static char* kwlist[] = {(char*)"self", (char*)"maximum_size", NULL};
+    PyObject* py_self = NULL;
+    Py_ssize_t maximum_size = 0;
+    if ( ! PyArg_ParseTupleAndKeywords(args, kwds, "On", kwlist, &py_self, &maximum_size)) {
+        return NULL;
+    }
+    kth_program_const_t self_handle = (kth_program_const_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_VM_PROGRAM);
+    if (self_handle == NULL) return NULL;
+    if (maximum_size < 0) {
+        PyErr_Format(PyExc_ValueError, "maximum_size must be non-negative, got %zd", maximum_size);
+        return NULL;
+    }
+    kth_number_mut_t out = NULL;
+    kth_error_code_t result = kth_vm_program_top_number(self_handle, (kth_size_t)maximum_size, &out);
+    if (result != kth_ec_success) {
+        PyErr_Format(PyExc_RuntimeError, "kth error code %d", (int)result);
+        return NULL;
+    }
+    PyObject* capsule = PyCapsule_New((void*)out, KTH_PY_CAPSULE_VM_NUMBER, kth_py_native_vm_number_capsule_dtor);
+    if (capsule == NULL) {
+        kth_vm_number_destruct(out);
+        return NULL;
+    }
+    return capsule;
+}
+
+PyObject*
+kth_py_native_vm_program_top_big_number(PyObject* self, PyObject* args, PyObject* kwds) {
+    static char* kwlist[] = {(char*)"self", (char*)"maximum_size", NULL};
+    PyObject* py_self = NULL;
+    Py_ssize_t maximum_size = 0;
+    if ( ! PyArg_ParseTupleAndKeywords(args, kwds, "On", kwlist, &py_self, &maximum_size)) {
+        return NULL;
+    }
+    kth_program_const_t self_handle = (kth_program_const_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_VM_PROGRAM);
+    if (self_handle == NULL) return NULL;
+    if (maximum_size < 0) {
+        PyErr_Format(PyExc_ValueError, "maximum_size must be non-negative, got %zd", maximum_size);
+        return NULL;
+    }
+    kth_big_number_mut_t out = NULL;
+    kth_error_code_t result = kth_vm_program_top_big_number(self_handle, (kth_size_t)maximum_size, &out);
+    if (result != kth_ec_success) {
+        PyErr_Format(PyExc_RuntimeError, "kth error code %d", (int)result);
+        return NULL;
+    }
+    PyObject* capsule = PyCapsule_New((void*)out, KTH_PY_CAPSULE_VM_BIG_NUMBER, kth_py_native_vm_big_number_capsule_dtor);
+    if (capsule == NULL) {
+        kth_vm_big_number_destruct(out);
+        return NULL;
+    }
+    return capsule;
+}
+
+PyObject*
 kth_py_native_vm_program_subscript(PyObject* self, PyObject* py_arg0) {
     PyObject* py_self = py_arg0;
     kth_program_const_t self_handle = (kth_program_const_t)PyCapsule_GetPointer(py_self, KTH_PY_CAPSULE_VM_PROGRAM);
@@ -819,7 +1025,11 @@ PyMethodDef kth_py_native_vm_program_methods[] = {
     {"vm_program_push_move", (PyCFunction)kth_py_native_vm_program_push_move, METH_VARARGS | METH_KEYWORDS, NULL},
     {"vm_program_push_copy", (PyCFunction)kth_py_native_vm_program_push_copy, METH_VARARGS | METH_KEYWORDS, NULL},
     {"vm_program_drop", (PyCFunction)kth_py_native_vm_program_drop, METH_O, NULL},
-    {"vm_program_pop", (PyCFunction)kth_py_native_vm_program_pop, METH_O, NULL},
+    {"vm_program_pop_simple", (PyCFunction)kth_py_native_vm_program_pop_simple, METH_O, NULL},
+    {"vm_program_pop_number", (PyCFunction)kth_py_native_vm_program_pop_number, METH_VARARGS | METH_KEYWORDS, NULL},
+    {"vm_program_pop_ternary", (PyCFunction)kth_py_native_vm_program_pop_ternary, METH_O, NULL},
+    {"vm_program_pop_big_number", (PyCFunction)kth_py_native_vm_program_pop_big_number, METH_VARARGS | METH_KEYWORDS, NULL},
+    {"vm_program_pop_big_ternary", (PyCFunction)kth_py_native_vm_program_pop_big_ternary, METH_O, NULL},
     {"vm_program_duplicate", (PyCFunction)kth_py_native_vm_program_duplicate, METH_VARARGS | METH_KEYWORDS, NULL},
     {"vm_program_swap", (PyCFunction)kth_py_native_vm_program_swap, METH_VARARGS | METH_KEYWORDS, NULL},
     {"vm_program_empty", (PyCFunction)kth_py_native_vm_program_empty, METH_O, NULL},
@@ -830,6 +1040,8 @@ PyMethodDef kth_py_native_vm_program_methods[] = {
     {"vm_program_if_", (PyCFunction)kth_py_native_vm_program_if_, METH_VARARGS | METH_KEYWORDS, NULL},
     {"vm_program_item", (PyCFunction)kth_py_native_vm_program_item, METH_VARARGS | METH_KEYWORDS, NULL},
     {"vm_program_top", (PyCFunction)kth_py_native_vm_program_top, METH_O, NULL},
+    {"vm_program_top_number", (PyCFunction)kth_py_native_vm_program_top_number, METH_VARARGS | METH_KEYWORDS, NULL},
+    {"vm_program_top_big_number", (PyCFunction)kth_py_native_vm_program_top_big_number, METH_VARARGS | METH_KEYWORDS, NULL},
     {"vm_program_subscript", (PyCFunction)kth_py_native_vm_program_subscript, METH_O, NULL},
     {"vm_program_size", (PyCFunction)kth_py_native_vm_program_size, METH_O, NULL},
     {"vm_program_conditional_stack_size", (PyCFunction)kth_py_native_vm_program_conditional_stack_size, METH_O, NULL},
