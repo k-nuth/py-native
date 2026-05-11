@@ -25,6 +25,9 @@
 extern "C" {
 #endif
 
+#define KTH_PY_CAPSULE_CHAIN_ABLA "kth.chain.abla"
+#define KTH_PY_CAPSULE_CHAIN_ABLA_CONFIG "kth.chain.abla_config"
+#define KTH_PY_CAPSULE_CHAIN_ABLA_STATE "kth.chain.abla_state"
 #define KTH_PY_CAPSULE_CHAIN_BLOCK "kth.chain.block"
 #define KTH_PY_CAPSULE_CHAIN_BLOCK_LIST "kth.chain.block_list"
 #define KTH_PY_CAPSULE_CHAIN_CHAIN_STATE "kth.chain.chain_state"
@@ -39,6 +42,7 @@ extern "C" {
 #define KTH_PY_CAPSULE_CHAIN_HISTORY_COMPACT_LIST "kth.chain.history_compact_list"
 #define KTH_PY_CAPSULE_CHAIN_INPUT "kth.chain.input"
 #define KTH_PY_CAPSULE_CHAIN_INPUT_LIST "kth.chain.input_list"
+#define KTH_PY_CAPSULE_CHAIN_INPUT_POINT "kth.chain.input_point"
 #define KTH_PY_CAPSULE_CHAIN_MERKLE_BLOCK "kth.chain.merkle_block"
 #define KTH_PY_CAPSULE_CHAIN_METRICS "kth.chain.metrics"
 #define KTH_PY_CAPSULE_CHAIN_OPERATION "kth.chain.operation"
@@ -61,23 +65,46 @@ extern "C" {
 #define KTH_PY_CAPSULE_CHAIN_UTXO_LIST "kth.chain.utxo_list"
 #define KTH_PY_CAPSULE_CORE_BINARY "kth.core.binary"
 #define KTH_PY_CAPSULE_CORE_BOOL_LIST "kth.core.bool_list"
+#define KTH_PY_CAPSULE_CORE_DOUBLE_LIST "kth.core.double_list"
 #define KTH_PY_CAPSULE_CORE_HASH_LIST "kth.core.hash_list"
 #define KTH_PY_CAPSULE_CORE_STRING_LIST "kth.core.string_list"
+#define KTH_PY_CAPSULE_CORE_U32_LIST "kth.core.u32_list"
 #define KTH_PY_CAPSULE_CORE_U64_LIST "kth.core.u64_list"
+#define KTH_PY_CAPSULE_VM_BIG_NUMBER "kth.vm.big_number"
 #define KTH_PY_CAPSULE_VM_DEBUG_SNAPSHOT "kth.vm.debug_snapshot"
 #define KTH_PY_CAPSULE_VM_DEBUG_SNAPSHOT_LIST "kth.vm.debug_snapshot_list"
 #define KTH_PY_CAPSULE_VM_INTERPRETER "kth.vm.interpreter"
 #define KTH_PY_CAPSULE_VM_METRICS "kth.vm.metrics"
+#define KTH_PY_CAPSULE_VM_NUMBER "kth.vm.number"
 #define KTH_PY_CAPSULE_VM_PROGRAM "kth.vm.program"
+#define KTH_PY_CAPSULE_VM_SCRIPT_EXECUTION_CONTEXT "kth.vm.script_execution_context"
+#define KTH_PY_CAPSULE_WALLET_BITCOIN_URI "kth.wallet.bitcoin_uri"
+#define KTH_PY_CAPSULE_WALLET_CASHADDR "kth.wallet.cashaddr"
+#define KTH_PY_CAPSULE_WALLET_COIN_SELECTION "kth.wallet.coin_selection"
+#define KTH_PY_CAPSULE_WALLET_COIN_SELECTION_RESULT "kth.wallet.coin_selection_result"
+#define KTH_PY_CAPSULE_WALLET_DICTIONARY "kth.wallet.dictionary"
+#define KTH_PY_CAPSULE_WALLET_DICTIONARY_LIST "kth.wallet.dictionary_list"
 #define KTH_PY_CAPSULE_WALLET_EC_COMPRESSED_LIST "kth.wallet.ec_compressed_list"
 #define KTH_PY_CAPSULE_WALLET_EC_PRIVATE "kth.wallet.ec_private"
 #define KTH_PY_CAPSULE_WALLET_EC_PUBLIC "kth.wallet.ec_public"
+#define KTH_PY_CAPSULE_WALLET_EK_PRIVATE "kth.wallet.ek_private"
+#define KTH_PY_CAPSULE_WALLET_EK_PUBLIC "kth.wallet.ek_public"
+#define KTH_PY_CAPSULE_WALLET_EK_TOKEN "kth.wallet.ek_token"
+#define KTH_PY_CAPSULE_WALLET_ENCRYPTED_KEYS "kth.wallet.encrypted_keys"
 #define KTH_PY_CAPSULE_WALLET_HD_PRIVATE "kth.wallet.hd_private"
 #define KTH_PY_CAPSULE_WALLET_HD_PUBLIC "kth.wallet.hd_public"
+#define KTH_PY_CAPSULE_WALLET_LANGUAGE "kth.wallet.language"
+#define KTH_PY_CAPSULE_WALLET_MESSAGE "kth.wallet.message"
+#define KTH_PY_CAPSULE_WALLET_MNEMONIC "kth.wallet.mnemonic"
 #define KTH_PY_CAPSULE_WALLET_PAYMENT_ADDRESS "kth.wallet.payment_address"
 #define KTH_PY_CAPSULE_WALLET_PAYMENT_ADDRESS_LIST "kth.wallet.payment_address_list"
+#define KTH_PY_CAPSULE_WALLET_STEALTH_ADDRESS "kth.wallet.stealth_address"
+#define KTH_PY_CAPSULE_WALLET_STEALTH_RECEIVER "kth.wallet.stealth_receiver"
+#define KTH_PY_CAPSULE_WALLET_STEALTH_SENDER "kth.wallet.stealth_sender"
 #define KTH_PY_CAPSULE_WALLET_WALLET_DATA "kth.wallet.wallet_data"
 
+void kth_py_native_chain_abla_config_capsule_dtor(PyObject* capsule);
+void kth_py_native_chain_abla_state_capsule_dtor(PyObject* capsule);
 void kth_py_native_chain_block_capsule_dtor(PyObject* capsule);
 void kth_py_native_chain_block_list_capsule_dtor(PyObject* capsule);
 void kth_py_native_chain_compact_block_capsule_dtor(PyObject* capsule);
@@ -90,6 +117,7 @@ void kth_py_native_chain_history_compact_capsule_dtor(PyObject* capsule);
 void kth_py_native_chain_history_compact_list_capsule_dtor(PyObject* capsule);
 void kth_py_native_chain_input_capsule_dtor(PyObject* capsule);
 void kth_py_native_chain_input_list_capsule_dtor(PyObject* capsule);
+void kth_py_native_chain_input_point_capsule_dtor(PyObject* capsule);
 void kth_py_native_chain_merkle_block_capsule_dtor(PyObject* capsule);
 void kth_py_native_chain_operation_capsule_dtor(PyObject* capsule);
 void kth_py_native_chain_operation_list_capsule_dtor(PyObject* capsule);
@@ -110,16 +138,27 @@ void kth_py_native_chain_transaction_list_capsule_dtor(PyObject* capsule);
 void kth_py_native_chain_utxo_capsule_dtor(PyObject* capsule);
 void kth_py_native_chain_utxo_list_capsule_dtor(PyObject* capsule);
 void kth_py_native_core_binary_capsule_dtor(PyObject* capsule);
+void kth_py_native_vm_big_number_capsule_dtor(PyObject* capsule);
 void kth_py_native_vm_debug_snapshot_capsule_dtor(PyObject* capsule);
 void kth_py_native_vm_debug_snapshot_list_capsule_dtor(PyObject* capsule);
 void kth_py_native_vm_metrics_capsule_dtor(PyObject* capsule);
+void kth_py_native_vm_number_capsule_dtor(PyObject* capsule);
 void kth_py_native_vm_program_capsule_dtor(PyObject* capsule);
+void kth_py_native_vm_script_execution_context_capsule_dtor(PyObject* capsule);
+void kth_py_native_wallet_bitcoin_uri_capsule_dtor(PyObject* capsule);
+void kth_py_native_wallet_coin_selection_result_capsule_dtor(PyObject* capsule);
 void kth_py_native_wallet_ec_private_capsule_dtor(PyObject* capsule);
 void kth_py_native_wallet_ec_public_capsule_dtor(PyObject* capsule);
+void kth_py_native_wallet_ek_private_capsule_dtor(PyObject* capsule);
+void kth_py_native_wallet_ek_public_capsule_dtor(PyObject* capsule);
+void kth_py_native_wallet_ek_token_capsule_dtor(PyObject* capsule);
 void kth_py_native_wallet_hd_private_capsule_dtor(PyObject* capsule);
 void kth_py_native_wallet_hd_public_capsule_dtor(PyObject* capsule);
 void kth_py_native_wallet_payment_address_capsule_dtor(PyObject* capsule);
 void kth_py_native_wallet_payment_address_list_capsule_dtor(PyObject* capsule);
+void kth_py_native_wallet_stealth_address_capsule_dtor(PyObject* capsule);
+void kth_py_native_wallet_stealth_receiver_capsule_dtor(PyObject* capsule);
+void kth_py_native_wallet_stealth_sender_capsule_dtor(PyObject* capsule);
 void kth_py_native_wallet_wallet_data_capsule_dtor(PyObject* capsule);
 
 #ifdef __cplusplus

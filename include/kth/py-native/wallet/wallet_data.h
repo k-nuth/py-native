@@ -21,6 +21,7 @@ PyObject* kth_py_native_wallet_wallet_data_set_xpub(PyObject* self, PyObject* ar
 PyObject* kth_py_native_wallet_wallet_data_encrypted_seed(PyObject* self, PyObject* arg);
 PyObject* kth_py_native_wallet_wallet_data_set_encrypted_seed(PyObject* self, PyObject* args, PyObject* kwds);
 PyObject* kth_py_native_wallet_wallet_data_create(PyObject* self, PyObject* args, PyObject* kwds);
+PyObject* kth_py_native_wallet_wallet_data_create_simple(PyObject* self, PyObject* args, PyObject* kwds);
 
 extern PyMethodDef kth_py_native_wallet_wallet_data_methods[];
 

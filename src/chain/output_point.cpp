@@ -137,6 +137,21 @@ kth_py_native_chain_output_point_destruct(PyObject* self, PyObject* py_arg0) {
 }
 
 PyObject*
+kth_py_native_chain_output_point_null(PyObject* self, PyObject* Py_UNUSED(args)) {
+    auto const result = kth_chain_output_point_null();
+    if (result == NULL) {
+        PyErr_SetString(PyExc_RuntimeError, "kth: NULL handle returned");
+        return NULL;
+    }
+    PyObject* capsule = PyCapsule_New((void*)result, KTH_PY_CAPSULE_CHAIN_OUTPUT_POINT, kth_py_native_chain_output_point_capsule_dtor);
+    if (capsule == NULL) {
+        kth_chain_output_point_destruct(result);
+        return NULL;
+    }
+    return capsule;
+}
+
+PyObject*
 kth_py_native_chain_output_point_equals(PyObject* self, PyObject* args, PyObject* kwds) {
     static char* kwlist[] = {(char*)"self", (char*)"other", NULL};
     PyObject* py_self = NULL;
@@ -307,6 +322,7 @@ PyMethodDef kth_py_native_chain_output_point_methods[] = {
     {"chain_output_point_construct_from_point", (PyCFunction)kth_py_native_chain_output_point_construct_from_point, METH_O, NULL},
     {"chain_output_point_copy", (PyCFunction)kth_py_native_chain_output_point_copy, METH_O, NULL},
     {"chain_output_point_destruct", (PyCFunction)kth_py_native_chain_output_point_destruct, METH_O, NULL},
+    {"chain_output_point_null", (PyCFunction)kth_py_native_chain_output_point_null, METH_NOARGS, NULL},
     {"chain_output_point_equals", (PyCFunction)kth_py_native_chain_output_point_equals, METH_VARARGS | METH_KEYWORDS, NULL},
     {"chain_output_point_is_mature", (PyCFunction)kth_py_native_chain_output_point_is_mature, METH_VARARGS | METH_KEYWORDS, NULL},
     {"chain_output_point_is_valid", (PyCFunction)kth_py_native_chain_output_point_is_valid, METH_O, NULL},

@@ -25,6 +25,7 @@
 #include <kth/py-native/chain/header.h>
 #include <kth/py-native/chain/point.h>
 #include <kth/py-native/chain/point_list.h>
+#include <kth/py-native/chain/input_point.h>
 #include <kth/py-native/chain/output_point.h>
 #include <kth/py-native/chain/output_point_list.h>
 #include <kth/py-native/chain/script.h>
@@ -58,12 +59,32 @@
 #include <kth/py-native/chain/token_data.h>
 #include <kth/py-native/chain/utxo.h>
 #include <kth/py-native/chain/utxo_list.h>
+#include <kth/py-native/chain/abla_config.h>
+#include <kth/py-native/chain/abla_state.h>
+#include <kth/py-native/chain/abla.h>
 #include <kth/py-native/vm/program.h>
 #include <kth/py-native/vm/debug_snapshot.h>
 #include <kth/py-native/vm/debug_snapshot_list.h>
 #include <kth/py-native/vm/interpreter.h>
 #include <kth/py-native/vm/metrics.h>
+#include <kth/py-native/vm/script_execution_context.h>
+#include <kth/py-native/vm/number.h>
+#include <kth/py-native/vm/big_number.h>
 #include <kth/py-native/wallet/wallet_data.h>
+#include <kth/py-native/wallet/message.h>
+#include <kth/py-native/wallet/stealth_address.h>
+#include <kth/py-native/wallet/stealth_receiver.h>
+#include <kth/py-native/wallet/stealth_sender.h>
+#include <kth/py-native/wallet/cashaddr.h>
+#include <kth/py-native/wallet/bitcoin_uri.h>
+#include <kth/py-native/wallet/language.h>
+#include <kth/py-native/wallet/mnemonic.h>
+#include <kth/py-native/wallet/ek_private.h>
+#include <kth/py-native/wallet/ek_public.h>
+#include <kth/py-native/wallet/ek_token.h>
+#include <kth/py-native/wallet/coin_selection_result.h>
+#include <kth/py-native/wallet/coin_selection.h>
+#include <kth/py-native/wallet/encrypted_keys.h>
 // ── AUTO-GENERATED INCLUDES END ───────────────────────────────────────
 // `word_list.h` is the only hand-written binding still here — every
 // other class header on this block has migrated into the
@@ -899,6 +920,7 @@ PyInit_kth_native(void) {
     KTH_REGISTER_METHODS(kth_py_native_chain_header_methods);
     KTH_REGISTER_METHODS(kth_py_native_chain_point_methods);
     KTH_REGISTER_METHODS(kth_py_native_chain_point_list_methods);
+    KTH_REGISTER_METHODS(kth_py_native_chain_input_point_methods);
     KTH_REGISTER_METHODS(kth_py_native_chain_output_point_methods);
     KTH_REGISTER_METHODS(kth_py_native_chain_output_point_list_methods);
     KTH_REGISTER_METHODS(kth_py_native_chain_script_methods);
@@ -932,12 +954,32 @@ PyInit_kth_native(void) {
     KTH_REGISTER_METHODS(kth_py_native_chain_token_data_methods);
     KTH_REGISTER_METHODS(kth_py_native_chain_utxo_methods);
     KTH_REGISTER_METHODS(kth_py_native_chain_utxo_list_methods);
+    KTH_REGISTER_METHODS(kth_py_native_chain_abla_config_methods);
+    KTH_REGISTER_METHODS(kth_py_native_chain_abla_state_methods);
+    KTH_REGISTER_METHODS(kth_py_native_chain_abla_methods);
     KTH_REGISTER_METHODS(kth_py_native_vm_program_methods);
     KTH_REGISTER_METHODS(kth_py_native_vm_debug_snapshot_methods);
     KTH_REGISTER_METHODS(kth_py_native_vm_debug_snapshot_list_methods);
     KTH_REGISTER_METHODS(kth_py_native_vm_interpreter_methods);
     KTH_REGISTER_METHODS(kth_py_native_vm_metrics_methods);
+    KTH_REGISTER_METHODS(kth_py_native_vm_script_execution_context_methods);
+    KTH_REGISTER_METHODS(kth_py_native_vm_number_methods);
+    KTH_REGISTER_METHODS(kth_py_native_vm_big_number_methods);
     KTH_REGISTER_METHODS(kth_py_native_wallet_wallet_data_methods);
+    KTH_REGISTER_METHODS(kth_py_native_wallet_message_methods);
+    KTH_REGISTER_METHODS(kth_py_native_wallet_stealth_address_methods);
+    KTH_REGISTER_METHODS(kth_py_native_wallet_stealth_receiver_methods);
+    KTH_REGISTER_METHODS(kth_py_native_wallet_stealth_sender_methods);
+    KTH_REGISTER_METHODS(kth_py_native_wallet_cashaddr_methods);
+    KTH_REGISTER_METHODS(kth_py_native_wallet_bitcoin_uri_methods);
+    KTH_REGISTER_METHODS(kth_py_native_wallet_language_methods);
+    KTH_REGISTER_METHODS(kth_py_native_wallet_mnemonic_methods);
+    KTH_REGISTER_METHODS(kth_py_native_wallet_ek_private_methods);
+    KTH_REGISTER_METHODS(kth_py_native_wallet_ek_public_methods);
+    KTH_REGISTER_METHODS(kth_py_native_wallet_ek_token_methods);
+    KTH_REGISTER_METHODS(kth_py_native_wallet_coin_selection_result_methods);
+    KTH_REGISTER_METHODS(kth_py_native_wallet_coin_selection_methods);
+    KTH_REGISTER_METHODS(kth_py_native_wallet_encrypted_keys_methods);
 
 #undef KTH_REGISTER_METHODS
     // ── AUTO-GENERATED REGISTER END ───────────────────────────────────

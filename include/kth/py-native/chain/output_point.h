@@ -18,6 +18,7 @@ PyObject* kth_py_native_chain_output_point_construct_from_hash_index(PyObject* s
 PyObject* kth_py_native_chain_output_point_construct_from_point(PyObject* self, PyObject* arg);
 PyObject* kth_py_native_chain_output_point_copy(PyObject* self, PyObject* arg);
 PyObject* kth_py_native_chain_output_point_destruct(PyObject* self, PyObject* arg);
+PyObject* kth_py_native_chain_output_point_null(PyObject* self, PyObject* args);
 PyObject* kth_py_native_chain_output_point_equals(PyObject* self, PyObject* args, PyObject* kwds);
 PyObject* kth_py_native_chain_output_point_is_mature(PyObject* self, PyObject* args, PyObject* kwds);
 PyObject* kth_py_native_chain_output_point_is_valid(PyObject* self, PyObject* arg);
